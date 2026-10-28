@@ -1,0 +1,1480 @@
+{
+ "fps": 30,
+ "total": 900.0,
+ "para_gap": 1.214,
+ "pre_roll": 1.6,
+ "sentences": [
+  {
+   "pid": "P01",
+   "idx": 0,
+   "file": "P01_00.wav",
+   "text": "This bag weighs about ninety pounds.",
+   "start": 1.6,
+   "end": 3.799
+  },
+  {
+   "pid": "P01",
+   "idx": 1,
+   "file": "P01_01.wav",
+   "text": "It's rawhide, sewn shut, and the seams were sealed with grease.",
+   "start": 4.099,
+   "end": 7.967
+  },
+  {
+   "pid": "P01",
+   "idx": 2,
+   "file": "P01_02.wav",
+   "text": "Inside is food.",
+   "start": 8.267,
+   "end": 9.559
+  },
+  {
+   "pid": "P01",
+   "idx": 3,
+   "file": "P01_03.wav",
+   "text": "Packed like this and kept dry, it could last for years.",
+   "start": 10.039,
+   "end": 13.581
+  },
+  {
+   "pid": "P02",
+   "idx": 0,
+   "file": "P02_00.wav",
+   "text": "Two hundred years ago, bags like this crossed the northern half of a continent by canoe.",
+   "start": 15.295,
+   "end": 20.497
+  },
+  {
+   "pid": "P02",
+   "idx": 1,
+   "file": "P02_01.wav",
+   "text": "And on the eighth of January, 1814, the governor of a small, hungry colony on the Red River made it illegal to carry them out of his territory.",
+   "start": 20.797,
+   "end": 31.523
+  },
+  {
+   "pid": "P03",
+   "idx": 0,
+   "file": "P03_00.wav",
+   "text": "Not illegal to eat.",
+   "start": 33.137,
+   "end": 34.541
+  },
+  {
+   "pid": "P03",
+   "idx": 1,
+   "file": "P03_01.wav",
+   "text": "Illegal to move.",
+   "start": 34.841,
+   "end": 36.043
+  },
+  {
+   "pid": "P04",
+   "idx": 0,
+   "file": "P04_00.wav",
+   "text": "Two and a half years later, more than twenty men lay dead on a plain just downriver from his fort.",
+   "start": 38.857,
+   "end": 45.087
+  },
+  {
+   "pid": "P04",
+   "idx": 1,
+   "file": "P04_01.wav",
+   "text": "It was the bloodiest evening of what historians now call the Pemmican War.",
+   "start": 45.387,
+   "end": 50.178
+  },
+  {
+   "pid": "P05",
+   "idx": 0,
+   "file": "P05_00.wav",
+   "text": "The food in the bag is pemmican.",
+   "start": 51.992,
+   "end": 53.892
+  },
+  {
+   "pid": "P05",
+   "idx": 1,
+   "file": "P05_01.wav",
+   "text": "To understand why people would fight over it, you have to understand the problem it solved, and who knew how to make it.",
+   "start": 54.192,
+   "end": 61.463
+  },
+  {
+   "pid": "P06",
+   "idx": 0,
+   "file": "P06_00.wav",
+   "text": "Fresh meat is mostly water.",
+   "start": 69.177,
+   "end": 71.125
+  },
+  {
+   "pid": "P06",
+   "idx": 1,
+   "file": "P06_01.wav",
+   "text": "That's what makes it heavy, and that's what makes it rot.",
+   "start": 71.425,
+   "end": 74.429
+  },
+  {
+   "pid": "P06",
+   "idx": 2,
+   "file": "P06_02.wav",
+   "text": "On the northern plains, a good bison hunt could bring in far more meat than anyone could eat before it spoiled.",
+   "start": 74.729,
+   "end": 82.223
+  },
+  {
+   "pid": "P06",
+   "idx": 3,
+   "file": "P06_03.wav",
+   "text": "The hard part was never the hunt.",
+   "start": 82.523,
+   "end": 84.594
+  },
+  {
+   "pid": "P06",
+   "idx": 4,
+   "file": "P06_04.wav",
+   "text": "It was keeping what the hunt provided.",
+   "start": 84.894,
+   "end": 87.039
+  },
+  {
+   "pid": "P07",
+   "idx": 0,
+   "file": "P07_00.wav",
+   "text": "The fur traders didn't solve that problem.",
+   "start": 88.253,
+   "end": 90.681
+  },
+  {
+   "pid": "P07",
+   "idx": 1,
+   "file": "P07_01.wav",
+   "text": "They learned the solution from the people who already had it.",
+   "start": 90.981,
+   "end": 94.268
+  },
+  {
+   "pid": "P07",
+   "idx": 2,
+   "file": "P07_02.wav",
+   "text": "Plains peoples, among them the Cree and the Assiniboine, whose lands met the fur trade along these rivers, made a food that could travel.",
+   "start": 94.568,
+   "end": 103.499
+  },
+  {
+   "pid": "P07",
+   "idx": 3,
+   "file": "P07_03.wav",
+   "text": "The English word comes from Cree: pimîhkân, built on the word for fat, or grease.",
+   "start": 103.799,
+   "end": 109.321
+  },
+  {
+   "pid": "P08",
+   "idx": 0,
+   "file": "P08_00.wav",
+   "text": "The lean meat was cut into thin sheets and dried, in the sun and wind or over a slow fire, until it was hard and brittle.",
+   "start": 111.435,
+   "end": 119.921
+  },
+  {
+   "pid": "P08",
+   "idx": 1,
+   "file": "P08_01.wav",
+   "text": "Then it was pounded, often on a spread hide, until it broke down into something close to coarse meal.",
+   "start": 120.221,
+   "end": 126.681
+  },
+  {
+   "pid": "P08",
+   "idx": 2,
+   "file": "P08_02.wav",
+   "text": "Fat from the same animal was rendered, and the hot fat was poured over the pounded meat and worked all the way through it.",
+   "start": 126.981,
+   "end": 134.796
+  },
+  {
+   "pid": "P08",
+   "idx": 3,
+   "file": "P08_03.wav",
+   "text": "Sometimes dried fruit went in, saskatoon berries or chokecherries.",
+   "start": 135.096,
+   "end": 139.577
+  },
+  {
+   "pid": "P08",
+   "idx": 4,
+   "file": "P08_04.wav",
+   "text": "The mixture was packed into a rawhide bag while it was still warm, and the bag was sewn shut.",
+   "start": 139.877,
+   "end": 145.569
+  },
+  {
+   "pid": "P09",
+   "idx": 0,
+   "file": "P09_00.wav",
+   "text": "Most of that work was done by women.",
+   "start": 147.483,
+   "end": 149.634
+  },
+  {
+   "pid": "P09",
+   "idx": 1,
+   "file": "P09_01.wav",
+   "text": "Their skill decided whether a summer's hunt became a year of food, or a pile of spoiled meat.",
+   "start": 149.934,
+   "end": 156.239
+  },
+  {
+   "pid": "P10",
+   "idx": 0,
+   "file": "P10_00.wav",
+   "text": "Every step had a job.",
+   "start": 158.053,
+   "end": 159.447
+  },
+  {
+   "pid": "P10",
+   "idx": 1,
+   "file": "P10_01.wav",
+   "text": "Drying removed the water that bacteria and mold need to grow.",
+   "start": 159.747,
+   "end": 163.855
+  },
+  {
+   "pid": "P10",
+   "idx": 2,
+   "file": "P10_02.wav",
+   "text": "It took five or six pounds of fresh, lean meat to make a single pound of dried, pounded meat, so a heavy load became a light one.",
+   "start": 164.155,
+   "end": 173.132
+  },
+  {
+   "pid": "P11",
+   "idx": 0,
+   "file": "P11_00.wav",
+   "text": "The fat did two things.",
+   "start": 174.346,
+   "end": 175.915
+  },
+  {
+   "pid": "P11",
+   "idx": 1,
+   "file": "P11_01.wav",
+   "text": "It added energy, more than twice as much per ounce as the meat itself.",
+   "start": 176.215,
+   "end": 181.07
+  },
+  {
+   "pid": "P11",
+   "idx": 2,
+   "file": "P11_02.wav",
+   "text": "And as it cooled, it locked the fibers in place and kept out air and moisture.",
+   "start": 181.37,
+   "end": 186.379
+  },
+  {
+   "pid": "P11",
+   "idx": 3,
+   "file": "P11_03.wav",
+   "text": "The bag, greased along its seams, sealed the whole package.",
+   "start": 186.679,
+   "end": 190.323
+  },
+  {
+   "pid": "P12",
+   "idx": 0,
+   "file": "P12_00.wav",
+   "text": "None of this made pemmican indestructible.",
+   "start": 192.037,
+   "end": 194.7
+  },
+  {
+   "pid": "P12",
+   "idx": 1,
+   "file": "P12_01.wav",
+   "text": "Pemmican could go rancid, and damp could ruin it.",
+   "start": 195.0,
+   "end": 198.095
+  },
+  {
+   "pid": "P12",
+   "idx": 2,
+   "file": "P12_02.wav",
+   "text": "But packed well and kept dry, a bag could last for years.",
+   "start": 198.395,
+   "end": 202.129
+  },
+  {
+   "pid": "P12",
+   "idx": 3,
+   "file": "P12_03.wav",
+   "text": "What came out was dense, durable food that could be eaten cold, straight from the bag, by someone who had no time to stop and cook.",
+   "start": 202.429,
+   "end": 211.241
+  },
+  {
+   "pid": "P13",
+   "idx": 0,
+   "file": "P13_00.wav",
+   "text": "And at the start of the eighteen-hundreds, there was an entire industry made of people who had no time to stop.",
+   "start": 216.655,
+   "end": 223.147
+  },
+  {
+   "pid": "P14",
+   "idx": 0,
+   "file": "P14_00.wav",
+   "text": "The North West Company, run by merchants in Montreal, wanted the finest furs on the continent, and some of the best came from the Athabasca country in the far northwest.",
+   "start": 224.361,
+   "end": 236.373
+  },
+  {
+   "pid": "P14",
+   "idx": 1,
+   "file": "P14_01.wav",
+   "text": "The canoe route there ran close to three thousand miles.",
+   "start": 236.673,
+   "end": 240.093
+  },
+  {
+   "pid": "P14",
+   "idx": 2,
+   "file": "P14_02.wav",
+   "text": "It was so long that the company split the journey in two, with crews from Montreal and crews from the interior meeting halfway, at the western end of Lake Superior.",
+   "start": 240.393,
+   "end": 251.483
+  },
+  {
+   "pid": "P15",
+   "idx": 0,
+   "file": "P15_00.wav",
+   "text": "The northern season was short.",
+   "start": 253.097,
+   "end": 254.789
+  },
+  {
+   "pid": "P15",
+   "idx": 1,
+   "file": "P15_01.wav",
+   "text": "Canoes had to get in and get out before the rivers froze.",
+   "start": 255.089,
+   "end": 258.527
+  },
+  {
+   "pid": "P15",
+   "idx": 2,
+   "file": "P15_02.wav",
+   "text": "Every pound of food on board was a pound of trade goods or furs that couldn't be carried.",
+   "start": 258.827,
+   "end": 264.135
+  },
+  {
+   "pid": "P15",
+   "idx": 3,
+   "file": "P15_03.wav",
+   "text": "And a crew that stopped to hunt was a crew that wasn't paddling.",
+   "start": 264.435,
+   "end": 268.297
+  },
+  {
+   "pid": "P16",
+   "idx": 0,
+   "file": "P16_00.wav",
+   "text": "Pemmican changed that math.",
+   "start": 269.511,
+   "end": 271.033
+  },
+  {
+   "pid": "P16",
+   "idx": 1,
+   "file": "P16_01.wav",
+   "text": "Fur-trade accounts reckoned that around two pounds a day could keep a working man going.",
+   "start": 271.333,
+   "end": 276.774
+  },
+  {
+   "pid": "P16",
+   "idx": 2,
+   "file": "P16_02.wav",
+   "text": "So the company built a supply chain around it.",
+   "start": 277.074,
+   "end": 279.731
+  },
+  {
+   "pid": "P16",
+   "idx": 3,
+   "file": "P16_03.wav",
+   "text": "Pemmican was made on the plains, bought from Indigenous and Métis hunters, and stockpiled at depots along the route.",
+   "start": 280.031,
+   "end": 288.059
+  },
+  {
+   "pid": "P16",
+   "idx": 4,
+   "file": "P16_04.wav",
+   "text": "A northern canoe with a crew of six, making perhaps thirty-five miles a day, would take on about four ninety-pound bags at one depot.",
+   "start": 288.359,
+   "end": 297.696
+  },
+  {
+   "pid": "P16",
+   "idx": 5,
+   "file": "P16_05.wav",
+   "text": "That was enough to carry the crew to the next depot, hundreds of miles away.",
+   "start": 297.996,
+   "end": 302.584
+  },
+  {
+   "pid": "P17",
+   "idx": 0,
+   "file": "P17_00.wav",
+   "text": "A large share of that pemmican came from the Métis, a people whose roots lay in the fur trade itself, in families formed by traders and Cree and Ojibwe women.",
+   "start": 304.598,
+   "end": 316.103
+  },
+  {
+   "pid": "P17",
+   "idx": 1,
+   "file": "P17_01.wav",
+   "text": "By the early eighteen-hundreds, Métis communities along the Red and Assiniboine rivers had their own customs and their own economy.",
+   "start": 316.403,
+   "end": 325.407
+  },
+  {
+   "pid": "P17",
+   "idx": 2,
+   "file": "P17_02.wav",
+   "text": "Each year, whole families went out onto the plains together for the hunt, organized almost like a moving town, with elected captains and strict rules.",
+   "start": 325.707,
+   "end": 335.97
+  },
+  {
+   "pid": "P17",
+   "idx": 3,
+   "file": "P17_03.wav",
+   "text": "What they brought back, dried and packed, was sold to the posts.",
+   "start": 336.27,
+   "end": 340.01
+  },
+  {
+   "pid": "P18",
+   "idx": 0,
+   "file": "P18_00.wav",
+   "text": "Historians who study this trade put it plainly: without cheap, abundant pemmican from the plains, the fur trade of the far northwest would not have been possible.",
+   "start": 342.024,
+   "end": 352.559
+  },
+  {
+   "pid": "P18",
+   "idx": 1,
+   "file": "P18_01.wav",
+   "text": "The furs came from the north.",
+   "start": 352.859,
+   "end": 354.588
+  },
+  {
+   "pid": "P18",
+   "idx": 2,
+   "file": "P18_02.wav",
+   "text": "The fuel came from bison country.",
+   "start": 354.888,
+   "end": 356.959
+  },
+  {
+   "pid": "P19",
+   "idx": 0,
+   "file": "P19_00.wav",
+   "text": "The two great fur companies weren't equally exposed.",
+   "start": 358.773,
+   "end": 362.075
+  },
+  {
+   "pid": "P19",
+   "idx": 1,
+   "file": "P19_01.wav",
+   "text": "The Hudson's Bay Company could ship goods by sea straight into the heart of the continent, through Hudson Bay.",
+   "start": 362.375,
+   "end": 368.947
+  },
+  {
+   "pid": "P19",
+   "idx": 2,
+   "file": "P19_02.wav",
+   "text": "The North West Company had no such shortcut.",
+   "start": 369.247,
+   "end": 371.99
+  },
+  {
+   "pid": "P19",
+   "idx": 3,
+   "file": "P19_03.wav",
+   "text": "Its lifeline was the long canoe road from Montreal, and that road ran on pemmican.",
+   "start": 372.29,
+   "end": 378.24
+  },
+  {
+   "pid": "P19",
+   "idx": 4,
+   "file": "P19_04.wav",
+   "text": "Much of that pemmican came down rivers that met at one place: the point where the Assiniboine River joins the Red.",
+   "start": 378.54,
+   "end": 386.205
+  },
+  {
+   "pid": "P20",
+   "idx": 0,
+   "file": "P20_00.wav",
+   "text": "In 1811, the Hudson's Bay Company granted a Scottish aristocrat, the Earl of Selkirk, a tract of land of about a hundred and sixteen thousand square miles.",
+   "start": 391.019,
+   "end": 403.028
+  },
+  {
+   "pid": "P20",
+   "idx": 1,
+   "file": "P20_01.wav",
+   "text": "That's roughly the size of Italy.",
+   "start": 403.328,
+   "end": 405.367
+  },
+  {
+   "pid": "P20",
+   "idx": 2,
+   "file": "P20_02.wav",
+   "text": "Selkirk and his relatives had bought heavily into the company, and he meant to fill this land with farmers, many of them from the Scottish Highlands.",
+   "start": 405.667,
+   "end": 414.793
+  },
+  {
+   "pid": "P20",
+   "idx": 3,
+   "file": "P20_03.wav",
+   "text": "He called it Assiniboia.",
+   "start": 415.093,
+   "end": 416.583
+  },
+  {
+   "pid": "P20",
+   "idx": 4,
+   "file": "P20_04.wav",
+   "text": "Right in the middle of it sat the junction of those two rivers, and the North West Company's supply line.",
+   "start": 416.883,
+   "end": 423.412
+  },
+  {
+   "pid": "P21",
+   "idx": 0,
+   "file": "P21_00.wav",
+   "text": "The first settlers arrived in 1812, with a governor named Miles Macdonell.",
+   "start": 424.626,
+   "end": 429.939
+  },
+  {
+   "pid": "P21",
+   "idx": 1,
+   "file": "P21_01.wav",
+   "text": "Farming at Red River got off to a hard start, and the colony leaned on bison meat it could hunt or buy.",
+   "start": 430.239,
+   "end": 437.121
+  },
+  {
+   "pid": "P21",
+   "idx": 2,
+   "file": "P21_02.wav",
+   "text": "By the winter of 1813, food was short, and more families were on the way.",
+   "start": 437.421,
+   "end": 442.707
+  },
+  {
+   "pid": "P22",
+   "idx": 0,
+   "file": "P22_00.wav",
+   "text": "On January eighth, 1814, Macdonell issued his order.",
+   "start": 444.521,
+   "end": 448.832
+  },
+  {
+   "pid": "P22",
+   "idx": 1,
+   "file": "P22_01.wav",
+   "text": "For one year, no provisions gathered in Assiniboia could be taken out of it.",
+   "start": 449.132,
+   "end": 453.763
+  },
+  {
+   "pid": "P22",
+   "idx": 2,
+   "file": "P22_02.wav",
+   "text": "Not meat, not fish, not grain, not vegetables.",
+   "start": 454.063,
+   "end": 457.515
+  },
+  {
+   "pid": "P22",
+   "idx": 3,
+   "file": "P22_03.wav",
+   "text": "Traders could keep what they needed to reach their own posts, with a license from the governor.",
+   "start": 457.815,
+   "end": 463.317
+  },
+  {
+   "pid": "P22",
+   "idx": 4,
+   "file": "P22_04.wav",
+   "text": "Anything else could be seized, and would be paid for.",
+   "start": 463.617,
+   "end": 466.589
+  },
+  {
+   "pid": "P23",
+   "idx": 0,
+   "file": "P23_00.wav",
+   "text": "On paper, it was about feeding a colony.",
+   "start": 468.803,
+   "end": 471.444
+  },
+  {
+   "pid": "P23",
+   "idx": 1,
+   "file": "P23_01.wav",
+   "text": "In practice, it landed on the one product the North West Company could not do without, and on the Métis families whose living came from making and selling it.",
+   "start": 471.744,
+   "end": 482.305
+  },
+  {
+   "pid": "P23",
+   "idx": 2,
+   "file": "P23_02.wav",
+   "text": "To them, it looked less like famine relief than an attempt to control their country and their trade.",
+   "start": 482.605,
+   "end": 488.703
+  },
+  {
+   "pid": "P23",
+   "idx": 3,
+   "file": "P23_03.wav",
+   "text": "Both of those things could be true at once.",
+   "start": 489.003,
+   "end": 491.308
+  },
+  {
+   "pid": "P24",
+   "idx": 0,
+   "file": "P24_00.wav",
+   "text": "That spring, the colony enforced it.",
+   "start": 493.322,
+   "end": 495.67
+  },
+  {
+   "pid": "P24",
+   "idx": 1,
+   "file": "P24_01.wav",
+   "text": "A sheriff named John Spencer was sent to a North West Company post on the Souris River.",
+   "start": 495.97,
+   "end": 502.179
+  },
+  {
+   "pid": "P24",
+   "idx": 2,
+   "file": "P24_02.wav",
+   "text": "His party took four hundred and seventy-nine bags of pemmican, along with kegs of fat and bundles of dried meat.",
+   "start": 502.479,
+   "end": 510.363
+  },
+  {
+   "pid": "P24",
+   "idx": 3,
+   "file": "P24_03.wav",
+   "text": "That's more than forty thousand pounds of food, taken from a company that needed it to move its canoes north.",
+   "start": 510.663,
+   "end": 517.417
+  },
+  {
+   "pid": "P25",
+   "idx": 0,
+   "file": "P25_00.wav",
+   "text": "The North West Company answered.",
+   "start": 522.731,
+   "end": 524.684
+  },
+  {
+   "pid": "P25",
+   "idx": 1,
+   "file": "P25_01.wav",
+   "text": "Over the next year, its people worked to break the colony apart, and in June of 1815, most of the settlers left.",
+   "start": 524.984,
+   "end": 533.092
+  },
+  {
+   "pid": "P25",
+   "idx": 2,
+   "file": "P25_02.wav",
+   "text": "Macdonell himself was taken east under arrest.",
+   "start": 533.392,
+   "end": 536.679
+  },
+  {
+   "pid": "P25",
+   "idx": 3,
+   "file": "P25_03.wav",
+   "text": "For a moment, the colony was gone.",
+   "start": 536.979,
+   "end": 539.177
+  },
+  {
+   "pid": "P26",
+   "idx": 0,
+   "file": "P26_00.wav",
+   "text": "It didn't stay gone.",
+   "start": 540.391,
+   "end": 541.625
+  },
+  {
+   "pid": "P26",
+   "idx": 1,
+   "file": "P26_01.wav",
+   "text": "Settlers returned that same year, and a new governor, Robert Semple, arrived in the fall.",
+   "start": 541.925,
+   "end": 547.713
+  },
+  {
+   "pid": "P26",
+   "idx": 2,
+   "file": "P26_02.wav",
+   "text": "In March of 1816, the colony's men seized the North West Company's post at the Forks, Fort Gibraltar, and later pulled it down.",
+   "start": 548.013,
+   "end": 557.838
+  },
+  {
+   "pid": "P27",
+   "idx": 0,
+   "file": "P27_00.wav",
+   "text": "By then, the Métis had a leader of their own: Cuthbert Grant, barely in his twenties, the son of a North West Company partner and a Métis mother.",
+   "start": 559.652,
+   "end": 569.696
+  },
+  {
+   "pid": "P27",
+   "idx": 1,
+   "file": "P27_01.wav",
+   "text": "That spring, Grant's men seized Hudson's Bay Company pemmican on the Qu'Appelle River, hundreds of bags of it.",
+   "start": 569.996,
+   "end": 577.155
+  },
+  {
+   "pid": "P27",
+   "idx": 2,
+   "file": "P27_02.wav",
+   "text": "Pemmican was now both the prize and the weapon.",
+   "start": 577.455,
+   "end": 580.507
+  },
+  {
+   "pid": "P28",
+   "idx": 0,
+   "file": "P28_00.wav",
+   "text": "In June, Grant's party, around sixty riders, Métis and First Nations, set out to carry pemmican east to meet the North West Company's canoes on Lake Winnipeg.",
+   "start": 582.421,
+   "end": 594.317
+  },
+  {
+   "pid": "P28",
+   "idx": 1,
+   "file": "P28_01.wav",
+   "text": "To get there, they had to pass the colony.",
+   "start": 594.617,
+   "end": 597.045
+  },
+  {
+   "pid": "P28",
+   "idx": 2,
+   "file": "P28_02.wav",
+   "text": "They cut across country, over a stretch of low ground the Métis called la Grenouillère.",
+   "start": 597.345,
+   "end": 602.771
+  },
+  {
+   "pid": "P28",
+   "idx": 3,
+   "file": "P28_03.wav",
+   "text": "Frog Plain.",
+   "start": 603.071,
+   "end": 604.075
+  },
+  {
+   "pid": "P29",
+   "idx": 0,
+   "file": "P29_00.wav",
+   "text": "On the evening of June nineteenth, Governor Semple walked out from Fort Douglas with about two dozen men to stop them.",
+   "start": 605.889,
+   "end": 613.319
+  },
+  {
+   "pid": "P30",
+   "idx": 0,
+   "file": "P30_00.wav",
+   "text": "What happened next has been argued over for two centuries.",
+   "start": 615.733,
+   "end": 619.191
+  },
+  {
+   "pid": "P30",
+   "idx": 1,
+   "file": "P30_01.wav",
+   "text": "Words were exchanged.",
+   "start": 619.491,
+   "end": 620.873
+  },
+  {
+   "pid": "P30",
+   "idx": 2,
+   "file": "P30_02.wav",
+   "text": "Someone fired.",
+   "start": 621.353,
+   "end": 622.405
+  },
+  {
+   "pid": "P30",
+   "idx": 3,
+   "file": "P30_03.wav",
+   "text": "Each side said the other fired first.",
+   "start": 622.885,
+   "end": 625.073
+  },
+  {
+   "pid": "P30",
+   "idx": 4,
+   "file": "P30_04.wav",
+   "text": "Within minutes, Semple and twenty of his men were dead.",
+   "start": 625.373,
+   "end": 628.548
+  },
+  {
+   "pid": "P30",
+   "idx": 5,
+   "file": "P30_05.wav",
+   "text": "On the Métis side, at least one young man was killed.",
+   "start": 628.848,
+   "end": 632.247
+  },
+  {
+   "pid": "P31",
+   "idx": 0,
+   "file": "P31_00.wav",
+   "text": "Grant's men went on to take Fort Douglas, and the remaining settlers were forced to leave.",
+   "start": 636.661,
+   "end": 641.947
+  },
+  {
+   "pid": "P31",
+   "idx": 1,
+   "file": "P31_01.wav",
+   "text": "For the second time in a little over a year, the colony was emptied.",
+   "start": 642.247,
+   "end": 646.478
+  },
+  {
+   "pid": "P32",
+   "idx": 0,
+   "file": "P32_00.wav",
+   "text": "In the settler tradition, the killings became the Seven Oaks Massacre.",
+   "start": 648.492,
+   "end": 652.829
+  },
+  {
+   "pid": "P32",
+   "idx": 1,
+   "file": "P32_01.wav",
+   "text": "For the Métis, it was the Victory of Frog Plain, la Victoire de la Grenouillère.",
+   "start": 653.129,
+   "end": 658.725
+  },
+  {
+   "pid": "P32",
+   "idx": 2,
+   "file": "P32_02.wav",
+   "text": "A Métis songwriter named Pierre Falcon made a song about it that same year, and it was sung for generations.",
+   "start": 659.025,
+   "end": 666.122
+  },
+  {
+   "pid": "P32",
+   "idx": 3,
+   "file": "P32_03.wav",
+   "text": "Many historians, and many Métis people today, see these years as a moment when the Métis spoke of themselves as a nation.",
+   "start": 666.422,
+   "end": 675.079
+  },
+  {
+   "pid": "P33",
+   "idx": 0,
+   "file": "P33_00.wav",
+   "text": "The killing settled nothing quickly.",
+   "start": 677.293,
+   "end": 679.321
+  },
+  {
+   "pid": "P33",
+   "idx": 1,
+   "file": "P33_01.wav",
+   "text": "Lord Selkirk answered with force of his own, seizing the North West Company's inland headquarters at Fort William that August.",
+   "start": 679.621,
+   "end": 688.145
+  },
+  {
+   "pid": "P33",
+   "idx": 2,
+   "file": "P33_02.wav",
+   "text": "Lawsuits and inquiries dragged on for years.",
+   "start": 688.445,
+   "end": 691.252
+  },
+  {
+   "pid": "P33",
+   "idx": 3,
+   "file": "P33_03.wav",
+   "text": "Finally, under pressure from the British government, the two rivals stopped fighting, and in 1821 they merged under the Hudson's Bay Company name.",
+   "start": 691.552,
+   "end": 701.409
+  },
+  {
+   "pid": "P34",
+   "idx": 0,
+   "file": "P34_00.wav",
+   "text": "And the pemmican kept moving.",
+   "start": 706.823,
+   "end": 708.483
+  },
+  {
+   "pid": "P34",
+   "idx": 1,
+   "file": "P34_01.wav",
+   "text": "If anything, the trade grew.",
+   "start": 708.783,
+   "end": 710.534
+  },
+  {
+   "pid": "P34",
+   "idx": 2,
+   "file": "P34_02.wav",
+   "text": "In 1840, a single summer hunt out of Red River set out with more than twelve hundred carts.",
+   "start": 710.834,
+   "end": 717.747
+  },
+  {
+   "pid": "P34",
+   "idx": 3,
+   "file": "P34_03.wav",
+   "text": "Later in the century, factory-made pemmican went to the ends of the earth.",
+   "start": 718.047,
+   "end": 722.555
+  },
+  {
+   "pid": "P34",
+   "idx": 4,
+   "file": "P34_04.wav",
+   "text": "In 1911, Roald Amundsen's team carried it to the South Pole, in a version that added oatmeal and dried peas.",
+   "start": 722.855,
+   "end": 731.129
+  },
+  {
+   "pid": "P35",
+   "idx": 0,
+   "file": "P35_00.wav",
+   "text": "Which leaves the question that pemmican still raises.",
+   "start": 732.943,
+   "end": 735.995
+  },
+  {
+   "pid": "P35",
+   "idx": 1,
+   "file": "P35_01.wav",
+   "text": "A food this compact, this durable, this proven.",
+   "start": 736.295,
+   "end": 739.347
+  },
+  {
+   "pid": "P35",
+   "idx": 2,
+   "file": "P35_02.wav",
+   "text": "Why did it fade from everyday life?",
+   "start": 739.647,
+   "end": 741.797
+  },
+  {
+   "pid": "P36",
+   "idx": 0,
+   "file": "P36_00.wav",
+   "text": "Part of the answer is canned food and refrigeration.",
+   "start": 743.611,
+   "end": 747.293
+  },
+  {
+   "pid": "P36",
+   "idx": 1,
+   "file": "P36_01.wav",
+   "text": "But on the plains, the deeper answer is simpler, and harder.",
+   "start": 747.593,
+   "end": 751.194
+  },
+  {
+   "pid": "P36",
+   "idx": 2,
+   "file": "P36_02.wav",
+   "text": "The animal it was made from nearly disappeared.",
+   "start": 751.494,
+   "end": 754.247
+  },
+  {
+   "pid": "P37",
+   "idx": 0,
+   "file": "P37_00.wav",
+   "text": "Nobody knows exactly how many bison once lived on the plains.",
+   "start": 756.061,
+   "end": 760.228
+  },
+  {
+   "pid": "P37",
+   "idx": 1,
+   "file": "P37_01.wav",
+   "text": "Estimates run into the tens of millions.",
+   "start": 760.528,
+   "end": 763.081
+  },
+  {
+   "pid": "P37",
+   "idx": 2,
+   "file": "P37_02.wav",
+   "text": "Historians argue that a century of feeding the fur trade had already worn the northern herds down.",
+   "start": 763.381,
+   "end": 769.75
+  },
+  {
+   "pid": "P37",
+   "idx": 3,
+   "file": "P37_03.wav",
+   "text": "Then, in the 1870s, new tanning methods turned bison hides into industrial leather, and commercial hunters killed the animals by the millions.",
+   "start": 770.05,
+   "end": 780.651
+  },
+  {
+   "pid": "P38",
+   "idx": 0,
+   "file": "P38_00.wav",
+   "text": "By 1879, the bison were essentially gone from the Canadian plains.",
+   "start": 782.465,
+   "end": 787.981
+  },
+  {
+   "pid": "P38",
+   "idx": 1,
+   "file": "P38_01.wav",
+   "text": "Even the government's own commissioner in the region admitted the disappearance had taken Ottawa by surprise.",
+   "start": 788.281,
+   "end": 795.226
+  },
+  {
+   "pid": "P38",
+   "idx": 2,
+   "file": "P38_02.wav",
+   "text": "Hunger followed, for the nations whose lives had been built around the herds.",
+   "start": 795.526,
+   "end": 800.301
+  },
+  {
+   "pid": "P39",
+   "idx": 0,
+   "file": "P39_00.wav",
+   "text": "In 1889, the naturalist William Hornaday tried to count every bison left in North America.",
+   "start": 802.415,
+   "end": 809.792
+  },
+  {
+   "pid": "P39",
+   "idx": 1,
+   "file": "P39_01.wav",
+   "text": "His total was one thousand and ninety-one.",
+   "start": 810.092,
+   "end": 812.883
+  },
+  {
+   "pid": "P40",
+   "idx": 0,
+   "file": "P40_00.wav",
+   "text": "The pemmican economy didn't end because the idea failed.",
+   "start": 816.897,
+   "end": 820.818
+  },
+  {
+   "pid": "P40",
+   "idx": 1,
+   "file": "P40_01.wav",
+   "text": "It ended because the world that produced it was taken apart.",
+   "start": 821.118,
+   "end": 825.093
+  },
+  {
+   "pid": "P41",
+   "idx": 0,
+   "file": "P41_00.wav",
+   "text": "Bison have slowly come back since then, and pemmican never truly vanished.",
+   "start": 827.907,
+   "end": 832.751
+  },
+  {
+   "pid": "P41",
+   "idx": 1,
+   "file": "P41_01.wav",
+   "text": "It's still made in Indigenous kitchens, by people who learned it the way it was always learned: from someone who knew how.",
+   "start": 833.051,
+   "end": 840.599
+  },
+  {
+   "pid": "P41",
+   "idx": 2,
+   "file": "P41_02.wav",
+   "text": "And in 2014, nations from both sides of the border, among them the Blackfeet, the Blood Tribe, the Siksika and the Piikani, signed what they call the Buffalo Treaty, a pact to bring the animal back to their lands.",
+   "start": 840.899,
+   "end": 855.785
+  },
+  {
+   "pid": "P41",
+   "idx": 3,
+   "file": "P41_03.wav",
+   "text": "It was the first treaty among them in more than a hundred and fifty years.",
+   "start": 856.085,
+   "end": 860.537
+  },
+  {
+   "pid": "P42",
+   "idx": 0,
+   "file": "P42_00.wav",
+   "text": "Look at the bag again.",
+   "start": 863.151,
+   "end": 864.453
+  },
+  {
+   "pid": "P42",
+   "idx": 1,
+   "file": "P42_01.wav",
+   "text": "A governor tried to keep it in one valley.",
+   "start": 864.753,
+   "end": 867.128
+  },
+  {
+   "pid": "P42",
+   "idx": 2,
+   "file": "P42_02.wav",
+   "text": "A war was fought around it.",
+   "start": 867.428,
+   "end": 869.029
+  },
+  {
+   "pid": "P42",
+   "idx": 3,
+   "file": "P42_03.wav",
+   "text": "Explorers carried it to the bottom of the world.",
+   "start": 869.329,
+   "end": 871.971
+  },
+  {
+   "pid": "P42",
+   "idx": 4,
+   "file": "P42_04.wav",
+   "text": "But the knowledge inside it never belonged to the colony, or to the companies.",
+   "start": 872.271,
+   "end": 877.168
+  },
+  {
+   "pid": "P42",
+   "idx": 5,
+   "file": "P42_05.wav",
+   "text": "It belonged to the people who learned how to turn one short season of plenty into a year of survival.",
+   "start": 877.468,
+   "end": 883.786
+  }
+ ],
+ "paragraphs": [
+  {
+   "pid": "P01",
+   "start": 1.6,
+   "end": 13.581
+  },
+  {
+   "pid": "P02",
+   "start": 15.295,
+   "end": 31.523
+  },
+  {
+   "pid": "P03",
+   "start": 33.137,
+   "end": 36.043
+  },
+  {
+   "pid": "P04",
+   "start": 38.857,
+   "end": 50.178
+  },
+  {
+   "pid": "P05",
+   "start": 51.992,
+   "end": 61.463
+  },
+  {
+   "pid": "P06",
+   "start": 69.177,
+   "end": 87.039
+  },
+  {
+   "pid": "P07",
+   "start": 88.253,
+   "end": 109.321
+  },
+  {
+   "pid": "P08",
+   "start": 111.435,
+   "end": 145.569
+  },
+  {
+   "pid": "P09",
+   "start": 147.483,
+   "end": 156.239
+  },
+  {
+   "pid": "P10",
+   "start": 158.053,
+   "end": 173.132
+  },
+  {
+   "pid": "P11",
+   "start": 174.346,
+   "end": 190.323
+  },
+  {
+   "pid": "P12",
+   "start": 192.037,
+   "end": 211.241
+  },
+  {
+   "pid": "P13",
+   "start": 216.655,
+   "end": 223.147
+  },
+  {
+   "pid": "P14",
+   "start": 224.361,
+   "end": 251.483
+  },
+  {
+   "pid": "P15",
+   "start": 253.097,
+   "end": 268.297
+  },
+  {
+   "pid": "P16",
+   "start": 269.511,
+   "end": 302.584
+  },
+  {
+   "pid": "P17",
+   "start": 304.598,
+   "end": 340.01
+  },
+  {
+   "pid": "P18",
+   "start": 342.024,
+   "end": 356.959
+  },
+  {
+   "pid": "P19",
+   "start": 358.773,
+   "end": 386.205
+  },
+  {
+   "pid": "P20",
+   "start": 391.019,
+   "end": 423.412
+  },
+  {
+   "pid": "P21",
+   "start": 424.626,
+   "end": 442.707
+  },
+  {
+   "pid": "P22",
+   "start": 444.521,
+   "end": 466.589
+  },
+  {
+   "pid": "P23",
+   "start": 468.803,
+   "end": 491.308
+  },
+  {
+   "pid": "P24",
+   "start": 493.322,
+   "end": 517.417
+  },
+  {
+   "pid": "P25",
+   "start": 522.731,
+   "end": 539.177
+  },
+  {
+   "pid": "P26",
+   "start": 540.391,
+   "end": 557.838
+  },
+  {
+   "pid": "P27",
+   "start": 559.652,
+   "end": 580.507
+  },
+  {
+   "pid": "P28",
+   "start": 582.421,
+   "end": 604.075
+  },
+  {
+   "pid": "P29",
+   "start": 605.889,
+   "end": 613.319
+  },
+  {
+   "pid": "P30",
+   "start": 615.733,
+   "end": 632.247
+  },
+  {
+   "pid": "P31",
+   "start": 636.661,
+   "end": 646.478
+  },
+  {
+   "pid": "P32",
+   "start": 648.492,
+   "end": 675.079
+  },
+  {
+   "pid": "P33",
+   "start": 677.293,
+   "end": 701.409
+  },
+  {
+   "pid": "P34",
+   "start": 706.823,
+   "end": 731.129
+  },
+  {
+   "pid": "P35",
+   "start": 732.943,
+   "end": 741.797
+  },
+  {
+   "pid": "P36",
+   "start": 743.611,
+   "end": 754.247
+  },
+  {
+   "pid": "P37",
+   "start": 756.061,
+   "end": 780.651
+  },
+  {
+   "pid": "P38",
+   "start": 782.465,
+   "end": 800.301
+  },
+  {
+   "pid": "P39",
+   "start": 802.415,
+   "end": 812.883
+  },
+  {
+   "pid": "P40",
+   "start": 816.897,
+   "end": 825.093
+  },
+  {
+   "pid": "P41",
+   "start": 827.907,
+   "end": 860.537
+  },
+  {
+   "pid": "P42",
+   "start": 863.151,
+   "end": 883.786
+  }
+ ],
+ "inserts": [
+  {
+   "kind": "TITLE",
+   "start": 62.677,
+   "end": 69.177
+  },
+  {
+   "kind": "CH2",
+   "start": 213.055,
+   "end": 216.655
+  },
+  {
+   "kind": "CH3",
+   "start": 387.419,
+   "end": 391.019
+  },
+  {
+   "kind": "CH4",
+   "start": 519.131,
+   "end": 522.731
+  },
+  {
+   "kind": "CH5",
+   "start": 703.223,
+   "end": 706.823
+  }
+ ],
+ "credits": {
+  "start": 885.0,
+  "end": 900.0
+ },
+ "chapters": [
+  {
+   "id": "CH1",
+   "num": "I",
+   "title": "Meat That Keeps",
+   "start": 69.177,
+   "first_para": "P06"
+  },
+  {
+   "id": "CH2",
+   "num": "II",
+   "title": "The Canoe Road",
+   "start": 213.055,
+   "first_para": "P13"
+  },
+  {
+   "id": "CH3",
+   "num": "III",
+   "title": "The Order",
+   "start": 387.419,
+   "first_para": "P20"
+  },
+  {
+   "id": "CH4",
+   "num": "IV",
+   "title": "Frog Plain",
+   "start": 519.131,
+   "first_para": "P25"
+  },
+  {
+   "id": "CH5",
+   "num": "V",
+   "title": "The Last Hunts",
+   "start": 703.223,
+   "first_para": "P34"
+  }
+ ]
+}

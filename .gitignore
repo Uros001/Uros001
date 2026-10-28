@@ -1,0 +1,16 @@
+# --- pemmican-1814 production: regenerable or bulky intermediates ---
+productions/*/renders/lookdev/
+productions/*/renders/plates/*.log
+productions/*/renders/plates/queue*.log
+productions/*/renders/previews/
+productions/*/audio/narration/raw/
+productions/*/audio/narration/*.wav
+productions/*/audio/sfx/*.wav
+productions/*/audio/music/*.wav
+productions/*/audio/mix/*.wav
+productions/*/assets/maps/*.geojson
+productions/*/assets/maps/cache/*.pkl
+productions/*/delivery/*.mp4.parts/
+__pycache__/
+*.pyc
+*.blend1

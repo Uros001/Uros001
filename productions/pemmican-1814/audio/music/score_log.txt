@@ -1,0 +1,18 @@
+cello keys [36, 40, 43] ... [71, 74, 77] n 27
+viola keys [48, 50, 52] ... [79, 83, 86] n 26
+violins keys [55, 57, 59] ... [79, 83, 86] n 22
+bass keys [24, 28, 30] ... [52, 56, 59] n 28
+vtrem keys [55, 57, 59] ... [79, 83, 86] n 21
+ctrem keys [36, 40, 43] ... [71, 74, 77] n 25
+pizz keys [29, 36, 40] ... [71, 74, 77] n 52
+harp keys [28, 31, 35] ... [83, 86, 89] n 23
+solo keys [55, 57, 60] ... [91, 93, 96] n 30
+piano keys [21, 25, 29] ... [101, 105, 108] n 23
+timp keys [42, 98] ... [42, 98] n 4
+troll keys [98] ... [98] n 10
+bdrum keys [98] ... [98] n 4
+score written ../audio/music/score_raw.wav peak 0.09611751
+
+real	0m30.321s
+user	0m17.783s
+sys	0m13.095s

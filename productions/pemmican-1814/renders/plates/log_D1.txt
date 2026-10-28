@@ -1,0 +1,14 @@
+fur: 243735 strands on BagHero
+fur: 26747 strands on BagHero_flap
+fur: 120000 strands on Bag3
+00:04.146  cycles           | WARNING CUEW initialization failed: Error opening the library
+EGL Error (0x3009): EGL_BAD_MATCH: Arguments are inconsistent (for example, a valid context requires buffers not supplied by a valid surface).
+EGL Error (0x3009): EGL_BAD_MATCH: Arguments are inconsistent (for example, a valid context requires buffers not supplied by a valid surface).
+EGL Error (0x3009): EGL_BAD_MATCH: Arguments are inconsistent (for example, a valid context requires buffers not supplied by a valid surface).
+02:00.224  render           | Saved: '../../renders/plates/dock_D1_bg.png'
+03:46.760  render           | Saved: '../../renders/plates/dock_D1_fg.png'
+PLATES DONE ../../renders/plates/dock_D1 116.0 106.5
+
+real	3m47.748s
+user	14m8.494s
+sys	0m13.785s
