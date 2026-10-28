@@ -1,0 +1,9 @@
+# realism pass 2: remaining plates (already re-rendered once with --force; B1 renders alone afterwards: ~7 GB)
+scene_fort F1 --samples 16
+scene_fort F2 --samples 16
+scene_dock D1 --samples 16
+scene_dock D4 --samples 16
+scene_dock C1 --samples 16
+scene_plain G1 --samples 16
+scene_plain B3 --samples 16
+scene_camp R3 --samples 16

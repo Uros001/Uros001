@@ -196,8 +196,10 @@ def build(variant='winter'):
 
 POINTS = {}
 CAMS = {
-    'F1': dict(cam=(-33.0, -60.0, 5.5), tgt=(2.0, 0.0, 3.6), lens=40, fstop=11.0, focus_dist=65.0, variant='winter'),
-    'F2': dict(cam=(9.0, -36.0, 1.75), tgt=(0.0, -18.0, 3.4), lens=30, fstop=8.0, focus_dist=21.0, variant='winter'),
+    'F1': dict(cam=(-33.0, -60.0, 5.5), tgt=(2.0, 0.0, 3.6), lens=40, fstop=11.0, focus_dist=65.0, variant='winter',
+               fg_holdout=True),
+    'F2': dict(cam=(9.0, -36.0, 1.75), tgt=(0.0, -18.0, 3.4), lens=30, fstop=8.0, focus_dist=21.0, variant='winter',
+               fg_holdout=True),
     'F3': dict(cam=(46.0, -66.0, 6.0), tgt=(0.0, 2.0, 3.0), lens=35, fstop=11.0, focus_dist=80.0, variant='summer'),
 }
 MIST = (30.0, 900.0)

@@ -14,3 +14,6 @@ productions/*/delivery/*.mp4.parts/
 __pycache__/
 *.pyc
 *.blend1
+productions/*/delivery/*.log
+productions/*/delivery/.chunk_plates_*.json
+productions/*/delivery/picture.mp4

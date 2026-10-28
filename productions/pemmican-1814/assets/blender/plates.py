@@ -4,7 +4,8 @@
 
 * BG: full scene, objects tagged layer='fg' are invisible to camera rays (they still cast shadows
   and appear in reflections), scene fog compositing applied.
-* FG: transparent film, only 'fg' objects visible to the camera; 'bg' objects still light/shadow.
+* FG: transparent film, only 'fg' objects visible to the camera; 'bg' objects still light/shadow
+  (with CAMS[cam]['fg_holdout'] they are holdouts instead, so they occlude fg objects behind them).
 Objects are tagged with obj['layer'] = 'fg' | 'bg' (default 'bg'); cameras may override with a
 list of name prefixes in CAMS[cam]['fg'].
 Outputs <outdir>/<scene>_<cam>_bg.png, _fg.png and _meta.json (camera, focal, anchor).
@@ -84,6 +85,10 @@ def main():
         for o in objs:
             o.visible_camera = is_fg(o, prefixes)
             o.visible_shadow = True
+            if C.get('fg_holdout') and not is_fg(o, prefixes):
+                # bg objects cut the fg layer where they are in front (e.g. ground over the buried part of a drift)
+                o.visible_camera = True
+                o.is_holdout = True
         scn.render.film_transparent = True
         scn.render.use_compositing = False
         scn.render.image_settings.color_mode = 'RGBA'

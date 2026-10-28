@@ -28,7 +28,7 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
 | 8 3D + graphics | 🔄 realism pass: plates re-rendering | assets/blender/*.py, renders/plates/, tools/film/{gfx,mapseq,life}.py |
 | 9 Edit | ✅ EDL (105 clips) + renderer | tools/film/edl.py, render.py |
 | 10 Audio | ✅ score, SFX, mix −14.0 LUFS / −1.4 dBTP (re-mix after final EDL for SFX cuts) | audio/music, audio/sfx, audio/mix |
-| 11 Final render | ⏳ after plates | delivery/The_Pemmican_War_1080p.mp4 |
+| 11 Final render | 🔄 `sh tools/run_final.sh` (resumable: plates → chunks → mux; log delivery/render_final.log) | delivery/The_Pemmican_War_1080p.mp4 |
 | 12 QA + delivery | ⏳ (SRT, thumbnails, metadata done) | delivery/ |
 
 ## Decisions
@@ -38,11 +38,19 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
   - Bison: lofted anatomy reworked (hump, low head, beard), dense hair-curve fur (200k strands per prototype); herd shots re-framed as backlit telephoto wildlife shots (B1 100 mm, B2 135 mm sunset).
   - Trees: leaf-card canopies from a generated oak-leaf atlas (250k cards), straighter, thicker trunks with root flare.
   - Camp: weathered lodge covers (smoke-darkened tops, seams), lacing pins, door covers, wider camp circle, travois.
-  - Fort: woodpile; smoke from chimneys (compositor).
+  - Fort: woodpile; visible chimney smoke (compositor; first version was too faint to read); snow drifts sunk into the
+    ground so their dark undersides no longer show.
   - Compositor "life" (`tools/film/life.py`): wind in grass and leaves (texture-masked so solid objects stay rigid), water ripple, drifting cloud decks, smoke from chimneys, lodges and fire, heat haze over the kettle, lens chromatic aberration.
   - Graphics moved onto the live moving 3D shots instead of black backgrounds; two long maps split with live shots.
   - Fixed square sun glow (HDR clamp before the fog blur).
 - Ration line corrected: "roughly two weeks of food" conflicted with the 2 lb/day figure, so P16 was re-voiced and the timing re-solved.
+
+## Errors and recoveries (render stage)
+- OOM: the furred bison close-up (B1, ~7 GB in Blender) plus two compositor workers exceeded 15 GB; the kernel killed
+  B1 and one compositor worker. B1 now renders alone; the chunk renderer uses a process executor so a killed worker
+  stops the pass instead of hanging it, and `run_final.sh` retries.
+- Container restart mid-render (all background processes lost, files kept): resumed with `run_final.sh`; finished
+  chunks (`delivery/picture.mp4.parts/*.ok`) are reused, stale ones (plates newer than the chunk) re-rendered.
 
 ## Open issues
 - Final MP4 will exceed GitHub's 100 MB file limit: delivered in the working directory + sent to the user; committed to git as split parts with a join script.

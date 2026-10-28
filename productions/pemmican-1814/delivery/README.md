@@ -18,12 +18,12 @@ Nothing has been uploaded to YouTube. Publishing needs the channel owner's expli
 ## Rebuilding the film from source
 
 ```
-# 3D plates (Blender 5.2.3 as the bpy module; ~2–3 h on 4 CPU cores)
-cd assets/blender && python3 render_queue.py jobs_camp.txt   # and jobs2..jobs5.txt
+# 3D plates (Blender 5.2.3 as the bpy module; ~3–4 h on 4 CPU cores)
+cd assets/blender && python3 render_queue.py jobs_camp.txt   # and jobs2..jobs9.txt (later lists re-render with --force)
 # narration timing, score, sound, mix
 python3 tools/assemble_narration.py && python3 tools/score.py <vsco_dir> audio/music/score_raw.wav
 python3 tools/sfx.py audio/sfx/ambience.wav audio/sfx/fx.wav && python3 tools/mix.py audio/mix/pemmican_mix_master.wav
-# picture (parallel chunks) and mux
+# picture (parallel chunks) and mux; tools/run_final.sh does the last plates, picture and mux in one resumable step
 cd tools && python3 -m film.render video ../delivery/picture.mp4 --workers 4
 ffmpeg -i ../delivery/picture.mp4 -i ../audio/mix/pemmican_mix_master.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k \
        -ar 48000 -movflags +faststart ../delivery/The_Pemmican_War_1080p.mp4

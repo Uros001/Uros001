@@ -116,38 +116,87 @@ def _encoder(path, w, h, fps, crf, preset='medium'):
     return subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
 
+def _claim(path):
+    """Atomically claim a chunk via path.lock (holding the worker PID) so several render processes can share
+    the chunk list; a lock whose owner is gone is taken over."""
+    lock = path + '.lock'
+    for _ in range(2):
+        try:
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                os.kill(int(open(lock).read().strip()), 0)
+                return False
+            except (ValueError, OSError):
+                try:
+                    os.remove(lock)
+                except FileNotFoundError:
+                    pass
+                continue
+        os.write(fd, str(os.getpid()).encode())
+        os.close(fd)
+        return True
+    return False
+
+
 def _work(args):
     f0, f1, path, scale, crf = args
-    film = Film(scale)
-    core = film.core
-    enc = _encoder(path, core.W, core.H, core.FPS, crf)
-    t = time.time()
-    for i in range(f0, f1):
-        enc.stdin.write(film.frame(i).tobytes())
-    enc.stdin.close()
-    enc.wait()
-    return path, f1 - f0, time.time() - t
+    if os.path.exists(path + '.ok') or not _claim(path):
+        return path + '.skip', 0, 1.0          # done or being rendered by another process
+    try:
+        film = Film(scale)
+        core = film.core
+        enc = _encoder(path, core.W, core.H, core.FPS, crf)
+        t = time.time()
+        for i in range(f0, f1):
+            enc.stdin.write(film.frame(i).tobytes())
+        enc.stdin.close()
+        if enc.wait() != 0:
+            raise RuntimeError(f'encoder failed for {path}')
+        dt = time.time() - t
+        open(path + '.ok', 'w').write(f'{f1 - f0} {dt:.1f}\n')
+    finally:
+        os.remove(path + '.lock')
+    return path, f1 - f0, dt
+
+
+def _plan(chunk):
+    """chunk_plates() cached on disk until any film module changes (the dry-run takes minutes)."""
+    import glob
+    here = os.path.dirname(os.path.abspath(__file__))
+    key = max(os.path.getmtime(f) for f in glob.glob(os.path.join(here, '*.py')))
+    cache = os.path.join(here, '..', '..', 'delivery', f'.chunk_plates_{chunk}.json')
+    try:
+        d = json.load(open(cache))
+        if d['key'] == key:
+            return {tuple(map(int, k.split('_'))): set(v) for k, v in d['plates'].items()}
+    except (OSError, ValueError, KeyError):
+        pass
+    cp = chunk_plates(chunk=chunk)
+    json.dump({'key': key, 'plates': {f'{a}_{b}': sorted(v) for (a, b), v in cp.items()}}, open(cache, 'w'))
+    return cp
 
 
 def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, pending=None, redo=None):
     import multiprocessing as mp
     from concurrent.futures import ProcessPoolExecutor, as_completed
-    film = Film(scale)
-    fps = film.core.FPS
-    n_total = int(round(film.total * fps))
+    core = _setup(scale)[0]
+    fps = core.FPS
+    n_total = int(round(core.timing()['total'] * fps))
     f0 = int(round(t_from * fps))
     f1 = n_total if t_to is None else min(n_total, int(round(t_to * fps)))
     tmp = out + '.parts'
     os.makedirs(tmp, exist_ok=True)
     skip = set()
-    cp = chunk_plates(chunk=chunk)
-    _free_caches()
+    # dry-run in a child process so this parent stays small while the workers run
+    with ProcessPoolExecutor(1, mp_context=mp.get_context('spawn')) as ex:
+        cp = ex.submit(_plan, chunk).result()
     if pending:
         skip = {k for k, v in cp.items() if v & pending}
         print(f'{len(skip)} chunks wait for pending plates', flush=True)
     # invalidate finished chunks whose plates were re-rendered after the chunk was encoded,
     # or that use plates whose compositing settings changed since (--redo)
-    pdir = os.path.join(film.core.ROOT, 'renders/plates')
+    pdir = os.path.join(core.ROOT, 'renders/plates')
     for (a, b), names in cp.items():
         p = os.path.join(out + '.parts', f'{a:06d}_{b:06d}.mp4')
         if os.path.exists(p + '.ok') and redo and names & redo:
@@ -175,11 +224,15 @@ def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, p
     with ProcessPoolExecutor(workers, mp_context=mp.get_context('spawn'), max_tasks_per_child=1) as ex:
         for fut in as_completed([ex.submit(_work, j) for j in jobs]):
             path, n, dt = fut.result()
-            open(path + '.ok', 'w').write(f'{n} {dt:.1f}\n')
+            if not n:
+                continue
             print(f'  {os.path.basename(path)}: {n} frames in {dt:.0f}s ({n / dt:.2f} fps)', flush=True)
     if skip:
         print('partial pass done; re-run without --pending to finish', flush=True)
         return
+    missing = [j[2] for j in jobs if not os.path.exists(j[2] + '.ok')]
+    if missing:
+        raise SystemExit(f'{len(missing)} chunks not finished (rendered by another process?): run again')
     parts = sorted(p for p in os.listdir(tmp) if p.endswith('.mp4'))
     lst = os.path.join(tmp, 'list.txt')
     with open(lst, 'w') as f:
