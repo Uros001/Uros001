@@ -314,7 +314,10 @@ def mist_compositor(scn, fog_color, gamma=1.0, strength=1.0, glare=None, blur_fo
         bl = nt.nodes.new('CompositorNodeBlur'); bl.location = (250, 250)
         sx = blur_px * scn.render.resolution_x / 1920.0
         bl.inputs['Size'].default_value = (sx, sx)
-        nt.links.new(rl.outputs['Image'], bl.inputs['Image'])
+        clampn = nt.nodes.new('ShaderNodeVectorMath'); clampn.operation = 'MINIMUM'; clampn.location = (100, 250)
+        clampn.inputs[1].default_value = (2.5, 2.5, 2.5)
+        nt.links.new(rl.outputs['Image'], clampn.inputs[0])
+        nt.links.new(clampn.outputs['Vector'], bl.inputs['Image'])
         fm = nt.nodes.new('ShaderNodeMix'); fm.data_type = 'RGBA'; fm.location = (450, 250)
         fm.inputs['Factor'].default_value = blur_fog
         fm.inputs[6].default_value = (*fog_color, 1)
@@ -449,7 +452,7 @@ def add_fur(obj, hair_mat, density=150000.0, length=0.022, radius=0.00045, mask_
 
 def add_fur_curves(obj, hair_mat, density=120000.0, length=0.022, radius=0.0005, mask_scale=3.0,
                    mask_threshold=0.45, comb=(0.15, -0.3, -1.0), frizz=0.5, seed=0, points=6,
-                   max_strands=250000, curl=0.35, soft=0.08, comb_var=0.6):
+                   max_strands=250000, curl=0.35, soft=0.08, comb_var=0.6, length_fn=None):
     """Fur as a native Curves object (Cycles in this bpy build renders native curves only).
 
     Samples the *evaluated* surface of `obj` (area-weighted). A smooth 3D noise mask with a soft
@@ -492,6 +495,8 @@ def add_fur_curves(obj, hair_mat, density=120000.0, length=0.022, radius=0.0005,
         root, N = root[pick], N[pick]
     m = len(root)
     L = length * rng.uniform(0.45, 1.0, m)
+    if length_fn is not None:
+        L = L * np.array([length_fn(r) for r in root], np.float32)
     # regional matting direction
     base = np.array(comb, np.float32); base /= np.linalg.norm(base)
     q2 = (root - ofs) * (mask_scale * 0.6)

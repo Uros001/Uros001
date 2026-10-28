@@ -8,8 +8,10 @@ for line in open(sys.argv[1]):
         continue
     parts = line.split()
     mod, cam, extra = parts[0], parts[1], parts[2:]
+    force = '--force' in extra
+    extra = [e for e in extra if e != '--force']
     base = os.path.join(OUT, f"{mod.replace('scene_', '')}_{cam}")
-    if os.path.exists(base + '_meta.json') and os.path.exists(base + '_bg.png'):
+    if not force and os.path.exists(base + '_meta.json') and os.path.exists(base + '_bg.png'):
         print('skip', base, flush=True)
         continue
     t = time.time()

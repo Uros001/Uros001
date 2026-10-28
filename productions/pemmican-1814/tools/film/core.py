@@ -272,8 +272,23 @@ def _grain_bank():
     return bank
 
 
+def film_look(img, split=0.035, halation=0.10):
+    """Gentle split-toning (cool shadows, warm highlights) and red-orange halation around bright edges."""
+    lum = (img * np.array([0.2126, 0.7152, 0.0722], np.float32)).sum(-1, keepdims=True)
+    sh = np.clip(1 - lum * 1.6, 0, 1) ** 2
+    hi = np.clip((lum - 0.55) * 2.2, 0, 1)
+    out = img + split * (sh * np.array([-0.35, 0.05, 0.3], np.float32) + hi * np.array([0.3, 0.08, -0.3], np.float32))
+    if halation:
+        b = np.clip(lum - 0.72, 0, None)
+        small = cv2.resize(b, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
+        small = cv2.GaussianBlur(small, (0, 0), 3.5)
+        hb = cv2.resize(small, (W, H), interpolation=cv2.INTER_LINEAR)[:, :, None]
+        out = out + hb * halation * np.array([1.0, 0.42, 0.22], np.float32)
+    return np.clip(out, 0, 1)
+
+
 def finish(img, frame_idx, grain=0.022, vignette=True):
-    out = img
+    out = film_look(img)
     if vignette:
         out = out * _vignette()
     if grain:

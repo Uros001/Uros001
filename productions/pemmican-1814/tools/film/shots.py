@@ -7,7 +7,7 @@
 import os, json, math, functools
 import numpy as np
 import cv2
-from . import core
+from . import core, life as LF
 from .core import ease_io, ease_io5, lerp, seg, clamp
 
 PLATES = os.path.join(core.ROOT, 'renders/plates')
@@ -76,11 +76,13 @@ class Plate(Shot):
 
     def __init__(self, name, s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), p=0.06, ease='io', hand=0.0012,
                  fog=None, fog2=None, dust=None, grade=None, bloom=(0.8, 0.18), flicker=0.0, fg_fade=None,
-                 desc='', source='', post=None, fg_alpha=1.0, seed=0, fade_parts=None):
+                 desc='', source='', post=None, fg_alpha=1.0, seed=0, fade_parts=None, life=None):
         self.name, self.s, self.c, self.p, self.ease, self.hand = name, s, c, p, ease, hand
         self.fog, self.fog2, self.dust, self.grd, self.bloom = fog, fog2, dust, grade or {}, bloom
         self.flicker, self.fg_fade, self.post, self.fg_alpha, self.seed = flicker, fg_fade, post, fg_alpha, seed
         self.fade_parts = fade_parts      # (t0, t1) film seconds: FG connected parts fade out one by one
+        self.life = life or {}             # wind / fgwind / water / clouds / smoke / heat / chroma (see film.life)
+        self._smoke = None
         self.desc = desc or name
         self.source = source or f'Original Blender 3D reconstruction ({name})'
         self._parts = None
@@ -112,8 +114,20 @@ class Plate(Shot):
             cy = clamp(cy, vis_h, 1 - vis_h)
             return core.affine(scale, cx, cy, -hx * extra, -hy * extra, hr * extra, sw, sh)
 
+        L_ = self.life
+        bg0 = bg
+        if L_.get('wind'):
+            bg = LF.wind(bg, t, self.name + ':bg', ref=bg0, **L_['wind'])
+        if L_.get('water'):
+            bg = LF.water(bg, t, self.name + ':bg', ref=bg0, **L_['water'])
+        if L_.get('clouds'):
+            bg = LF.clouds(bg, t, self.name + ':bg', ref=bg0, **L_['clouds'])
+        if fg is not None and L_.get('fgwind'):
+            fg0 = fg
+            fg = LF.wind(fg, t, self.name + ':fg', ref=fg0, **L_['fgwind'])
         s, cx, cy = self.transform(u)
-        out = core.warp(bg, M(s, cx, cy))
+        Mbg = M(s, cx, cy)
+        out = core.warp(bg, Mbg)
         if self.flicker:
             f = 1 + self.flicker * (math.sin(t * 11.3) * 0.5 + math.sin(t * 17.9 + 1) * 0.3 + math.sin(t * 5.1) * 0.2)
             out = out * f
@@ -139,6 +153,22 @@ class Plate(Shot):
                 out = core.over(out, fgw, a)
         if self.fog2:
             out = core.over(out, core.fog_layer(t, **self.fog2))
+        if L_.get('smoke') or L_.get('heat'):
+            def tf(px, py):
+                q = Mbg @ np.array([px * sw, py * sh, 1.0], np.float32)
+                return float(q[0] / core.W), float(q[1] / core.H)
+            zoom = float(np.hypot(Mbg[0, 0], Mbg[1, 0])) * sw / core.W
+            if L_.get('smoke'):
+                cfg = dict(L_['smoke'])
+                pts = cfg.pop('points')
+                em = [(*tf(px, py), k * zoom) for px, py, k in pts]
+                sm = LF.Smoke(em, **cfg)
+                out = sm.draw(out, t)
+            if L_.get('heat'):
+                hb = L_['heat']['box']
+                a0, b0 = tf(hb[0], hb[1])
+                a1, b1 = tf(hb[2], hb[3])
+                out = LF.heat(out, t, (max(0, a0), max(0, b0), min(1, a1), min(1, b1)), L_['heat'].get('strength', 2.0))
         if self.post:
             out = self.post(out, tl, dur, t)
         if self.dust:
@@ -151,6 +181,8 @@ class Plate(Shot):
             out = core.bloom(out, *self.bloom)
         if self.grd:
             out = core.grade(out, **self.grd)
+        if L_.get('chroma', 0.0009):
+            out = LF.chroma(out, L_.get('chroma', 0.0009))
         return out
 
 

@@ -92,14 +92,20 @@ def build(variant='winter'):
     # ---------- trees along both banks
     tb = P.Batch()
     rnd = random.Random(5)
+    tips_all = []
     for i in range(120):
         x = rnd.uniform(-150, 150)
         y = rnd.uniform(28, 44)
         if abs(x) < 26 and y < 36:
             continue
-        P.tree(tb, (x, y), rnd.uniform(12, 19), seed=i, kind='oak' if rnd.random() < 0.6 else 'elm', depth=4,
-               leaves=summer, z0=ground_z(x, y))
+        tp = P.tree(tb, (x, y), rnd.uniform(12, 19), seed=i, kind='oak' if rnd.random() < 0.6 else 'elm', depth=4,
+                    leaves='cards' if summer else False, z0=ground_z(x, y))
+        if summer and tp:
+            tips_all += tp
     tb.build('Trees_near', [bark, leaves])
+    if summer:
+        P.leaf_cards('Trees_near_leaves', tips_all, P.mat_leafcards('Leafcards', transl=0.4), per_tip=120, size=(0.2, 0.36), spread=1.8, seed=5,
+                     min_z=lambda p: ground_z(p[0], p[1]) + 3.0)
     tf = P.Batch()
     for i in range(170):
         x = rnd.uniform(-260, 260)
@@ -168,11 +174,24 @@ def build(variant='winter'):
         x, y = rnd3.uniform(-90, 50), rnd3.uniform(-100, -40)
         P.tree(sb, (x, y), rnd3.uniform(1.4, 3.0), seed=500 + i, kind='elm', depth=3, z0=ground_z(x, y))
     sb.build('Trees_scrub', [bark])
+    if not summer:
+        # trampled path to the gate (decal strip over the snow) and a snow-capped woodpile
+        wb = P.Batch()
+        rw = random.Random(4)
+        for layer in range(5):
+            for k in range(7 - layer):
+                x0 = 5.0 + k * 0.32 + layer * 0.16
+                z = 0.17 + layer * 0.28
+                wb.tube([(x0, -20.6, z), (x0 + rw.uniform(-0.05, 0.05), -19.2, z)], 0.15 * rw.uniform(0.85, 1.1), segs=8)
+        wb.build('Woodpile', [logs])
+        sb = P.Batch()
+        sb.ico((5.95, -19.9, 1.62), 1.0, (1.25, 0.85, 0.22), subdiv=3, jitter=0.25, seed=2)
+        sb.build('WoodpileSnow', [snow])
     global POINTS
     POINTS = {f'chimney{i}': c for i, c in enumerate(chim)}
 
     for o in scn.objects:
-        o['layer'] = 'fg' if o.name in ('Fort', 'Drifts') else 'bg'
+        o['layer'] = 'fg' if o.name in ('Fort', 'Drifts', 'Woodpile', 'WoodpileSnow') else 'bg'
     return scn, fort
 
 

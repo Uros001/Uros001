@@ -26,8 +26,64 @@ G_CANDLE = dict(contrast=1.06, sat=0.95, temp=0.2)
 G_STORE = dict(contrast=1.06, sat=0.9, temp=0.15)
 
 
+def _meta(name):
+    import json, os
+    p = os.path.join(core.ROOT, 'renders/plates', name + '_meta.json')
+    return json.load(open(p)) if os.path.exists(p) else {}
+
+
+def default_life(name):
+    """Natural motion per scene family (see film.life). Emitter sizes scale with camera distance."""
+    fam, cam = name.split('_')[0], name.split('_')[1]
+    pts = _meta(name).get('points', {})
+
+    def em(prefix, ref):
+        out = []
+        for k, (x, y, d) in pts.items():
+            if k.startswith(prefix) and -0.05 < x < 1.05 and -0.05 < y < 1.0 and d > 0:
+                out.append((x, y, min(3.0, ref / d)))
+        return out
+
+    L = {}
+    if fam == 'dock':
+        L['water'] = dict(strength=1.1)
+    elif fam == 'camp':
+        if cam in ('R1', 'R3', 'R3b', 'R2'):
+            L['wind'] = dict(strength=0.9)
+            L['clouds'] = dict(cover=0.38, opacity=0.55, speed=0.003, tint=(1.0, 0.95, 0.88) if cam != 'R3b' else (1.0, 0.82, 0.8))
+            e = em('lodge', 20.0) + (em('fire', 8.0) if cam != 'R3b' else [])
+            if e:
+                L['smoke'] = dict(points=e, rate=4, rise=0.018, drift=(0.012, 0), size=0.006, grow=0.035, opacity=0.4,
+                                  color=(0.66, 0.66, 0.68))
+        if cam in ('K1', 'K3'):
+            L['wind'] = dict(strength=0.7, y0=0.0)
+        if cam == 'K2':
+            L['wind'] = dict(strength=0.6, y0=0.0)
+            L['heat'] = dict(box=(0.22, 0.0, 0.78, 0.3), strength=3.0)
+            L['smoke'] = dict(points=[(0.5, 0.2, 2.2)], rate=6, rise=0.03, drift=(0.01, 0), size=0.02, grow=0.12, opacity=0.22,
+                              color=(0.7, 0.68, 0.66))
+    elif fam == 'plain':
+        L['wind'] = dict(strength=1.3 if cam in ('G2',) else 1.0)
+        if cam in ('G1', 'G3', 'G4'):
+            L['fgwind'] = dict(strength=0.8, y0=0.0, speed=0.08)
+        if cam != 'G2':
+            L['clouds'] = dict(cover=0.4, opacity=0.6, speed=0.003,
+                               tint=(1.0, 0.82, 0.78) if cam in ('G3', 'B2') else (1.0, 0.94, 0.86))
+    elif fam == 'fort':
+        winter = cam in ('F1', 'F2')
+        L['clouds'] = dict(cover=0.62 if winter else 0.4, opacity=0.6, speed=0.003, tint=(0.95, 0.97, 1.0) if winter else (1.0, 0.95, 0.88))
+        L['wind'] = dict(strength=0.6)
+        e = em('chimney', 60.0)
+        if e:
+            L['smoke'] = dict(points=e, rate=5, rise=0.02, drift=(0.012, 0), size=0.008, grow=0.05, opacity=0.6 if winter else 0.4,
+                              color=(0.55, 0.57, 0.61) if winter else (0.7, 0.7, 0.72))
+    return L
+
+
 def P(name, s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), **kw):
     fam = name.split('_')[0]
+    if 'life' not in kw:
+        kw['life'] = default_life(name)
     defaults = dict(
         dock=dict(fog=DAWN_FOG, dust=dict(DUST, opacity=0.18), grade=G_DAWN),
         camp=dict(dust=DUST, grade=G_GOLD),
@@ -45,8 +101,13 @@ def F(fn, desc, source='Original motion graphic'):
     return Func(fn, desc=desc, source=source)
 
 
-def chapter(n, title):
-    return F(gfx.chapter(n, title), f'Chapter card {n}: {title}')
+def cont(fn, start, total_end):
+    """Run a map/graphic on its own clock (from `start`) even when the edit cuts away and back."""
+    return lambda tl, dur, t: fn(t - A(start), A(total_end) - A(start), t)
+
+
+def chapter(n, title, plate=None):
+    return F(gfx.chapter(n, title, plate), f'Chapter card {n}: {title}' + (f' over `{plate}`' if plate else ''))
 
 
 def tl_view(t0=None):
@@ -86,8 +147,8 @@ CLIPS = [
     ('P11.2-0.3', F(gfx.section, 'Diagram: cross-section of a filled bag'), 0.5),
     ('P12.0-0.45', P('store_S2', s=(1.0, 1.1), c=((0.5, 0.5), (0.46, 0.5)), p=0.05, desc='Stacked bags in a store'), 0.7),
     ('P12.2-0.3', P('store_S1', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), desc='Depot storehouse, light from the door'), 0.6),
-    ('P12.3-0.3', P('dock_C3', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), desc='Bags and bales loaded in the canoe'), 0.6),
-    ('CH2', chapter('II', 'The Canoe Road'), -1.0),
+    ('P12.3-0.3', P('dock_C3b', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), desc='Bags and bales loaded in the canoe'), 0.6),
+    ('CH2', chapter('II', 'The Canoe Road', 'dock_C2'), -1.0),
     # ---------------- II. The Canoe Road
     ('CH2.e', P('dock_C2', s=(1.12, 1.2), c=((0.6, 0.5), (0.45, 0.5)), p=0.06, desc='Canoe, low side angle'), -1.0),
     ('P14.0-0.5', F(MS.canoe_road, 'Map: the North West Company canoe road, Montreal to Athabasca'), 0.7),
@@ -103,10 +164,13 @@ CLIPS = [
     ('P17.3-0.3', P('store_S1', s=(1.12, 1.2), c=((0.42, 0.55), (0.38, 0.55)), desc='Bags stacked at a post'), 0.6),
     ('P18.0-0.45', P('plain_B1', s=(1.15, 1.25), c=((0.55, 0.52), (0.45, 0.52)), p=0.05, desc='Bison herd, closer'), 0.7),
     ('P18.1-0.3', F(MS.furs_fuel, 'Map: furs from the north, fuel from bison country'), 0.6),
-    ('P19.0-0.45', F(MS.two_routes, "Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks"), 0.7),
-    ('CH3', chapter('III', 'The Order'), -1.0),
+    ('P19.0-0.45', P('fort_F3', s=(1.06, 1.12), c=((0.5, 0.5), (0.52, 0.5)), desc='A post on the river'), 0.7),
+    ('P19.1-0.35', F(cont(MS.two_routes, 'P19.0-0.45', 'CH3'), "Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks"), 0.6),
+    ('CH3', chapter('III', 'The Order', 'desk_W1'), -1.0),
     # ---------------- III. The Order
-    ('CH3.e', F(MS.assiniboia_map, 'Map: the Selkirk grant (Assiniboia) and Italy at the same scale'), -1.0),
+    ('CH3.e', F(cont(MS.assiniboia_map, 'CH3.e', 'P21.0-0.45'), 'Map: the Selkirk grant (Assiniboia) and Italy at the same scale'), -1.0),
+    ('P20.2-0.3', P('plain_G4', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.48)), desc='Open land under a bur oak'), 0.6),
+    ('P20.3-0.35', F(cont(MS.assiniboia_map, 'CH3.e', 'P21.0-0.45'), 'Map: Assiniboia, the Forks'), 0.6),
     ('P21.0-0.45', P('fort_F3', s=(1.12, 1.2), c=((0.45, 0.55), (0.5, 0.55)), desc='The post, summer'), 0.7),
     ('P21.1-0.3', P('camp_R3b', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks at dusk'), 0.7),
     ('P21.2-0.3', P('fort_F2', s=(1.0, 1.1), c=((0.5, 0.5), (0.5, 0.48)), dust=SNOW, desc='The gate in winter'), 0.7),
@@ -116,7 +180,7 @@ CLIPS = [
     ('P24.0-0.45', P('fort_F3', s=(1.18, 1.26), c=((0.55, 0.55), (0.6, 0.55)), desc='The post, summer, closer'), 0.6),
     ('P24.1-0.3', F(MS.souris, "Map: the colony to the North West Company post on the Souris"), 0.6),
     ('P24.2-0.4', F(gfx.bags479, 'Graphic: 479 bags seized'), 0.6),
-    ('CH4', chapter('IV', 'Frog Plain'), -1.0),
+    ('CH4', chapter('IV', 'Frog Plain', 'plain_G3'), -1.0),
     # ---------------- IV. Frog Plain
     ('CH4.e', F(gfx.timeline, 'Timeline 1812–1816'), -1.0),
     ('P25.2-0.35', P('camp_R3b', s=(1.1, 1.18), c=((0.45, 0.5), (0.55, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks'), 0.7),
@@ -138,7 +202,7 @@ CLIPS = [
     ('P33.1-0.3', F(MS.fort_william_map, 'Map: Selkirk seizes Fort William, 1816'), 0.6),
     ('P33.2-0.3', P('desk_W2', s=(1.0, 1.08), c=((0.5, 0.5), (0.45, 0.52)), flicker=0.025, desc='Pen and paper: lawsuits and inquiries'), 0.6),
     ('P33.3-0.3', F(gfx.merger, 'Graphic: 1821 merger'), 0.6),
-    ('CH5', chapter('V', 'The Last Hunts'), -1.0),
+    ('CH5', chapter('V', 'The Last Hunts', 'plain_B2'), -1.0),
     # ---------------- V. The Last Hunts
     ('CH5.e', P('camp_R1', s=(1.1, 1.18), c=((0.55, 0.5), (0.45, 0.5)), desc='Camp with full racks'), -1.0),
     ('P34.2-0.3', P('plain_B3', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), desc='The Red River hunt: a line of carts'), 0.6),
@@ -162,7 +226,7 @@ CLIPS = [
     ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, desc='The bag'), 0.9),
     ('P42.1-0.2', P('desk_W2', s=(1.15, 1.2), c=((0.55, 0.5), (0.55, 0.5)), flicker=0.025, desc='The order'), 0.3),
     ('P42.2-0.2', P('plain_G2', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), grade=G_DUSK, desc='The plain'), 0.3),
-    ('P42.3-0.2', P('dock_C3', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Cargo'), 0.3),
+    ('P42.3-0.2', P('dock_C3b', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Cargo'), 0.3),
     ('P42.4-0.3', P('dock_D4', s=(1.12, 1.0), c=((0.5, 0.5), (0.5, 0.5)), p=0.05, desc='Pull back from the landing'), 0.9),
     ('CREDITS', F(gfx.credits, 'Credits and disclosures'), -1.4),
 ]

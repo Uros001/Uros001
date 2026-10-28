@@ -63,6 +63,23 @@ def bg_plate(name, tl, dur, blur=14, dim=0.42, s=(1.04, 1.1), c=(0.5, 0.5), sat=
     return out
 
 
+_LIVE = {}
+
+
+def bg_live(name, tl, dur, t, dim=0.5, s=(1.0, 1.07), c=((0.5, 0.5), (0.5, 0.5)), band=0.35):
+    """The real moving 3D shot (parallax + natural motion), dimmed with a soft centre band for legible text."""
+    from . import edl
+    key = (name, s, c)
+    if key not in _LIVE:
+        _LIVE[key] = edl.P(name, s=s, c=c)
+    img = _LIVE[key].frame(tl, dur, t)
+    y = np.linspace(-1, 1, core.H, dtype=np.float32)[:, None]
+    x = np.linspace(-1, 1, core.W, dtype=np.float32)[None, :]
+    centre = np.exp(-(y ** 2) / 0.5 - (x ** 2) / 1.6)
+    g = dim * (1 - band * centre)
+    return np.clip(img * g[:, :, None], 0, 1).astype(np.float32)
+
+
 def comp(bg, L):
     return core.over(bg, L.rgba())
 
@@ -74,7 +91,7 @@ def _leader(L, x0, y0, x1, y1, a, col=INK_DIM):
 
 # ------------------------------------------------------------------ cards
 def title_card(tl, dur, t):
-    out = bg_dark(t, 0.16)
+    out = bg_live('dock_D4', tl, dur, t, dim=0.5, s=(1.12, 1.04))
     L = Layer()
     a = fade_window(tl, 0.0, dur, 1.2, 1.0)
     k = ease_out(seg(tl, 0.3, 2.6), 4)
@@ -89,9 +106,9 @@ def title_card(tl, dur, t):
     return comp(out, L)
 
 
-def chapter(num, title):
+def chapter(num, title, plate=None):
     def fn(tl, dur, t):
-        out = bg_dark(t, 0.14)
+        out = bg_live(plate, tl, dur, t, dim=0.42, s=(1.04, 1.1)) if plate else bg_dark(t, 0.14)
         L = Layer()
         T.chapter_card(L, tl, 0.0, dur, num, title)
         return comp(out, L)
@@ -115,7 +132,7 @@ def not_move(tl, dur, t):
 
 def word_card(tl, dur, t):
     """P07.3 (A3): the English word comes from Cree pimîhkân, built on pimiy, 'fat, grease'."""
-    out = bg_dark(t, 0.12)
+    out = bg_live('camp_R1', tl, dur, t, dim=0.38, s=(1.15, 1.22))
     L = Layer()
     a = fade_window(tl, 0, dur, 0.6, 0.8)
     k = ease_out(seg(tl, 0.2, 1.6))
@@ -160,7 +177,7 @@ def credits(tl, dur, t):
 # ------------------------------------------------------------------ chapter I diagrams
 def water(tl, dur, t):
     """P06: fresh meat is mostly water (about three-quarters; standard food composition)."""
-    out = bg_plate('camp_R2', tl, dur, blur=18, dim=0.38)
+    out = bg_live('camp_R2', tl, dur, t, dim=0.45)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.6, 0.7)
     L.text('FRESH LEAN MEAT', 960, 250, font('sans', 24, 600), INK, a, align='center', tracking=8)
@@ -184,7 +201,7 @@ def water(tl, dur, t):
 
 def steps(tl, dur, t):
     """P10.0–P10.1: every step had a job."""
-    out = bg_dark(t, 0.1)
+    out = bg_live('camp_K1', tl, dur, t, dim=0.38)
     L = Layer()
     items = [('DRY', 'removes the water', 'microbes need'), ('POUND', 'breaks it down', 'to pack densely'),
              ('FAT', 'adds energy and', 'shuts out air'), ('SEW', 'a greased hide bag', 'seals the load')]
@@ -205,7 +222,7 @@ def steps(tl, dur, t):
 
 def ratio(tl, dur, t):
     """P10.2 (A7): 5–6 lb fresh lean meat -> 1 lb dried, pounded meat."""
-    out = bg_dark(t, 0.1)
+    out = bg_live('camp_R2', tl, dur, t, dim=0.38, s=(1.12, 1.2))
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.7)
     for i in range(6):
@@ -232,7 +249,7 @@ def ratio(tl, dur, t):
 
 def energy(tl, dur, t):
     """P11.1 (A10): fat ~9 kcal/g vs protein ~4 kcal/g."""
-    out = bg_plate('camp_K2', tl, dur, blur=16, dim=0.36)
+    out = bg_live('camp_K2', tl, dur, t, dim=0.42)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.7)
     L.text('ENERGY PER GRAM', 960, 330, font('sans', 24, 600), INK, a, align='center', tracking=8)
@@ -323,7 +340,7 @@ def section(tl, dur, t):
 # ------------------------------------------------------------------ chapter II
 def cargo(tl, dur, t):
     """P15.2: every pound of food displaced a pound of cargo."""
-    out = bg_plate('dock_C1', tl, dur, blur=16, dim=0.36)
+    out = bg_live('dock_C1', tl, dur, t, dim=0.45)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.7)
     L.text('ONE CANOE, ONE LOAD', 960, 360, font('sans', 24, 600), INK, a, align='center', tracking=8)
@@ -341,7 +358,7 @@ def cargo(tl, dur, t):
 
 def ration(tl, dur, t):
     """P16.1 (A11): about two pounds a day."""
-    out = bg_plate('dock_C3', tl, dur, blur=16, dim=0.34)
+    out = bg_live('dock_C3b', tl, dur, t, dim=0.42)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.7)
     k = ease_out(seg(tl, 0.3, 1.4))
@@ -353,7 +370,7 @@ def ration(tl, dur, t):
 
 def depot_math(tl, dur, t):
     """P16.4–P16.5 (B3): about four 90-lb bags per canoe at a depot; next depot hundreds of miles on."""
-    out = bg_plate('dock_C2', tl, dur, blur=16, dim=0.34)
+    out = bg_live('dock_C2', tl, dur, t, dim=0.4)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.7)
     L.text('ONE NORTHERN CANOE', 960, 250, font('sans', 24, 600), INK, a, align='center', tracking=8)
@@ -376,7 +393,7 @@ def depot_math(tl, dur, t):
 # ------------------------------------------------------------------ chapter III
 def order_terms(tl, dur, t):
     """P22 (C4): paraphrased main terms of Macdonell's 8 January 1814 order. Not the original text."""
-    out = bg_plate('desk_W1', tl, dur, blur=12, dim=0.3, sat=0.6)
+    out = bg_live('desk_W1', tl, dur, t, dim=0.32)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.6, 0.8)
     L.text('THE ORDER OF 8 JANUARY 1814', 960, 230, font('sans', 26, 700), INK, a, align='center', tracking=8)
@@ -400,7 +417,7 @@ def order_terms(tl, dur, t):
 
 def paper_practice(tl, dur, t):
     """P23: on paper vs in practice."""
-    out = bg_dark(t, 0.1)
+    out = bg_live('fort_F2', tl, dur, t, dim=0.36)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.8)
     end = t - tl + dur
@@ -421,7 +438,7 @@ def paper_practice(tl, dur, t):
 
 def bags479(tl, dur, t):
     """P24.2–P24.3 (C6): 479 bags of pemmican; 479 × 90 lb ≈ 43,000 lb."""
-    out = bg_plate('store_S1', tl, dur, blur=16, dim=0.3)
+    out = bg_live('store_S1', tl, dur, t, dim=0.36)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.5, 0.8)
     L.text('SEIZED AT THE SOURIS RIVER POST, 1814', 960, 170, font('sans', 24, 700), INK, a, align='center', tracking=6)
@@ -486,7 +503,7 @@ def timeline(tl, dur, t, focus=None):
 
 def two_names(tl, dur, t):
     """P32.0–P32.1 (D7)."""
-    out = bg_plate('plain_G3', tl, dur, blur=14, dim=0.32)
+    out = bg_live('plain_G3', tl, dur, t, dim=0.4)
     L = Layer()
     a = fade_window(tl, 0, dur, 0.6, 0.8)
     end = t - tl + dur
@@ -503,7 +520,7 @@ def two_names(tl, dur, t):
 
 def merger(tl, dur, t):
     """P33.3 (E3): 1821 merger."""
-    out = bg_dark(t, 0.1)
+    out = bg_live('dock_C1', tl, dur, t, dim=0.4, s=(1.1, 1.18))
     L = Layer()
     a = fade_window(tl, 0, dur, 0.6, 0.8)
     k = ease_io(seg(tl, 0.6, 2.6))

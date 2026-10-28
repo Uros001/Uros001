@@ -435,6 +435,23 @@ def lodge(name, loc, r=2.4, h=4.4, cover=None, poles=None, seed=0, n_poles=12, t
     cov = mesh_obj(name, verts, faces, cover)
     sol = cov.modifiers.new('sol', 'SOLIDIFY'); sol.thickness = 0.01
     parts = [cov]
+    # lacing pins down the front seam (opposite the door) and a hide door cover
+    front = door + math.pi
+    for k in range(9):
+        f = 0.12 + k * 0.075
+        rr = r * (1 - f)
+        p0 = Vector((x + rr * math.cos(front), y + rr * math.sin(front), z0 + h * f))
+        t = Vector((-math.sin(front), math.cos(front), 0)) * 0.12
+        parts.append(pole(f'{name}_pin{k}', p0 - t + Vector((0, 0, 0.02)), p0 + t, 0.008, 0.006, poles, segs=4, seed=k, n=2))
+    dv = []
+    for j in range(7):
+        for i in range(6):
+            a = door + (i / 5 - 0.5) * 0.48
+            zz = z0 + 0.05 + j * 0.2
+            rr = r * (1 - (zz - z0) / h) + 0.03
+            dv.append((x + rr * math.cos(a), y + rr * math.sin(a), zz))
+    df = [(j * 6 + i, j * 6 + i + 1, (j + 1) * 6 + i + 1, (j + 1) * 6 + i) for j in range(6) for i in range(5)]
+    parts.append(mesh_obj(f'{name}_door', dv, df, cover))
     apex = Vector((x, y, z0 + h * 0.9))
     for k in range(n_poles):
         a = 2 * math.pi * k / n_poles + rnd.uniform(-0.05, 0.05)
@@ -840,8 +857,8 @@ def tree(batch, loc, height=9.0, seed=0, kind='oak', depth=4, leaves=False, z0=0
     rnd = random.Random(seed)
     x, y = loc
     base = Vector((x, y, z0 - 0.2))
-    trunk_len = height * (0.38 if kind == 'oak' else 0.5)
-    r0 = height * (0.028 if kind == 'oak' else 0.018)
+    trunk_len = height * (0.36 if kind == 'oak' else 0.5)
+    r0 = height * (0.042 if kind == 'oak' else 0.02)
     tips = []
 
     def grow(p0, d, L, r, level):
@@ -849,13 +866,16 @@ def tree(batch, loc, height=9.0, seed=0, kind='oak', depth=4, leaves=False, z0=0
         pts, rad = [p0], [r]
         p = p0.copy()
         dd = d.copy()
-        crook = 0.35 if kind == 'oak' else 0.15
+        crook = (0.06 if level == 0 else 0.3) if kind == 'oak' else (0.04 if level == 0 else 0.15)
         for i in range(1, n + 1):
             dd = (dd + Vector((rnd.uniform(-crook, crook), rnd.uniform(-crook, crook), rnd.uniform(-crook, crook) * 0.5 + (0.05 if kind != 'oak' else -0.02)))).normalized()
             p = p + dd * (L / n)
             pts.append(p.copy())
             rad.append(r * (1 - 0.45 * i / n))
-        batch.tube(pts, rad, segs=7 if level < 2 else 4, cap=False)
+        if level == 0:   # root flare into the ground
+            pts = [p0 - Vector((0, 0, 0.4))] + pts
+            rad = [r * 1.35] + rad
+        batch.tube(pts, rad, segs=9 if level < 2 else 4, cap=False)
         if level >= depth:
             tips.append((p, L))
             return
@@ -873,6 +893,8 @@ def tree(batch, loc, height=9.0, seed=0, kind='oak', depth=4, leaves=False, z0=0
             grow(p, nd, L * rnd.uniform(0.58, 0.75) * (crown if level == 0 else 1.0), r * rnd.uniform(0.5, 0.65), level + 1)
 
     grow(base, Vector((rnd.uniform(-0.05, 0.05), rnd.uniform(-0.05, 0.05), 1)).normalized(), trunk_len, r0, 0)
+    if leaves == 'cards':
+        return tips
     if leaves:
         for (p, L) in tips:
             if rnd.random() < 0.9:
@@ -1154,9 +1176,9 @@ def bison2(batch, loc=(0, 0, 0), rot_z=0.0, pose='graze', seed=0, scale=1.0, mat
         return L0 + R @ (Vector((x, y, z)) * s)
 
     if not ox:
-        prof = [(-1.36, 1.14, 0.94, 0.10), (-1.25, 1.30, 0.74, 0.30), (-0.95, 1.38, 0.60, 0.40), (-0.5, 1.42, 0.56, 0.46),
-                (-0.1, 1.56, 0.52, 0.49), (0.25, 1.80, 0.50, 0.52), (0.55, 1.86, 0.46, 0.52), (0.85, 1.68, 0.44, 0.48),
-                (1.06, 1.44, 0.50, 0.42), (1.18, 1.2, 0.62, 0.32)]
+        prof = [(-1.36, 1.16, 0.96, 0.10), (-1.26, 1.26, 0.78, 0.28), (-1.0, 1.32, 0.66, 0.38), (-0.55, 1.36, 0.64, 0.42),
+                (-0.15, 1.48, 0.56, 0.47), (0.15, 1.72, 0.48, 0.52), (0.4, 1.93, 0.42, 0.54), (0.62, 1.96, 0.40, 0.53),
+                (0.86, 1.80, 0.42, 0.50), (1.05, 1.54, 0.48, 0.44), (1.18, 1.28, 0.58, 0.34)]
     else:
         prof = [(-1.3, 1.3, 1.1, 0.10), (-1.2, 1.42, 0.92, 0.26), (-0.9, 1.46, 0.82, 0.32), (-0.4, 1.44, 0.8, 0.35),
                 (0.1, 1.46, 0.82, 0.35), (0.5, 1.5, 0.84, 0.32), (0.8, 1.44, 0.9, 0.26), (1.0, 1.36, 0.98, 0.2)]
@@ -1169,9 +1191,9 @@ def bison2(batch, loc=(0, 0, 0), rot_z=0.0, pose='graze', seed=0, scale=1.0, mat
     # head
     if not ox:
         if pose == 'graze':
-            hp = [(1.0, 1.15, 0.36), (1.2, 0.9, 0.36), (1.38, 0.62, 0.30), (1.5, 0.42, 0.22), (1.55, 0.3, 0.14)]
+            hp = [(1.04, 1.18, 0.34), (1.2, 0.92, 0.31), (1.32, 0.64, 0.26), (1.4, 0.44, 0.2), (1.44, 0.33, 0.12)]
         else:
-            hp = [(0.98, 1.35, 0.36), (1.22, 1.22, 0.36), (1.45, 1.06, 0.29), (1.62, 0.9, 0.21), (1.68, 0.8, 0.13)]
+            hp = [(1.04, 1.42, 0.34), (1.2, 1.18, 0.31), (1.32, 0.95, 0.26), (1.4, 0.78, 0.2), (1.44, 0.68, 0.12)]
     else:
         hp = [(0.95, 1.3, 0.24), (1.15, 1.22, 0.2), (1.35, 1.08, 0.17), (1.5, 0.95, 0.12)]
     hs = []
@@ -1183,8 +1205,8 @@ def bison2(batch, loc=(0, 0, 0), rot_z=0.0, pose='graze', seed=0, scale=1.0, mat
         hs.append((P_(x, 0, z), R @ Y, R @ v, r * s * 0.85, r * s))
     _loft(batch, hs, segs=14, mat_index=mat_index, power=2.2)
     if not ox:   # beard / dewlap
-        bx, bz = (hp[2][0] - 0.12, hp[2][1] - 0.22) if pose == 'graze' else (hp[2][0] - 0.15, hp[2][1] - 0.3)
-        batch.ico(tuple(P_(bx, 0, bz)), 0.18 * s, (0.9, 0.7, 1.4), subdiv=2, mat_index=mat_index, jitter=0.25, seed=seed)
+        bx, bz = (hp[2][0] - 0.16, hp[2][1] - 0.24) if pose == 'graze' else (hp[2][0] - 0.2, hp[2][1] - 0.32)
+        batch.ico(tuple(P_(bx, 0, bz)), 0.2 * s, (0.8, 0.65, 1.6), subdiv=2, mat_index=mat_index, jitter=0.3, seed=seed)
     # legs
     walk = rnd.uniform(-0.18, 0.18) if pose != 'graze' else rnd.uniform(-0.06, 0.06)
     fr = 0.16 if not ox else 0.1
@@ -1239,3 +1261,83 @@ def herd(protos, placements, coll_name='Herd'):
         o.pass_index = i + 1
         out.append(o)
     return out
+
+
+
+# ---------------------------------------------------------------- foliage cards
+def mat_leafcards(name='LeafCards', atlas=None, tint=(1.0, 1.0, 1.0), transl=0.35, emit=None, emit_strength=0.0):
+    """Alpha-cut leaf cards from a 2x2 atlas, with translucency so backlit leaves glow."""
+    import os
+    atlas = atlas or os.path.join(os.path.dirname(os.path.abspath(__file__)), '../textures/leaf_atlas.png')
+    m, nt, b, out = lib.mat_new(name)
+    im = node(nt, 'ShaderNodeTexImage', (-900, 0))
+    im.image = bpy.data.images.load(os.path.abspath(atlas))
+    im.interpolation = 'Cubic'
+    uv = node(nt, 'ShaderNodeTexCoord', (-1150, 0))
+    link(nt, uv.outputs['UV'], im.inputs['Vector'])
+    hsv = node(nt, 'ShaderNodeHueSaturation', (-650, 100))
+    info = node(nt, 'ShaderNodeObjectInfo', (-1150, -300))
+    rnd = node(nt, 'ShaderNodeMath', (-900, -300), operation='MULTIPLY')
+    link(nt, info.outputs['Random'], rnd.inputs[0])
+    rnd.inputs[1].default_value = 1.0
+    hsv.inputs['Value'].default_value = 1.0
+    link(nt, im.outputs['Color'], hsv.inputs['Color'])
+    mul = node(nt, 'ShaderNodeMix', (-450, 100), data_type='RGBA', blend_type='MULTIPLY')
+    mul.inputs['Factor'].default_value = 1.0
+    link(nt, hsv.outputs['Color'], mul.inputs[6])
+    mul.inputs[7].default_value = (*tint, 1)
+    link(nt, mul.outputs[2], b.inputs['Base Color'])
+    b.inputs['Roughness'].default_value = 0.55
+    if emit:
+        b.inputs['Emission Color'].default_value = (*srgb(emit), 1)
+        b.inputs['Emission Strength'].default_value = emit_strength
+    tr = node(nt, 'ShaderNodeBsdfTranslucent', (-200, -250))
+    link(nt, mul.outputs[2], tr.inputs['Color'])
+    mx = node(nt, 'ShaderNodeMixShader', (100, 0))
+    mx.inputs['Fac'].default_value = transl
+    link(nt, b.outputs['BSDF'], mx.inputs[1])
+    link(nt, tr.outputs['BSDF'], mx.inputs[2])
+    tp = node(nt, 'ShaderNodeBsdfTransparent', (100, -250))
+    cut = node(nt, 'ShaderNodeMixShader', (350, 0))
+    link(nt, im.outputs['Alpha'], cut.inputs['Fac'])
+    link(nt, tp.outputs['BSDF'], cut.inputs[1])
+    link(nt, mx.outputs['Shader'], cut.inputs[2])
+    link(nt, cut.outputs['Shader'], out.inputs['Surface'])
+    m.blend_method = 'HASHED' if hasattr(m, 'blend_method') else None
+    return m
+
+
+def leaf_cards(name, tips, mat, per_tip=60, size=(0.09, 0.16), spread=1.0, seed=0, droop=0.3, min_z=None):
+    """Clusters of alpha leaf cards around branch tips. tips: list of (Vector, L)."""
+    rnd = random.Random(seed)
+    bm = bmesh.new()
+    uvl = bm.loops.layers.uv.new()
+    for (p, L) in tips:
+        if min_z is not None and p[2] < min_z(p):
+            continue
+        R = (0.35 + 0.5 * L) * spread
+        for k in range(per_tip):
+            c = Vector((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 0.7))) * R * 0.55 + Vector(p)
+            sz = rnd.uniform(*size)
+            nrm = Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-0.2, 1.0) + droop)).normalized()
+            t1 = nrm.orthogonal().normalized()
+            ang = rnd.uniform(0, 6.283)
+            t1 = (Matrix.Rotation(ang, 3, nrm) @ t1).normalized()
+            t2 = nrm.cross(t1).normalized()
+            w, h = sz * 0.62, sz
+            curl = rnd.uniform(-0.25, 0.25) * sz
+            corners = [c - t1 * w / 2, c + t1 * w / 2, c + t1 * w / 2 + t2 * h + nrm * curl, c - t1 * w / 2 + t2 * h + nrm * curl]
+            vs = [bm.verts.new(v) for v in corners]
+            f = bm.faces.new(vs)
+            cell = rnd.randrange(4)
+            u0, v0 = (cell % 2) * 0.5, (cell // 2) * 0.5
+            for lp, (uu, vv) in zip(f.loops, ((0, 1), (1, 1), (1, 0), (0, 0))):
+                lp[uvl].uv = (u0 + uu * 0.5, 1 - (v0 + vv * 0.5))
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    me.materials.append(mat)
+    o = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(o)
+    print(f'leaf cards: {len(me.polygons)} in {name}', flush=True)
+    return o

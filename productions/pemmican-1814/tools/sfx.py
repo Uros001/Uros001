@@ -199,6 +199,45 @@ def squeal(dur):
     return norm(y, 0.3)
 
 
+def _distance(y, wet=0.85, tail=2.6, lp_hz=3500):
+    n = int(tail * SR)
+    t = np.arange(n) / SR
+    ir = rng.normal(0, 1, (n, 2)).astype(np.float32) * np.exp(-t * 6.9 / tail)[:, None]
+    ir = lp(ir, 2500)
+    ir /= np.sqrt((ir ** 2).sum(0))
+    out = np.zeros((len(y) + n, 2), np.float32)
+    for c in range(2):
+        out[:, c] = signal.fftconvolve(y[:, c], ir[:, c])
+    out[:len(y)] = out[:len(y)] * wet + y * (1 - wet)
+    return lp(out, lp_hz)
+
+
+def loon(dur=3.2):
+    """Common loon 'wail': a slow rising-falling glide with vibrato, heard across water."""
+    L = int(dur * SR)
+    t = np.arange(L) / SR
+    u = t / dur
+    f = 620 + 300 * np.sin(np.pi * np.clip(u * 1.25, 0, 1)) ** 0.7 - 120 * np.clip((u - 0.75) / 0.25, 0, 1)
+    f = f + 9 * np.sin(2 * np.pi * 5.2 * t) * np.clip(u * 3, 0, 1)
+    ph = np.cumsum(2 * np.pi * f / SR)
+    y = np.sin(ph) + 0.18 * np.sin(2 * ph) + 0.05 * np.sin(3 * ph)
+    env = np.clip(u / 0.12, 0, 1) ** 1.5 * np.clip((1 - u) / 0.2, 0, 1)
+    y = (y * env)[:, None] * np.array([1.0, 0.9], np.float32)
+    return norm(_distance(y.astype(np.float32), 0.8, 3.0, 3000), 0.35)
+
+
+def bison_grunt(dur=0.9):
+    L = int(dur * SR)
+    t = np.arange(L) / SR
+    f0 = 78 + 10 * np.sin(2 * np.pi * 1.3 * t) + rng.normal(0, 2, L).cumsum() * 0.002
+    ph = np.cumsum(2 * np.pi * f0 / SR)
+    buzz = signal.sawtooth(ph) * (0.6 + 0.4 * np.sin(2 * np.pi * 24 * t))
+    y = buzz[:, None].astype(np.float32) * np.array([1, 1], np.float32)
+    y = bp(y, 120, 900) + bp(rng.normal(0, 1, (L, 2)).astype(np.float32), 200, 1200) * 0.15
+    env = np.sin(np.pi * np.clip(t / dur, 0, 1)) ** 0.8
+    return norm(_distance(y * env[:, None], 0.6, 1.5, 1800), 0.4)
+
+
 def place(buf, y, t, gain_db=0.0, pan=0.0):
     i = int(t * SR)
     if i < 0 or i >= len(buf):
@@ -252,6 +291,16 @@ def main():
         else:
             if c['start'] > 1:
                 place(fx, whoosh(0.9, True), c['start'] - 0.45, -24)
+    # natural cues: loons over the misty river (cold open, ending), bison grunts under herd shots
+    for t0 in (3.0, core.anchor('P02.0') + 1.5, core.anchor('P42.4') + 1.0, core.anchor('CREDITS') + 2.0):
+        place(fx, loon(rng.uniform(2.6, 3.4)), t0, -22, rng.uniform(-0.6, 0.6))
+    for c in clips:
+        sh = c['shot']
+        if isinstance(sh, Plate) and sh.name == 'plain_B1':
+            t = c['start'] + rng.uniform(0.8, 2.0)
+            while t < c['end'] - 1.0:
+                place(fx, bison_grunt(rng.uniform(0.6, 1.1)), t, -24 + rng.uniform(-5, 0), rng.uniform(-0.5, 0.5))
+                t += rng.uniform(2.5, 5.0)
     # counters / grids
     for t0, t1 in ((core.anchor('P24.2'), core.anchor('P24.2') + 4.2),):
         t = t0
