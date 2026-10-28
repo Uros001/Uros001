@@ -1,8 +1,10 @@
-scene_fort F1 --samples 20
-scene_fort F2 --samples 20
-scene_plain B1 --samples 20
-scene_plain B2 --samples 20
-scene_dock D1 --samples 20 --force
-scene_dock D4 --samples 20 --force
-scene_dock C1 --samples 20 --force
-scene_plain G1 --samples 20 --force
+scene_fort F1 --samples 16
+scene_fort F2 --samples 16
+scene_plain B1 --samples 16
+scene_plain B2 --samples 16
+scene_dock D1 --samples 16 --force
+scene_dock D4 --samples 16 --force
+scene_dock C1 --samples 16 --force
+scene_plain G1 --samples 16 --force
+scene_plain B3 --samples 16 --force
+scene_camp R3 --samples 16

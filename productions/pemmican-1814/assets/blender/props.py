@@ -1195,7 +1195,7 @@ def bison2(batch, loc=(0, 0, 0), rot_z=0.0, pose='graze', seed=0, scale=1.0, mat
         else:
             hp = [(1.04, 1.42, 0.34), (1.2, 1.18, 0.31), (1.32, 0.95, 0.26), (1.4, 0.78, 0.2), (1.44, 0.68, 0.12)]
     else:
-        hp = [(0.95, 1.3, 0.24), (1.15, 1.22, 0.2), (1.35, 1.08, 0.17), (1.5, 0.95, 0.12)]
+        hp = [(0.95, 1.36, 0.27), (1.15, 1.3, 0.25), (1.38, 1.16, 0.22), (1.6, 1.0, 0.17), (1.72, 0.9, 0.12)]
     hs = []
     for i, (x, z, r) in enumerate(hp):
         nx = hp[min(i + 1, len(hp) - 1)][0] - hp[max(i - 1, 0)][0]
@@ -1217,6 +1217,11 @@ def bison2(batch, loc=(0, 0, 0), rot_z=0.0, pose='graze', seed=0, scale=1.0, mat
         batch.tube([P_(-0.92, side * 0.25, 0.95), P_(-1.0 - a * 0.3, side * 0.22, 0.5), P_(-0.93 - a, side * 0.2, 0.12), P_(-0.92 - a, side * 0.2, 0.0)],
                    [fr * 0.95 * s, fr * 0.6 * s, fr * 0.48 * s, fr * 0.6 * s], segs=8, mat_index=mat_index)
     batch.tube([P_(-1.34, 0, 1.12), P_(-1.42, 0, 0.85), P_(-1.42, 0, 0.6)], [0.05 * s, 0.03 * s, 0.05 * s], segs=6, mat_index=mat_index)
+    if ox:   # forward-curving ox horns
+        hx, hz = hp[1][0], hp[1][1] + 0.18
+        for side in (-1, 1):
+            batch.tube([P_(hx, side * 0.16, hz), P_(hx + 0.02, side * 0.36, hz + 0.08), P_(hx + 0.12, side * 0.42, hz + 0.24)],
+                       [0.04 * s, 0.028 * s, 0.008 * s], segs=6, mat_index=mat_index)
     if horn_mi is not None and not ox:
         hx, hz = hp[1][0] + 0.05, hp[1][1] + 0.25
         for side in (-1, 1):

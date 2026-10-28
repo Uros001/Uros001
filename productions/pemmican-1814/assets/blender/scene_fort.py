@@ -152,17 +152,16 @@ def build(variant='winter'):
     # snow drifts against the palisade (winter)
     if not summer:
         db = P.Batch()
-        for i in range(60):
-            t = i / 60
-            for (a, b) in zip(pal, pal[1:] + pal[:1]):
-                pass
         rnd2 = random.Random(9)
         for i in range(140):
             side = rnd2.randrange(4)
             a, b = Vector((*pal[side], 0)), Vector((*pal[(side + 1) % 4], 0))
             p = a.lerp(b, rnd2.random())
             out = Vector((p.x, p.y, 0)).normalized() * 0.8
-            db.ico((p.x + out.x, p.y + out.y, 0.0), rnd2.uniform(0.8, 1.6), (1.4, 1.4, 0.45), subdiv=2, jitter=0.2, seed=i)
+            # sunk so only the soft crown shows above the ground snow (no dark undersides)
+            r = rnd2.uniform(0.8, 1.6)
+            x, y = p.x + out.x, p.y + out.y
+            db.ico((x, y, ground_z(x, y) - 0.3 * r), r, (1.6, 1.6, 0.5), subdiv=3, jitter=0.15, seed=i)
         db.build('Drifts', [gmat])
     # dry grass and willow scrub poking through the snow in the foreground
     gm = P.mat_strand('DryGrass', '#5a4c33', '#b59a6a', transl=0.2) if not summer else P.mat_strand('Grass', '#4a4a26', '#a99a5c', transl=0.3)

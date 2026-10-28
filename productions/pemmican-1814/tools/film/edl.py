@@ -53,8 +53,8 @@ def default_life(name):
             L['clouds'] = dict(cover=0.38, opacity=0.55, speed=0.003, tint=(1.0, 0.95, 0.88) if cam != 'R3b' else (1.0, 0.82, 0.8))
             e = em('lodge', 20.0) + (em('fire', 8.0) if cam != 'R3b' else [])
             if e:
-                L['smoke'] = dict(points=e, rate=4, rise=0.018, drift=(0.012, 0), size=0.006, grow=0.035, opacity=0.4,
-                                  color=(0.66, 0.66, 0.68))
+                L['smoke'] = dict(points=e, rate=5, rise=0.018, drift=(0.012, 0), size=0.009, grow=0.04, opacity=0.6,
+                                  density=0.9, color=(0.62, 0.62, 0.65))
         if cam in ('K1', 'K3'):
             L['wind'] = dict(strength=0.7, y0=0.0)
         if cam == 'K2':
@@ -75,8 +75,8 @@ def default_life(name):
         L['wind'] = dict(strength=0.6)
         e = em('chimney', 60.0)
         if e:
-            L['smoke'] = dict(points=e, rate=5, rise=0.02, drift=(0.012, 0), size=0.008, grow=0.05, opacity=0.6 if winter else 0.4,
-                              color=(0.55, 0.57, 0.61) if winter else (0.7, 0.7, 0.72))
+            L['smoke'] = dict(points=e, rate=6, rise=0.02, drift=(0.014, 0), size=0.012, grow=0.06, opacity=0.9 if winter else 0.5,
+                              density=1.0 if winter else 0.8, color=(0.5, 0.52, 0.57) if winter else (0.7, 0.7, 0.72))
     return L
 
 
@@ -117,7 +117,8 @@ def tl_view(t0=None):
 # ------------------------------------------------------------------ clips
 CLIPS = [
     # ---------------- cold open
-    (0.0, P('dock_D1', s=(1.0, 1.16), c=((0.5, 0.52), (0.47, 0.58)), p=0.07, desc='The bag on the landing at dawn: slow push-in'), 0),
+    (0.0, P('dock_D1', s=(1.0, 1.16), c=((0.5, 0.52), (0.47, 0.58)), p=0.07, rack=dict(layer='fg', sigma=(9.0, 0.0), span=(0.05, 0.45)),
+             desc='The bag on the landing at dawn: focus pull, slow push-in'), 0),
     ('P01.2-0.35', P('dock_D2', s=(1.08, 1.16), c=((0.44, 0.5), (0.56, 0.5)), p=0.05, desc='Seam macro: lacing and greased edge'), 0.6),
     ('P02.0-0.45', P('dock_C1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.5)), desc='Northern canoe at the landing'), 0.7),
     ('P02.1-0.15', P('fort_F1', s=(1.0, 1.1), c=((0.5, 0.52), (0.52, 0.5)), dust=SNOW, desc='Palisaded post in winter (Red River colony, illustrative)'), 0.8),
@@ -174,7 +175,8 @@ CLIPS = [
     ('P21.0-0.45', P('fort_F3', s=(1.12, 1.2), c=((0.45, 0.55), (0.5, 0.55)), desc='The post, summer'), 0.7),
     ('P21.1-0.3', P('camp_R3b', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks at dusk'), 0.7),
     ('P21.2-0.3', P('fort_F2', s=(1.0, 1.1), c=((0.5, 0.5), (0.5, 0.48)), dust=SNOW, desc='The gate in winter'), 0.7),
-    ('P22.0-0.45', P('desk_W1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.52)), flicker=0.03, desc='Writing table by candlelight (generated prop document)'), 0.7),
+    ('P22.0-0.45', P('desk_W1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.52)), flicker=0.03, grade=dict(contrast=1.08, sat=1.08, temp=0.75, gamma=0.97),
+                     desc='Writing table by candlelight (generated prop document)'), 0.7),
     ('P22.1-0.4', F(gfx.order_terms, "Graphic: the order's main terms, paraphrased"), 0.6),
     ('P23.0-0.45', F(gfx.paper_practice, 'Graphic: on paper vs in practice'), 0.6),
     ('P24.0-0.45', P('fort_F3', s=(1.18, 1.26), c=((0.55, 0.55), (0.6, 0.55)), desc='The post, summer, closer'), 0.6),
@@ -223,7 +225,8 @@ CLIPS = [
     ('P41.1-0.3', P('camp_K3', s=(1.12, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Berries for pemmican'), 0.6),
     ('P41.1+4.0', P('camp_K1', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), desc='Pounded meat on a hide'), 0.6),
     ('P41.2-0.3', F(MS.treaty_map, 'Map: the Buffalo Treaty, 2014'), 0.7),
-    ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, desc='The bag'), 0.9),
+    ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, rack=dict(layer='fg', sigma=(7.0, 0.0), span=(0.1, 0.7)),
+                     desc='The bag: focus pull'), 0.9),
     ('P42.1-0.2', P('desk_W2', s=(1.15, 1.2), c=((0.55, 0.5), (0.55, 0.5)), flicker=0.025, desc='The order'), 0.3),
     ('P42.2-0.2', P('plain_G2', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), grade=G_DUSK, desc='The plain'), 0.3),
     ('P42.3-0.2', P('dock_C3b', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Cargo'), 0.3),
@@ -261,6 +264,11 @@ def build_overlays():
     o = []
     o.append(recon(1.0, 8.0, 'Reconstruction  ·  3D'))
     o.append(sup('Red River colony', '8 January 1814', A('P02.1+0.6'), A('P02.1+6.3')))
+    o.append(recon(A('P02.1+0.2'), A('P02.1+6.2'), 'Reconstruction'))
+    o.append(recon(A('P02.1+6.7'), A('P02.1e+0.6'), 'Generated prop document'))
+    o.append(recon(A('P04.0-0.2'), A('P04.1-0.4'), 'Reconstruction'))
+    o.append(recon(A('P12.0-0.2'), A('P12.0+4.0'), 'Reconstruction'))
+    o.append(recon(A('P22.0-0.3'), A('P22.1-0.5'), 'Generated prop document'))
     o.append(sup('Frog Plain', '19 June 1816', A('P04.0+0.6'), A('P04.1-0.4')))
     o.append(recon(A('P05.1+2.8'), A('P05.1+6.5'), 'Reconstruction'))
     o.append((A('TITLE.e'), A('TITLE.e+4.4'), _d(lambda L, t: T.chapter_label(L, t, A('TITLE.e') + 0.2, 'I', 'Meat That Keeps'),

@@ -36,27 +36,23 @@ def to_lufs(y, target):
 
 
 def speech_env(nar, att=0.06, rel=0.7):
-    """0..1 envelope that is 1 while the narrator speaks, with smooth attack/release."""
-    x = np.abs(nar).max(1)
-    win = int(0.03 * SR)
-    rms = np.sqrt(np.convolve(x ** 2, np.ones(win) / win, mode='same'))
+    """0..1 envelope that is 1 while the narrator speaks, with smooth attack/release (O(N) running filters)."""
+    from scipy.ndimage import uniform_filter1d, maximum_filter1d
+    x = np.abs(nar).max(1).astype(np.float32)
+    rms = np.sqrt(uniform_filter1d(x * x, int(0.03 * SR)))
     gate = (rms > 10 ** (-42 / 20)).astype(np.float32)
-    # hold gaps shorter than 0.35 s
-    hold = int(0.35 * SR)
-    g = np.convolve(gate, np.ones(hold), mode='same') > 0
-    g = g.astype(np.float32)
-    a = np.exp(-1 / (att * SR))
-    r = np.exp(-1 / (rel * SR))
-    out = np.empty_like(g)
-    v = 0.0
-    # one-pole attack/release follower (vectorised in blocks for speed)
+    g = maximum_filter1d(gate, int(0.35 * SR))            # hold gaps shorter than 0.35 s
     blk = 480
-    for i in range(0, len(g), blk):
-        target = g[i:i + blk].max()
-        coef = a if target > v else r
-        v = target + (v - target) * coef ** blk
-        out[i:i + blk] = v
-    return np.convolve(out, np.ones(blk) / blk, mode='same')
+    gb = g[: len(g) // blk * blk].reshape(-1, blk).max(1)
+    a = np.exp(-blk / (att * SR))
+    r = np.exp(-blk / (rel * SR))
+    v, out = 0.0, np.empty_like(gb)
+    for i, target in enumerate(gb):
+        v = target + (v - target) * (a if target > v else r)
+        out[i] = v
+    env = np.repeat(out, blk)
+    env = np.concatenate([env, np.full(len(g) - len(env), env[-1] if len(env) else 0.0, np.float32)])
+    return uniform_filter1d(env, blk)
 
 
 def main():
@@ -67,11 +63,11 @@ def main():
     amb = fit(read('audio/sfx/ambience.wav'), n)
     fx = fit(read('audio/sfx/fx.wav'), n)
     mus, m0 = to_lufs(mus, -25.0)
-    amb, a0 = to_lufs(amb, -33.0)
+    amb, a0 = to_lufs(amb, -27.5)
     fx = fx * 10 ** (-4 / 20)
     env = speech_env(nar)[:, None]
     duck_m = 10 ** (-7.5 * env / 20)
-    duck_a = 10 ** (-4.0 * env / 20)
+    duck_a = 10 ** (-5.0 * env / 20)
     mix = nar * 1.0 + mus * duck_m + amb * duck_a + fx * duck_a
     # gentle bus glue: high-pass rumble, slight low shelf trim
     sos = signal.butter(2, 28 / (SR / 2), 'high', output='sos')

@@ -127,7 +127,7 @@ class Short:
         t = idx / core.FPS
         img = self.picture(t)
         g = min(core.ease_io(t / 0.6), 1.0 - core.ease_io((t - (self.total - 0.8)) / 0.8))
-        img = core.finish(img * max(g, 0), idx, grain=0.02)
+        img = core.finish(img * max(g, 0), idx, grain=0.015)
         L = T.Layer()
         if t < core.anchor('P05.0e') + 0.3:
             self.captions(L, t)
@@ -166,11 +166,27 @@ def main():
     open(lst, 'w').write(''.join(f"file '{p}'\n" for p in parts))
     vid = os.path.join(tmp, 'video.mp4')
     subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', vid], check=True)
-    mix = os.path.join(sh.core.ROOT, 'audio/mix/pemmican_mix_master.wav')
+    import soundfile as sf
+    root = sh.core.ROOT
+    mix, sr = sf.read(os.path.join(root, 'audio/mix/pemmican_mix_master.wav'), dtype='float32', always_2d=True)
+    mus, _ = sf.read(os.path.join(root, 'audio/mix/music_stem.wav'), dtype='float32', always_2d=True)
     dur = sh.total
-    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', vid, '-i', mix, '-map', '0:v', '-map', '1:a',
-                    '-af', f'atrim=0:{dur:.3f},afade=t=out:st={dur - 2.5:.3f}:d=2.5', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k',
-                    '-ar', '48000', '-shortest', '-movflags', '+faststart', a.out], check=True)
+    n = int(dur * sr)
+    cut = int((sh.core.anchor('P05.1') - 0.12) * sr)        # before the next sentence starts
+    xf = int(0.25 * sr)
+    out = np.zeros((n, 2), np.float32)
+    out[:cut] = mix[:cut]
+    w = np.linspace(1, 0, xf, dtype=np.float32)[:, None]
+    out[cut - xf:cut] *= w
+    tail = mus[cut - xf:n] * 1.6
+    out[cut - xf:n] += tail[: n - cut + xf] * (1 - np.concatenate([w, np.zeros((n - cut, 1), np.float32)]))
+    fo = int(2.5 * sr)
+    out[-fo:] *= np.linspace(1, 0, fo, dtype=np.float32)[:, None]
+    wav = os.path.join(tmp, 'audio.wav')
+    sf.write(wav, np.clip(out, -0.95, 0.95), sr, subtype='PCM_24')
+    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', vid, '-i', wav, '-map', '0:v', '-map', '1:a',
+                    '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-shortest', '-movflags', '+faststart', a.out],
+                   check=True)
     print('short written', a.out, round(dur, 1), 's')
 
 

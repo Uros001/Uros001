@@ -203,8 +203,9 @@ class Smoke:
     """Rising, drifting smoke from emitters given in normalized plate coords."""
 
     def __init__(self, emitters, seed=4, rate=6.0, rise=0.022, drift=(0.012, 0.0), size=0.012, grow=0.05,
-                 life=9.0, color=(0.82, 0.83, 0.85), opacity=0.32):
+                 life=9.0, color=(0.82, 0.83, 0.85), opacity=0.32, density=0.55):
         self.em, self.rate, self.rise, self.drift, self.size, self.grow, self.life = emitters, rate, rise, drift, size, grow, life
+        self.density = density
         self.color, self.opacity = np.array(color, np.float32), opacity
         rng = np.random.default_rng(seed)
         n = int(rate * life) + 1
@@ -224,7 +225,7 @@ class Smoke:
                 x = ex + (self.drift[0] * age + self.jit[e, i, 0] * 0.004 * age ** 0.8) * k
                 y = ey - (self.rise * age ** 0.85 + self.jit[e, i, 1] * 0.002 * age) * k
                 r = (self.size + self.grow * fa) * k * (1 + 0.25 * self.jit[e, i, 2])
-                a = (min(1.0, age / 0.8) * (1 - fa) ** 1.6) * 0.55
+                a = (min(1.0, age / 0.8) * (1 - fa) ** 1.6) * self.density
                 if a <= 0.005:
                     continue
                 cv2.circle(acc, (int(x * lw), int(y * lh)), max(1, int(r * lw)), float(a), -1, cv2.LINE_AA)

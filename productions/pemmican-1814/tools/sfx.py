@@ -205,7 +205,7 @@ def _distance(y, wet=0.85, tail=2.6, lp_hz=3500):
     ir = rng.normal(0, 1, (n, 2)).astype(np.float32) * np.exp(-t * 6.9 / tail)[:, None]
     ir = lp(ir, 2500)
     ir /= np.sqrt((ir ** 2).sum(0))
-    out = np.zeros((len(y) + n, 2), np.float32)
+    out = np.zeros((len(y) + n - 1, 2), np.float32)
     for c in range(2):
         out[:, c] = signal.fftconvolve(y[:, c], ir[:, c])
     out[:len(y)] = out[:len(y)] * wet + y * (1 - wet)

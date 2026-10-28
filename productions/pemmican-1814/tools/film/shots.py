@@ -11,6 +11,7 @@ from . import core, life as LF
 from .core import ease_io, ease_io5, lerp, seg, clamp
 
 PLATES = os.path.join(core.ROOT, 'renders/plates')
+ACCESSED = set()          # plate names touched (for chunk readiness checks)
 
 
 @functools.lru_cache(maxsize=10)
@@ -76,12 +77,13 @@ class Plate(Shot):
 
     def __init__(self, name, s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), p=0.06, ease='io', hand=0.0012,
                  fog=None, fog2=None, dust=None, grade=None, bloom=(0.8, 0.18), flicker=0.0, fg_fade=None,
-                 desc='', source='', post=None, fg_alpha=1.0, seed=0, fade_parts=None, life=None):
+                 desc='', source='', post=None, fg_alpha=1.0, seed=0, fade_parts=None, life=None, rack=None):
         self.name, self.s, self.c, self.p, self.ease, self.hand = name, s, c, p, ease, hand
         self.fog, self.fog2, self.dust, self.grd, self.bloom = fog, fog2, dust, grade or {}, bloom
         self.flicker, self.fg_fade, self.post, self.fg_alpha, self.seed = flicker, fg_fade, post, fg_alpha, seed
         self.fade_parts = fade_parts      # (t0, t1) film seconds: FG connected parts fade out one by one
         self.life = life or {}             # wind / fgwind / water / clouds / smoke / heat / chroma (see film.life)
+        self.rack = rack                   # dict(layer='fg'|'bg', sigma=(s0, s1), span=(u0, u1)): focus pull
         self._smoke = None
         self.desc = desc or name
         self.source = source or f'Original Blender 3D reconstruction ({name})'
@@ -99,6 +101,7 @@ class Plate(Shot):
         return sp if parallax else s, cx, cy
 
     def frame(self, tl, dur, t):
+        ACCESSED.add(self.name)
         bg, fg, meta = plate_images(self.name)
         sh, sw = bg.shape[:2]
         u = seg(tl, 0, dur)
@@ -125,6 +128,18 @@ class Plate(Shot):
         if fg is not None and L_.get('fgwind'):
             fg0 = fg
             fg = LF.wind(fg, t, self.name + ':fg', ref=fg0, **L_['fgwind'])
+        if self.rack:
+            r = self.rack
+            k = ease_io(seg(u, *r.get('span', (0.0, 0.4))))
+            sig = lerp(r['sigma'][0], r['sigma'][1], k) * sw / 2304
+            if sig > 0.3:
+                if r.get('layer', 'fg') == 'fg' and fg is not None:
+                    pm = fg[:, :, :3] * fg[:, :, 3:4]
+                    pm = cv2.GaussianBlur(pm, (0, 0), sig)
+                    al = cv2.GaussianBlur(fg[:, :, 3], (0, 0), sig)
+                    fg = np.dstack([pm / np.maximum(al[:, :, None], 1e-4), al])
+                else:
+                    bg = cv2.GaussianBlur(bg, (0, 0), sig)
         s, cx, cy = self.transform(u)
         Mbg = M(s, cx, cy)
         out = core.warp(bg, Mbg)

@@ -54,6 +54,8 @@ def _plate_comp(name, blur):
 
 
 def bg_plate(name, tl, dur, blur=14, dim=0.42, s=(1.04, 1.1), c=(0.5, 0.5), sat=0.7):
+    from .shots import ACCESSED
+    ACCESSED.add(name)
     img = _plate_comp(name, blur)
     sh, sw = img.shape[:2]
     e = ease_io(seg(tl, 0, dur))

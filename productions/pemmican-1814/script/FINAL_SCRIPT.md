@@ -9,7 +9,7 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > This bag weighs about ninety pounds. It's rawhide, sewn shut, and the seams were sealed with grease. Inside is food. Packed like this and kept dry, it could last for years.
 
-- 0:01.6 `dock_D1` The bag on the landing at dawn: slow push-in
+- 0:01.6 `dock_D1` The bag on the landing at dawn: focus pull, slow push-in
 - 0:07.9 `dock_D2` Seam macro: lacing and greased edge
 - 0:01.0 *on screen:* Tag: "Reconstruction  ·  3D"
 
@@ -21,6 +21,8 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 - 0:20.6 `fort_F1` Palisaded post in winter (Red River colony, illustrative)
 - 0:27.3 `desk_W2` Quill on a written sheet by candlelight
 - 0:21.4 *on screen:* Super: Red River colony / 8 January 1814
+- 0:21.0 *on screen:* Tag: "Reconstruction"
+- 0:27.5 *on screen:* Tag: "Generated prop document"
 
 **P03** · 0:33.1–0:36.0
 
@@ -34,6 +36,7 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 0:38.9 `plain_G3` Frog Plain after sunset
 - 0:45.1 `plain_G2` Grass close-up, evening
+- 0:38.7 *on screen:* Tag: "Reconstruction"
 - 0:39.5 *on screen:* Super: Frog Plain / 19 June 1816
 
 **P05** · 0:52.0–1:01.5
@@ -102,7 +105,8 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 3:12.0 `store_S2` Stacked bags in a store
 - 3:18.1 `store_S1` Depot storehouse, light from the door
-- 3:22.1 `dock_C3` Bags and bales loaded in the canoe
+- 3:22.1 `dock_C3b` Bags and bales loaded in the canoe
+- 3:11.8 *on screen:* Tag: "Reconstruction"
 
 ## II. The Canoe Road  (3:33.1)
 
@@ -154,7 +158,8 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > The two great fur companies weren't equally exposed. The Hudson's Bay Company could ship goods by sea straight into the heart of the continent, through Hudson Bay. The North West Company had no such shortcut. Its lifeline was the long canoe road from Montreal, and that road ran on pemmican. Much of that pemmican came down rivers that met at one place: the point where the Assiniboine River joins the Red.
 
-- 5:58.8 Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks
+- 5:58.8 `fort_F3` A post on the river
+- 6:02.0 Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks
 
 ## III. The Order  (6:27.4)
 
@@ -163,6 +168,8 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 > In 1811, the Hudson's Bay Company granted a Scottish aristocrat, the Earl of Selkirk, a tract of land of about a hundred and sixteen thousand square miles. That's roughly the size of Italy. Selkirk and his relatives had bought heavily into the company, and he meant to fill this land with farmers, many of them from the Scottish Highlands. He called it Assiniboia. Right in the middle of it sat the junction of those two rivers, and the North West Company's supply line.
 
 - 6:31.0 Map: the Selkirk grant (Assiniboia) and Italy at the same scale
+- 6:45.4 `plain_G4` Open land under a bur oak
+- 6:54.7 Map: Assiniboia, the Forks
 - 6:32.5 *on screen:* Lower third: Thomas Douglas, Earl of Selkirk — Hudson's Bay Company shareholder
 
 **P21** · 7:04.6–7:22.7
@@ -180,6 +187,7 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 7:24.5 `desk_W1` Writing table by candlelight (generated prop document)
 - 7:28.7 Graphic: the order's main terms, paraphrased
+- 7:24.2 *on screen:* Tag: "Generated prop document"
 
 **P23** · 7:48.8–8:11.3
 
@@ -336,10 +344,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > Look at the bag again. A governor tried to keep it in one valley. A war was fought around it. Explorers carried it to the bottom of the world. But the knowledge inside it never belonged to the colony, or to the companies. It belonged to the people who learned how to turn one short season of plenty into a year of survival.
 
-- 14:23.2 `dock_D5` The bag
+- 14:23.2 `dock_D5` The bag: focus pull
 - 14:24.6 `desk_W2` The order
 - 14:27.2 `plain_G2` The plain
-- 14:29.1 `dock_C3` Cargo
+- 14:29.1 `dock_C3b` Cargo
 - 14:32.0 `dock_D4` Pull back from the landing
 
 **Credits** · 14:45.0–15:00.0: disclosures (synthetic narration, 3D reconstructions, generated props), map, music and font credits; sources in the description.

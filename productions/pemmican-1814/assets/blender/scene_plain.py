@@ -169,7 +169,7 @@ def build(variant='plain'):
         focus = herd[3]
     elif variant == 'carts':
         P.grass_curves('Grass_near', T, (-40, 40, -40, 20), 500, (0.1, 0.35), grass, seed=1, max_strands=600000, clump=0.4)
-        P.grass_curves('Grass_mid', T, (-150, 170, 20, 260), 30, (0.15, 0.35), grass, seed=2, radius=0.006, max_strands=1000000, clump=0.4)
+        P.grass_curves('Grass_mid', T, (-150, 170, 20, 260), 16, (0.2, 0.45), grass, seed=2, radius=0.014, max_strands=900000, clump=0.4)
         wood = P.mat_principled('CartWood', '#8a7457', rough=0.85, var=0.6, dark='#5a4a38', var_scale=8)
         load = P.mat_principled('Load', '#9a8a6e', rough=0.95)
         ox_coat = P.mat_bison('OxCoat', ox=True)

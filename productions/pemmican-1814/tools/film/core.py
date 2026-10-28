@@ -145,18 +145,25 @@ def affine(scale, cx, cy, tx=0.0, ty=0.0, rot=0.0, src_w=None, src_h=None):
 
 
 def warp(img, M, border=cv2.BORDER_REFLECT):
-    flags = cv2.INTER_LINEAR if abs(M[0, 0]) >= 0.999 else cv2.INTER_AREA
-    if abs(M[0, 0]) > 1.0:
-        flags = cv2.INTER_CUBIC
-    return cv2.warpAffine(img, M, (W, H), flags=flags, borderMode=border)
+    return cv2.warpAffine(img, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=border)
 
 
 def over(dst, src_rgba, opacity=1.0):
     """Alpha-over straight-alpha RGBA onto RGB."""
-    a = src_rgba[:, :, 3:4] * opacity
-    dst *= (1 - a)
-    dst += src_rgba[:, :, :3] * a
-    return dst
+    a = src_rgba[:, :, 3]
+    if opacity != 1.0:
+        a = a * np.float32(opacity)
+    a = np.ascontiguousarray(a, np.float32)
+    src = np.ascontiguousarray(src_rgba[:, :, :3], np.float32)
+    dst32 = np.ascontiguousarray(dst, np.float32)
+    return cv2.blendLinear(dst32, src, 1.0 - a, a)
+
+
+_LUM = np.array([[0.2126, 0.7152, 0.0722]], np.float32)
+
+
+def luma(img):
+    return cv2.transform(np.ascontiguousarray(img, np.float32), _LUM)
 
 
 # ------------------------------------------------------------------ atmosphere
@@ -177,13 +184,17 @@ def _fbm_tile(size, seed, octaves=5):
     return acc
 
 
+@functools.lru_cache(maxsize=4)
+def _fog_big(seed, tw, th):
+    return cv2.resize(_fbm_tile(1024, seed), (tw, th), interpolation=cv2.INTER_LINEAR)
+
+
 def fog_layer(t, density=0.35, speed=(0.012, 0.002), scale=1.0, seed=3, color=(0.75, 0.78, 0.8),
               band=(0.35, 0.8), soft=0.25):
     """Drifting fog wisps as RGBA (straight alpha). `band` = vertical extent (0 top..1 bottom)."""
-    tile = _fbm_tile(1024, seed)
     tw = int(W * 1.5 * scale)
     th = int(H * 1.5 * scale)
-    big = cv2.resize(tile, (tw, th), interpolation=cv2.INTER_LINEAR)
+    big = _fog_big(seed, tw, th)
     ox = int((t * speed[0] * W) % (tw - W)) if tw > W else 0
     oy = int((t * speed[1] * H) % (th - H)) if th > H else 0
     n = big[oy:oy + H, ox:ox + W]
@@ -212,13 +223,14 @@ class Particles:
         x = (self.p[:, 0] + t * drift[0] * self.z + np.sin(t * 0.7 + self.ph) * sway) % 1.0
         y = (self.p[:, 1] + t * (drift[1] + fall) * self.z + np.cos(t * 0.5 + self.ph) * sway * 0.5) % 1.0
         layer = np.zeros((H, W), np.float32)
-        xs = (x * W).astype(np.int32)
-        ys = (y * H).astype(np.int32)
-        r = np.maximum(1, (size * self.z * (W / 1920)).astype(np.int32))
+        xs = np.clip((x * W).astype(np.int32), 0, W - 1)
+        ys = np.clip((y * H).astype(np.int32), 0, H - 1)
         tw = 0.6 + 0.4 * np.sin(t * 2.0 + self.ph * 3)
-        for xi, yi, ri, zi, ti in zip(xs, ys, r, self.z, tw):
-            cv2.circle(layer, (int(xi), int(yi)), int(ri), float(zi * ti), -1, lineType=cv2.LINE_AA)
-        layer = cv2.GaussianBlur(layer, (0, 0), 1.2)
+        r = size * self.z * (W / 1920)
+        # splat energy ~ disc area, then blur to the disc size (vectorised)
+        np.add.at(layer, (ys, xs), (self.z * tw * np.maximum(r, 1.0) ** 2 * 3.0).astype(np.float32))
+        layer = cv2.GaussianBlur(layer, (0, 0), max(0.9, float(np.median(r)) * 0.9))
+        layer = np.minimum(layer, 1.0)
         if mask is not None:
             layer *= mask
         a = np.clip(layer * opacity, 0, 1)[:, :, None]
@@ -229,19 +241,25 @@ class Particles:
 
 # ------------------------------------------------------------------ grade / finish
 def grade(img, lift=0.0, gamma=1.0, gain=1.0, sat=1.0, temp=0.0, tint=0.0, contrast=1.0, pivot=0.45):
-    out = img
-    if temp or tint:
-        out = out * np.array([1 + temp * 0.06 + tint * 0.02, 1 - tint * 0.04, 1 - temp * 0.06 + tint * 0.02], np.float32)
-    if contrast != 1.0:
-        out = (out - pivot) * contrast + pivot
-    if lift or gain != 1.0:
-        out = out * (gain - lift) + lift
+    """Temperature/tint, contrast, lift/gain and saturation folded into one 3x4 colour matrix, then gamma."""
+    wb = np.diag([1 + temp * 0.06 + tint * 0.02, 1 - tint * 0.04, 1 - temp * 0.06 + tint * 0.02]).astype(np.float64)
+    M = wb.copy()
+    off = np.zeros(3)
+    M, off = M * contrast, off * contrast + pivot * (1 - contrast)                 # contrast about pivot
+    M, off = M * (gain - lift), off * (gain - lift) + lift                         # lift / gain
+    if gamma == 1.0 and sat != 1.0:
+        L = np.repeat(_LUM.astype(np.float64), 3, 0)
+        S = sat * np.eye(3) + (1 - sat) * L
+        M, off = S @ M, S @ off
+    A = np.hstack([M, off[:, None]]).astype(np.float32)
+    out = cv2.transform(np.ascontiguousarray(img, np.float32), A)
     if gamma != 1.0:
-        out = np.power(np.clip(out, 0, None), 1.0 / gamma)
-    if sat != 1.0:
-        l = (out * np.array([0.2126, 0.7152, 0.0722], np.float32)).sum(-1, keepdims=True)
-        out = l + (out - l) * sat
-    return np.clip(out, 0, 1).astype(np.float32)
+        out = cv2.pow(np.maximum(out, 0), 1.0 / gamma)
+        if sat != 1.0:
+            L = np.repeat(_LUM, 3, 0)
+            S = (sat * np.eye(3) + (1 - sat) * L).astype(np.float32)
+            out = cv2.transform(out, S)
+    return np.clip(out, 0, 1, out=out)
 
 
 def bloom(img, threshold=0.78, strength=0.25, radius=24):
@@ -272,31 +290,37 @@ def _grain_bank():
     return bank
 
 
+_SPLIT = np.array([[-0.35, 0.3], [0.05, 0.08], [0.3, -0.3]], np.float32)   # rows R,G,B; cols shadows, highlights
+
+
 def film_look(img, split=0.035, halation=0.10):
     """Gentle split-toning (cool shadows, warm highlights) and red-orange halation around bright edges."""
-    lum = (img * np.array([0.2126, 0.7152, 0.0722], np.float32)).sum(-1, keepdims=True)
-    sh = np.clip(1 - lum * 1.6, 0, 1) ** 2
+    lum = luma(img)
+    sh = np.clip(1 - lum * 1.6, 0, 1)
+    sh *= sh
     hi = np.clip((lum - 0.55) * 2.2, 0, 1)
-    out = img + split * (sh * np.array([-0.35, 0.05, 0.3], np.float32) + hi * np.array([0.3, 0.08, -0.3], np.float32))
+    delta = cv2.transform(cv2.merge([sh, hi]), _SPLIT * split)
+    out = cv2.add(np.ascontiguousarray(img, np.float32), delta)
     if halation:
-        b = np.clip(lum - 0.72, 0, None)
+        b = np.maximum(lum - 0.72, 0)
         small = cv2.resize(b, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
         small = cv2.GaussianBlur(small, (0, 0), 3.5)
-        hb = cv2.resize(small, (W, H), interpolation=cv2.INTER_LINEAR)[:, :, None]
-        out = out + hb * halation * np.array([1.0, 0.42, 0.22], np.float32)
-    return np.clip(out, 0, 1)
+        hb = cv2.resize(small, (W, H), interpolation=cv2.INTER_LINEAR)
+        out = cv2.add(out, cv2.merge([hb * (halation * 1.0), hb * (halation * 0.42), hb * (halation * 0.22)]))
+    return np.clip(out, 0, 1, out=out)
 
 
 def finish(img, frame_idx, grain=0.022, vignette=True):
     out = film_look(img)
     if vignette:
-        out = out * _vignette()
+        out = cv2.multiply(out, cv2.merge([_vignette()[:, :, 0]] * 3))
     if grain:
         g = _grain_bank()[frame_idx % 24]
-        lum = (out * np.array([0.3, 0.59, 0.11], np.float32)).sum(-1)
-        w = (grain * (0.35 + 0.65 * (1 - np.abs(lum - 0.45) * 1.6))).clip(0.004, None)
-        out = out + (g * w)[:, :, None]
-    return np.clip(out, 0, 1)
+        lum = luma(out)
+        w = np.maximum(grain * (0.35 + 0.65 * (1 - np.abs(lum - 0.45) * 1.6)), 0.004)
+        gw = g * w
+        out = cv2.add(out, cv2.merge([gw, gw, gw]))
+    return np.clip(out, 0, 1, out=out)
 
 
 def to_u8(img):
