@@ -10,8 +10,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 > This bag weighs about ninety pounds. It's rawhide, sewn shut, and the seams were sealed with grease. Inside is food. Packed like this and kept dry, it could last for years.
 
 - 0:01.6 `dock_D1` The bag on the landing at dawn: focus pull, slow push-in
+- 0:04.0 1819 glossary: "Taureau: a bag of pemican ... made of raw buffaloe hide, weighing usually about 90 lbs"
 - 0:07.9 `dock_D2` Seam macro: lacing and greased edge
 - 0:01.0 *on screen:* Tag: "Reconstruction  ·  3D"
+- 0:04.6 *on screen:* Credit: Glossary of 1819: "Pemican" and "Taureau" — Internet Archive  ·  highlighting added
 
 **P02** · 0:15.3–0:31.5
 
@@ -19,10 +21,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 0:15.3 `dock_C1` Northern canoe at the landing
 - 0:20.6 `fort_F1` Palisaded post in winter (Red River colony, illustrative)
-- 0:27.3 `desk_W2` Quill on a written sheet by candlelight
+- 0:27.3 The proclamation of 8 January 1814: "shall take out any provisions"
 - 0:21.4 *on screen:* Super: Red River colony / 8 January 1814
 - 0:21.0 *on screen:* Tag: "Reconstruction"
-- 0:27.5 *on screen:* Tag: "Generated prop document"
+- 0:27.9 *on screen:* Credit: Macdonell's proclamation, 8 January 1814, as printed in 1819 — Internet Archive  ·  highlighting added
 
 **P03** · 0:33.1–0:36.0
 
@@ -44,8 +46,8 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 > The food in the bag is pemmican. To understand why people would fight over it, you have to understand the problem it solved, and who knew how to make it.
 
 - 0:52.0 `dock_D3` The bag, low angle, river mist
-- 0:56.8 `camp_K1` Pounded meat on a spread hide, stone maul
-- 0:57.0 *on screen:* Tag: "Reconstruction"
+- 0:56.8 1819 glossary: "Pemican: the meat of buffaloes ... dried and pounded, mixed with grease or fat"
+- 0:57.4 *on screen:* Credit: Glossary of 1819: "Pemican" and "Taureau" — Internet Archive  ·  highlighting added
 
 **Title card** · 1:02.7: THE PEMMICAN WAR — Red River · 1812–1821
 
@@ -165,8 +167,9 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > The two great fur companies weren't equally exposed. The Hudson's Bay Company could ship goods by sea straight into the heart of the continent, through Hudson Bay. The North West Company had no such shortcut. Its lifeline was the long canoe road from Montreal, and that road ran on pemmican. Much of that pemmican came down rivers that met at one place: the point where the Assiniboine River joins the Red.
 
-- 5:58.8 `fort_F3` A post on the river
+- 5:58.8 Photograph of a Hudson's Bay Company post, Fort Vancouver, 1860
 - 6:02.0 Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks
+- 5:58.9 *on screen:* Credit: Hudson's Bay Company post, Fort Vancouver, Columbia River, 1860 — Library of Congress
 
 ## III. The Order  (6:27.4)
 
@@ -183,19 +186,23 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > The first settlers arrived in 1812, with a governor named Miles Macdonell. Farming at Red River got off to a hard start, and the colony leaned on bison meat it could hunt or buy. By the winter of 1813, food was short, and more families were on the way.
 
-- 7:04.6 `fort_F3` The post, summer
+- 7:04.6 Photograph of a Hudson's Bay Company post, Fort Colville, 1860
 - 7:09.9 George Catlin: Buffalo Chase in Winter, Indians on Snowshoes (1832–33)
 - 7:17.1 `fort_F2` The gate in winter
 - 7:04.9 *on screen:* Lower third: Miles Macdonell — Governor of the Red River colony
+- 7:04.8 *on screen:* Credit: Officers' house, Hudson's Bay Company's Fort Colville, 1860 — Library of Congress
 - 7:10.5 *on screen:* Credit: Buffalo Chase in Winter, Indians on Snowshoes, 1832–33 — George Catlin  ·  Smithsonian American Art Museum
 
 **P22** · 7:24.5–7:46.6
 
 > On January eighth, 1814, Macdonell issued his order. For one year, no provisions gathered in Assiniboia could be taken out of it. Not meat, not fish, not grain, not vegetables. Traders could keep what they needed to reach their own posts, with a license from the governor. Anything else could be seized, and would be paid for.
 
-- 7:24.5 `desk_W1` Writing table by candlelight (generated prop document)
-- 7:28.7 Graphic: the order's main terms, paraphrased
-- 7:24.2 *on screen:* Tag: "Generated prop document"
+- 7:24.5 The proclamation, whole page, then the date and the governor's signature
+- 7:28.7 "for one twelvemonth from the date hereof"; "shall take out any provisions"
+- 7:33.8 "either of flesh, fish, grain, or vegetable"
+- 7:37.5 "save and except what may be judged necessary ... obtain a licence"
+- 7:43.3 "shall be forfeited"; "paid for by British bills"
+- 7:24.7 *on screen:* Credit: Macdonell's proclamation, 8 January 1814, as printed in 1819 — Internet Archive  ·  highlighting added
 
 **P23** · 7:48.8–8:11.3
 
@@ -224,9 +231,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > It didn't stay gone. Settlers returned that same year, and a new governor, Robert Semple, arrived in the fall. In March of 1816, the colony's men seized the North West Company's post at the Forks, Fort Gibraltar, and later pulled it down.
 
-- 9:00.4 `fort_F3` The post, summer 1815
+- 9:00.4 Photograph: huts of the Hudson's Bay Company's servants, Fort Colville, 1860
 - 9:07.6 Timeline: Fort Gibraltar seized
 - 9:02.9 *on screen:* Lower third: Robert Semple — Governor from the fall of 1815
+- 9:00.5 *on screen:* Credit: Huts of the Hudson's Bay Company's servants, Fort Colville, 1860 — Library of Congress
 
 **P27** · 9:19.7–9:40.5
 
@@ -279,8 +287,9 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 11:17.3 `plain_G3` Dusk
 - 11:19.3 Map: Selkirk seizes Fort William, 1816
-- 11:28.1 `desk_W2` Pen and paper: lawsuits and inquiries
+- 11:28.1 Title page of the report on the 1818 York assizes: the lawsuits
 - 11:31.3 Graphic: 1821 merger
+- 11:28.7 *on screen:* Credit: Title page of the 1819 report on the Selkirk trials — Internet Archive
 
 ## V. The Last Hunts  (11:43.2)
 
@@ -363,9 +372,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 > Look at the bag again. A governor tried to keep it in one valley. A war was fought around it. Explorers carried it to the bottom of the world. But the knowledge inside it never belonged to the colony, or to the companies. It belonged to the people who learned how to turn one short season of plenty into a year of survival.
 
 - 14:23.2 `dock_D5` The bag: focus pull
-- 14:24.6 `desk_W2` The order
+- 14:24.6 The order: the governor's signature
 - 14:27.2 `plain_G2` The plain
 - 14:29.1 `dock_C3b` Cargo
 - 14:32.0 `dock_D4` Pull back from the landing
+- 14:25.2 *on screen:* Credit: Macdonell's proclamation, 8 January 1814, as printed in 1819 — Internet Archive  ·  highlighting added
 
 **Credits** · 14:45.0–15:00.0: disclosures (synthetic narration, 3D reconstructions, generated props), map, music and font credits; sources in the description.

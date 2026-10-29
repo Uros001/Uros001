@@ -9,7 +9,7 @@ from scipy import signal
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from film import core, edl
-from film.shots import Plate, Archive, Diptych, Sequence
+from film.shots import Plate, Archive, Diptych, Sequence, DocPage
 
 SR = 48000
 rng = np.random.default_rng(11)
@@ -134,6 +134,9 @@ ARCH_BEDS = {           # archival stills: the place in the picture, kept low un
     'tavernier_slaughtered_for_the_hide': [('wind', -10)],
     'tavernier_curing_hides_and_bones': [('wind', -10)],
     'nyzp_nucleus_of_the_buffalo_herd': [('wind', -14)],
+    'hbc_fort_vancouver_mess': [('wind', -13), ('water', -22)],
+    'hbc_fort_colville_officers_house': [('wind', -12)],
+    'hbc_fort_colville_huts': [('wind', -11)],
 }
 ARCH_BISON = ('catlin_yellowstone_chase', 'catlin_herds_crossing', 'catlin_bulls_running_season', 'catlin_winter_chase',
               'nyzp_nucleus_of_the_buffalo_herd')
@@ -150,6 +153,8 @@ def clip_beds(c):
         return ARCH_BEDS.get(arch_key(sh), [('wind', -10)])
     if isinstance(sh, (Diptych, Sequence)):
         return [('room', -12), ('wind', -22)]
+    if isinstance(sh, DocPage):                 # a printed page: only the quiet of a room
+        return [('room', -10), ('cold', -26)]
     if isinstance(sh, Plate):
         n = sh.name
         fam, cam = n.split('_')[0], n.split('_')[1]
@@ -327,7 +332,7 @@ def main():
                     if t + off < c['end'] - 0.3:
                         place(fx, thud(), t + off, -27 + rng.uniform(-2, 1), rng.uniform(-0.15, 0.15))
                 t += stride
-        elif not isinstance(sh, (Archive, Diptych)):
+        elif not isinstance(sh, (Archive, Diptych, DocPage)):
             if c['start'] > 1:
                 place(fx, whoosh(0.9, True), c['start'] - 0.45, -24)
     # natural cues: loons over the misty river (cold open, ending), bison grunts under herd shots

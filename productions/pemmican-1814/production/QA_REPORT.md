@@ -131,3 +131,58 @@ material is now 18 clips, 134 s (14.9% of the film; measured from the edit list)
 Visual check: the four new clips were viewed at start and end of their moves and in the finished film (credit
 legible, framing inside the picture, no mount or caption text of the source scan visible); the credits page was
 viewed. Not verified: real-time playback and sound by a person.
+
+## 7. Version 4: archival-first pass (2026-10-29)
+
+**What changed.** The brief was to use real archival material wherever it exists and to reconstruct only what cannot be
+found. Two kinds of generated or reconstructed shots were replaced:
+
+1. *Generated "prop" documents* (a quill on a sheet, a desk with an illegible page, 5 shots) → **real printed pages**
+   of the 1819 *Report of the proceedings … at the assizes, held at York in Upper Canada, October 1818* (Internet Archive,
+   University of Toronto scan, public domain): Macdonell's proclamation of 8 January 1814 (p. 134) in the cold open, as the
+   background of chapter III, across the whole "order" passage (the date, the one-year term, flesh/fish/grain/vegetables,
+   the licence exception, the forfeiture and the payment, each highlighted when it is spoken) and again at the signature
+   ("A governor tried to keep it in one valley"); the glossary page (p. xiv: "Taureau … weighing usually about 90 lbs",
+   "Pemican … dried and pounded, mixed with grease or fat") at the bag and at "The food in the bag is pemmican"; the title
+   page at "Lawsuits and inquiries dragged on for years". The paraphrase graphic and the two "Generated prop document" tags
+   are gone; the credits page no longer says documents are props. The highlighting is added by the film and the on-screen
+   credit says so.
+2. *Three 3D "post" shots* → **three 1860 photographs of Hudson's Bay Company posts** (Fort Vancouver, Fort Colville; Library
+   of Congress, "No known restrictions on publication"), captioned with their own place and year, not as Red River.
+
+Also: the Short uses the real page; sound beds were re-laid (room tone under pages, wind under the photographs, no quill);
+3D time falls by 42 s (below); length and narration are unchanged.
+
+**Real versus reconstructed (from the edit list, `tools/make_shotplan.py`):**
+
+| Kind | Clips | Screen time | Share |
+|---|---|---|---|
+| Real archival images (paintings, photographs, engravings, Muybridge sequence) | 21 | 151 s | 16.8% |
+| Real archival documents (1819 book pages) | 10 | 45 s | 5.0% |
+| **Real archival total** | **31** | **196 s** | **21.7%** (v3: 134 s, 14.9%) |
+| 3D reconstructions (Blender, labelled) | 47 | 317 s | 35.2% (v3: 359 s, 40%) |
+| Maps | 13 | 176 s | 19.6% |
+| Graphics and cards | 23 | 212 s | 23.6% |
+
+Remaining 3D by subject, and why it is still 3D: Frog Plain, open prairie, bison-herd and cart-line plates (116 s; for the
+battle of 1816 nothing was painted or photographed on the spot, while the herd and cart scenes could still be replaced
+by more archival images), canoe landings and bags (87 s), camp work such as pounding and drying (65 s; the museum objects found
+have no open licence), palisaded posts and the winter gate (29 s), storehouses (21 s). Searched without a usable result:
+Smithsonian NMAI (369 parfleche records, none with open-licence images; 180 open-licence records, none relevant), LOC
+(no Red River, pemmican or York-boat photographs). Not tried again: Wikimedia Commons and Library and Archives Canada (rate
+limit and network policy); Peter Rindisbacher's Red River watercolours of 1821, Paul Kane and Frances Anne Hopkins are
+there and would replace the fort, camp and canoe shots if access is granted.
+
+| Check (tools/qa.py + ffmpeg, v4 master) | Result |
+|---|---|
+| Video | H.264 High, 1920×1080, 30 fps, 27,000 frames, 15:00.000 |
+| Audio | AAC 48 kHz stereo, 14:59.989; −14.1 LUFS, −1.4 dBTP, LRA 3.4 LU |
+| Decode errors / frozen picture / silence over 1.5 s | none (full decode, `ffmpeg -v error`) / 0 / none |
+| Black frames | 3, all intended (8:42.6 into chapter IV, 14:44.9 to credits, final fade) |
+| Subtitles | 235 cues, 2,065 words (= narration), no overlaps, at most 42 characters per line |
+| Rendering | 15 of 45 chunks re-rendered (10 for the documents, chapter card and credits; 5 for the photographs); the other 30 unchanged |
+| Short | 1080×1920, 58.5 s, page framed whole, credit top right |
+
+Visual check: contact frames of all 13 new or changed clips were viewed in the finished film (marker positions against
+the spoken words at 6.8 s, 30.6 s, 60.4 s and 7:27–7:46; credit legible; photographs inside the picture, no album
+mount). Not verified: real-time playback and sound by a person; the highlight timing was set from sentence timings, not word timings.

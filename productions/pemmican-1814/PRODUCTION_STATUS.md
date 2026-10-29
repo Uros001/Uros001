@@ -77,6 +77,24 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
   read both before using), CC0 skies and textures (Polyhaven, ambientCG). Their hosts are open at network level but need a
   fetch method that does not trigger Wikimedia's rate limit or the permission checker.
 
+## Version 4 — archival first (2026-10-29)
+- Request: real archival material wherever it exists; reconstruct only what cannot be found. Done for documents and
+  posts; see production/QA_REPORT.md §7 for the real/3D table (real archival 196 s = 21.7 %, 3D 317 s = 35.2 %).
+- New: `DocPage` shot (tools/film/shots.py): a scanned page on a dark ground with a rostrum move and highlighter marks
+  drawn on in step with the narration; `tools/doc_marks.py` crops the pages from the Internet Archive scan of the 1819
+  *Report of the proceedings … York … 1818* (public domain) and finds each highlighted phrase from the scan's OCR word
+  boxes; `tools/fetch_documents.sh` re-fetches the originals (not kept in git). Pages: p. 134 (proclamation of
+  8 Jan 1814), p. xiv (glossary: Pemican, Taureau 90 lbs), title page.
+- Replaced: 5 generated "prop document" shots and the order paraphrase graphic (real page), the chapter III background,
+  3 3D post shots (1860 photographs of Hudson's Bay Company posts, LOC), credits page text, Short, sound beds.
+- Facts: the proclamation's wording differs between 1819 printings (FACT_CHECK C4); the film follows the page it shows.
+- Network (this session): archive.org, tile.loc.gov and the Smithsonian bucket answered; the Smithsonian API's shared demo
+  key was rate limited (not worked around); Wikimedia and LAC not requested again.
+- Renderer: chunk signatures do not include gfx code; the credits chunk `.ok` was removed by hand after the text change.
+- Master `delivery/The_Pemmican_War_1080p.mp4` is now v4 (1.6 GB, 15:00.000, −14.1 LUFS); v3 is kept locally as
+  `…_v3.mp4` (and in git history as parts). **v4 is not committed as parts** (each master adds ~1.6 GB to the
+  repository); it is awaiting the owner's go-ahead.
+
 ## Errors and recoveries (render stage)
 - OOM: the furred bison close-up (B1, ~7 GB in Blender) plus two compositor workers exceeded 15 GB; the kernel killed
   B1 and one compositor worker. B1 now renders alone; the chunk renderer uses a process executor so a killed worker
@@ -95,8 +113,9 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
   - Short: captions were hard to read over snow (dark plate added); end-card title was wider than the 1080 px frame.
 
 ## Open issues
-- Final MP4 (1.57 GB) exceeds GitHub's 100 MB file limit and LFS is blocked here: committed as 16 parts; run
-  `sh delivery/join_video.sh` to rebuild and verify it.
+- Final MP4 (1.6 GB) exceeds GitHub's 100 MB file limit and LFS is blocked here: version 3 is committed as 16 parts
+  (`sh delivery/join_video.sh` rebuilds and verifies it); version 4 exists only in this session's container until
+  it is split and pushed or handed over another way.
 - Not done by design: no YouTube upload (needs the channel owner's explicit go-ahead).
 - Recommended before publishing: one human viewing and listening pass of the full film (this production could only
   check sampled frames and measurements, see QA_REPORT §3–4).

@@ -853,11 +853,12 @@ Begin now.
 - "The video need to look realistic not generic."
 - Later: I like how the animations look and I like the composition of the whole video. Only the generic scenes must look more believable. Where there is a 3D scene it may stay, but everything has to look professional.
 - I allowed use of the internet, and I allowed you to use whatever app is best and to improve on anything I said if you know a better way.
+- Latest instruction: the shots must be real, archival, wherever real archive footage or images can be found; only where no real record can be found should realistic reconstructions be made. I also asked whether the video could be published to my channel with all SEO tags, metadata and description (answer: no tool available to the agent can upload a new video; nothing is published without my explicit go-ahead).
 
-### B2. The film that exists now (version 1, delivered)
+### B2. The film that exists now (version 4)
 - Topic chosen: pemmican and the Pemmican War, Red River colony, 1814–1816 ("The Pemmican War").
 - 15:00.0, 1920×1080, 30 fps, H.264 CRF 18, AAC 48 kHz stereo, −14.1 LUFS, −1.3 dBTP. Cold open, five chapters, credits.
-- 110 clips in version 3: about 45% maps and motion graphics (many sit on top of live 3D shots), about 40% original Blender 3D plates, about 15% real archival images (added in versions 2 and 3: 18 clips, 134 s).
+- 114 clips in version 4, measured from the edit list: real archival 31 clips, 196 s (21.7%; of which 10 clips, 45 s, are real pages of an 1819 printed book), original Blender 3D 47 clips, 317 s (35.2%), maps 176 s, graphics and cards 212 s (maps and graphics are often drawn over live 3D shots). History: version 1 was all 3D; version 3 had 18 archival clips, 134 s (14.9%), 3D 40%.
 - Narration: synthetic voice (Kokoro, "af_heart"), disclosed on screen and in the description. Music: original score built from CC0 orchestral samples. Sound effects are synthesized. Mix tested with loudness measurement and a speech-recognition check (about 4% word error, formatting only).
 - Also delivered: vertical Short (58.5 s), 2 thumbnails, English SRT (235 cues), 5 titles, description with sources, chapters, tags, shot plan, asset/licence manifest, fact check with source links, QA report. Nothing was uploaded to YouTube.
 - No AI image or video generation was used at any point.
@@ -880,15 +881,21 @@ Honesty rules used: every image is captioned with what it really is and where/wh
 ### B5b. Version 3 (in progress): Library of Congress, and what the network allowed
 After I changed the environment's network setting, most archives answered. Wikimedia Commons rate-limited the shared server address (HTTP 429), and the tool's permission checker refused a repeat request, so I did not retry. The Library of Congress worked. From it, four more real items were added: a photograph of Red River carts (B. F. Upton, Minnesota, 1867–75), two 1874 Harper's Weekly engravings of the hide trade (Frenzeny & Tavernier), and a 1900s photograph of the nucleus of a bison herd. Each was checked against its "No known restrictions on publication" rights advisory before use.
 
-### B6. What still looks generic (my honest list)
-- Frog Plain scenes (about 85 s): oaks and grass still read as CG.
-- Summer fort (32 s) and winter fort: clean model look.
-- Canoe, dock and rawhide bag macro shots (about 90 s): too clean, no real-world wear or texture.
-- Prairie camp lodges and the cart line: look like an illustration.
+### B5c. Version 4: archival first
+- Real document pages: the five generated "prop" documents (a quill, a desk) were replaced by real pages of an 1819 printed book (Report of the proceedings … York assizes, October 1818, University of Toronto scan on the Internet Archive, public domain): the proclamation of 8 January 1814 with a highlighter drawn on phrase by phrase as the narration says them (positions found from the scan's own OCR word boxes), the glossary page (Taureau: a bag of pemican of raw buffaloe hide, about 90 lbs), and the title page. The printed wording of the proclamation differs between 1819 printings; the film follows the page it shows and says so in its notes.
+- Real photographs: three 1860 photographs of Hudson's Bay Company posts (Fort Vancouver, Fort Colville; Library of Congress, no known restrictions) replaced three 3D fort shots, captioned with their own place and year (not Red River).
+- Searched with no usable result: Smithsonian NMAI (parfleche and Cree objects exist but have no open-licence images), Library of Congress for Red River, pemmican, York boats or camp life, Smithsonian's shared demo API key (rate limited; not worked around).
+- Highlighting, credits and the real-versus-reconstructed table are in the QA report; every real item is credited on screen while shown.
+
+### B6. What still looks generic (my honest list, version 4)
+- Frog Plain scenes and prairie plates (about 116 s with the herd and cart-line plates): oaks and grass still read as CG; there is no 1816 picture of the place to replace them.
+- Canoe, dock and rawhide bag macro shots (about 87 s): too clean, no real-world wear or texture; no open-licence photograph of a pemmican bag or a Plains parfleche was found.
+- Prairie camp (65 s): lodges, drying racks, pounding, berries look like an illustration.
+- Palisaded posts in winter (29 s) and storehouses (21 s).
 - Distant bison are silhouettes that stand still.
 
 ### B7. Ideas still open (not done yet)
-- Real public-domain material specific to this story that is still missing: Peter Rindisbacher's Red River watercolours (1820s), Paul Kane's Métis buffalo hunt paintings (1840s), Frances Anne Hopkins's canoe paintings (LAC C-002771), the 1892 photograph of a pile of bison skulls (rights records disagree), portraits of Selkirk, the Amundsen South Pole photograph.
+- Real public-domain material specific to this story that is still missing (the hosts are Wikimedia Commons and Library and Archives Canada, which rate-limited the shared address or were not requested again): Peter Rindisbacher's Red River watercolours (1820s), Paul Kane's Métis buffalo hunt paintings (1840s), Frances Anne Hopkins's canoe paintings (LAC C-002771), the 1892 photograph of a pile of bison skulls (rights records disagree), portraits of Selkirk, the Amundsen South Pole photograph. More pages of the 1819 report (the Seven Oaks testimony) could carry the battle sequence.
 - Real modern footage (bison herds, prairie wind, river mist) labelled "present-day footage".
 - Real photographic textures and sky maps (public domain / CC0) for the remaining 3D scenes.
 - A consistent "period photograph" finishing look so 3D and real images belong to one film.
