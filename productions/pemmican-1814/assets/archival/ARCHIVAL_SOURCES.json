@@ -359,5 +359,62 @@
   "catalog_title": "Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C.J. Jones",
   "catalog_date": "[between 1900 and 1920]",
   "catalog_artist": ""
+ },
+ "doc_proclamation": {
+  "file": "assets/archival/work/doc_proclamation.jpg",
+  "size": [
+   2078,
+   2674
+  ],
+  "title": "Macdonell's proclamation, 8 January 1814 (as printed in 1819)",
+  "maker": "Lane and Mower, printers, Montreal",
+  "date": "1819",
+  "collection": "Internet Archive (University of Toronto, Thomas Fisher Library copy)",
+  "smithsonian_id": "reportofproceedi00wilc, p. 134",
+  "record_id": "reportofproceedi00wilc",
+  "record_link": "https://archive.org/details/reportofproceedi00wilc/page/n167",
+  "guid": "",
+  "rights": "Public domain (printed 1819); scan by the University of Toronto",
+  "catalog_title": "Report of the proceedings connected with the disputes between the Earl of Selkirk, and the North-West Company, at the assizes, held at York in Upper Canada, October 1818: from minutes taken in court",
+  "catalog_date": "1819",
+  "catalog_artist": "Wilcocke, Samuel Hull, 1766?-1833"
+ },
+ "doc_glossary": {
+  "file": "assets/archival/work/doc_glossary.jpg",
+  "size": [
+   2011,
+   1972
+  ],
+  "title": "Glossary: \"Pemican\" and \"Taureau\", as printed in 1819",
+  "maker": "Lane and Mower, printers, Montreal",
+  "date": "1819",
+  "collection": "Internet Archive (University of Toronto, Thomas Fisher Library copy)",
+  "smithsonian_id": "reportofproceedi00wilc, p. xiv",
+  "record_id": "reportofproceedi00wilc",
+  "record_link": "https://archive.org/details/reportofproceedi00wilc/page/n19",
+  "guid": "",
+  "rights": "Public domain (printed 1819); scan by the University of Toronto",
+  "catalog_title": "Report of the proceedings connected with the disputes between the Earl of Selkirk, and the North-West Company, at the assizes, held at York in Upper Canada, October 1818: from minutes taken in court",
+  "catalog_date": "1819",
+  "catalog_artist": "Wilcocke, Samuel Hull, 1766?-1833"
+ },
+ "doc_title": {
+  "file": "assets/archival/work/doc_title.jpg",
+  "size": [
+   2011,
+   3631
+  ],
+  "title": "Report of the proceedings, York assizes, October 1818 (title page, 1819)",
+  "maker": "Lane and Mower, printers, Montreal",
+  "date": "1819",
+  "collection": "Internet Archive (University of Toronto, Thomas Fisher Library copy)",
+  "smithsonian_id": "reportofproceedi00wilc, title page",
+  "record_id": "reportofproceedi00wilc",
+  "record_link": "https://archive.org/details/reportofproceedi00wilc/page/n6",
+  "guid": "",
+  "rights": "Public domain (printed 1819); scan by the University of Toronto",
+  "catalog_title": "Report of the proceedings connected with the disputes between the Earl of Selkirk, and the North-West Company, at the assizes, held at York in Upper Canada, October 1818: from minutes taken in court",
+  "catalog_date": "1819",
+  "catalog_artist": "Wilcocke, Samuel Hull, 1766?-1833"
  }
 }

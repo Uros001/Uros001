@@ -38,7 +38,7 @@ CHAPTERS
 HOW THIS FILM WAS MADE (please read)
 - Narration is a synthetic voice (Kokoro-82M, open-source TTS). It is not a human recording.
 - All 3D scenes are original Blender reconstructions. They are illustrative, not historical records or photographs: no specific camp, fort or battlefield layout is shown as documented fact.
-- The document on the writing table is a generated prop, not a facsimile. The terms of the 1814 order appear on screen as a paraphrase.
+- The order of 8 January 1814 and the glossary and title pages shown on screen are real pages of an 1819 printed book, *Report of the proceedings connected with the disputes between the Earl of Selkirk and the North-West Company … York, Upper Canada, October 1818* (Montreal: Lane and Mower, 1819; University of Toronto copy, Internet Archive, public domain). The yellow highlighting was added for this film. The printed text of the order differs slightly between 1819 printings; the film follows this one.
 - Paintings and historical photographs: Smithsonian Institution Open Access (CC0). George Catlin's paintings from the upper Missouri, 1832–39, and his Comanche village and Sault Ste. Marie canoe race (Smithsonian American Art Museum); Eadweard Muybridge, "Buffalo gallop", 1884–86 (National Museum of American History); William T. Hornaday and his 1887 bison group, and the National Zoo herd about 1898 (Smithsonian Institution Archives); a National Zoo bison, 2014. Also from the Library of Congress (no known restrictions on publication): B. F. Upton's photograph of Red River carts (Minnesota, 1867–75), two 1874 Harper's Weekly engravings by Frenzeny & Tavernier of the hide trade, and a photograph of the nucleus of a bison herd (1900–20). Each is credited on screen while shown. The paintings show the bison-hunting world of the Plains nations in the 1830s, not Red River in 1814.
 - Maps: Natural Earth (public domain), NASA/NOAA shaded relief (public domain). Boundaries, homelands and routes are approximate and labelled as such.
 - Music: original score built from VSCO 2 Community Edition samples (CC0) by Versilian Studios (versilian-studios.com/vsco-community/); upright piano samples by Simon Dalzell, Ivy Audio. Sound effects synthesized for this film.
@@ -87,5 +87,5 @@ manitoba history, history documentary, lost tribe knowledge
 ## Pinned comment (suggested)
 
 ```
-Sources and how this was made are in the description. The paintings and photographs come from the Smithsonian's open collections; the 3D scenes are reconstructions, and the narration is a synthetic voice. If you know pemmican from your own family or community, we'd love to hear how it was made where you're from.
+Sources and how this was made are in the description. The paintings and photographs come from the Smithsonian's and the Library of Congress's open collections, and the documents from an 1819 book on the Internet Archive; the 3D scenes are reconstructions, and the narration is a synthetic voice. If you know pemmican from your own family or community, we'd love to hear how it was made where you're from.
 ```

@@ -7,7 +7,7 @@ OVERLAYS: (t0, t1, fn(L, t)) drawn on a Skia layer over the graded picture.
 """
 import json, os
 from . import core, gfx, mapseq as MS, text as T
-from .shots import Plate, Func, Black, Archive, Diptych, Sequence
+from .shots import Plate, Func, Black, Archive, Diptych, Sequence, DocPage
 from .core import anchor as A
 
 # ------------------------------------------------------------------ atmosphere presets
@@ -143,6 +143,21 @@ def SEQ(desc, **kw):
     return sh
 
 
+_DOC_CREDIT = {
+    'proclamation': "Macdonell's proclamation, 8 January 1814, as printed in 1819",
+    'glossary': 'Glossary of 1819: "Pemican" and "Taureau"',
+    'title': 'Title page of the 1819 report on the Selkirk trials',
+}
+
+
+def DOC(key, a, b=None, marks=(), desc='', **kw):
+    """A real page from the 1819 Report of the Proceedings (Internet Archive) with highlighter marks; credited on screen."""
+    m = _ARCH['doc_' + key]
+    sh = DocPage(key, a, b, marks, desc=desc or m['title'], source=f"{m['collection']}, {m['smithsonian_id']} (public domain)", **kw)
+    sh.credit = (_DOC_CREDIT[key], 'Internet Archive' + ('  ·  highlighting added' if marks else ''))
+    return sh
+
+
 def F(fn, desc, source='Original motion graphic'):
     return Func(fn, desc=desc, source=source)
 
@@ -152,8 +167,8 @@ def cont(fn, start, total_end):
     return lambda tl, dur, t: fn(t - A(start), A(total_end) - A(start), t)
 
 
-def chapter(n, title, plate=None):
-    return F(gfx.chapter(n, title, plate), f'Chapter card {n}: {title}' + (f' over `{plate}`' if plate else ''))
+def chapter(n, title, plate=None, bg=None):
+    return F(gfx.chapter(n, title, plate, bg), f'Chapter card {n}: {title}' + (f' over `{plate}`' if plate else ' over a real document page' if bg else ''))
 
 
 def tl_view(t0=None):
@@ -165,15 +180,19 @@ CLIPS = [
     # ---------------- cold open
     (0.0, P('dock_D1', s=(1.0, 1.16), c=((0.5, 0.52), (0.47, 0.58)), p=0.07, rack=dict(layer='fg', sigma=(9.0, 0.0), span=(0.05, 0.45)),
              desc='The bag on the landing at dawn: focus pull, slow push-in'), 0),
+    ('P01.1-0.1', DOC('glossary', (0.5, 0.80, 1.5), (0.5, 0.80, 0.78), [('taureau', 1.0, 2.2)],
+                      desc='1819 glossary: "Taureau: a bag of pemican ... made of raw buffaloe hide, weighing usually about 90 lbs"'), 0.6),
     ('P01.2-0.35', P('dock_D2', s=(1.08, 1.16), c=((0.44, 0.5), (0.56, 0.5)), p=0.05, desc='Seam macro: lacing and greased edge'), 0.6),
     ('P02.0-0.45', P('dock_C1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.5)), desc='Northern canoe at the landing'), 0.7),
     ('P02.1-0.15', P('fort_F1', s=(1.0, 1.1), c=((0.5, 0.52), (0.52, 0.5)), dust=SNOW, desc='Palisaded post in winter (Red River colony, illustrative)'), 0.8),
-    ('P02.1+6.5', P('desk_W2', s=(1.04, 1.16), c=((0.55, 0.5), (0.6, 0.48)), p=0.04, flicker=0.025, desc='Quill on a written sheet by candlelight'), 0.6),
+    ('P02.1+6.5', DOC('proclamation', (0.5, 0.5, 1.7), (0.5, 0.31, 0.95), [('take_out', 1.8, 1.6)],
+                      desc='The proclamation of 8 January 1814: "shall take out any provisions"'), 0.6),
     ('P02.1e+0.8', F(gfx.not_move, 'Typographic beat: "Not illegal to eat. Illegal to move."'), 0.5),
     ('P04.0-0.5', P('plain_G3', s=(1.0, 1.07), c=((0.5, 0.5), (0.5, 0.48)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Frog Plain after sunset'), -0.9),
     ('P04.1-0.25', P('plain_G2', s=(1.04, 1.12), c=((0.45, 0.55), (0.55, 0.55)), p=0.12, grade=G_DUSK, desc='Grass close-up, evening', rack=DENOISE_FG), 0.6),
     ('P05.0-0.35', P('dock_D3', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), p=0.08, desc='The bag, low angle, river mist'), 0.8),
-    ('P05.1+2.6', P('camp_K1', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), desc='Pounded meat on a spread hide, stone maul'), 0.7),
+    ('P05.1+2.6', DOC('glossary', (0.5, 0.60, 1.5), (0.5, 0.49, 0.85), [('pemican', 1.2, 2.6)],
+                      desc='1819 glossary: "Pemican: the meat of buffaloes ... dried and pounded, mixed with grease or fat"'), 0.7),
     ('TITLE', F(gfx.title_card, 'Title card'), -1.0),
     # ---------------- I. Meat That Keeps
     ('TITLE.e', F(gfx.water, 'Graphic: fresh meat is about three-quarters water'), -1.0),
@@ -215,7 +234,7 @@ CLIPS = [
     ('P18.1-0.3', F(MS.furs_fuel, 'Map: furs from the north, fuel from bison country'), 0.6),
     ('P19.0-0.45', P('fort_F3', s=(1.06, 1.12), c=((0.5, 0.5), (0.52, 0.5)), desc='A post on the river'), 0.7),
     ('P19.1-0.35', F(cont(MS.two_routes, 'P19.0-0.45', 'CH3'), "Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks"), 0.6),
-    ('CH3', chapter('III', 'The Order', 'desk_W1'), -1.0),
+    ('CH3', chapter('III', 'The Order', bg=DOC('proclamation', (0.5, 0.42, 2.2), (0.5, 0.40, 1.9)).frame), -1.0),
     # ---------------- III. The Order
     ('CH3.e', F(cont(MS.assiniboia_map, 'CH3.e', 'P21.0-0.45'), 'Map: the Selkirk grant (Assiniboia) and Italy at the same scale'), -1.0),
     ('P20.2-0.3', P('plain_G4', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.48)), desc='Open land under a bur oak'), 0.6),
@@ -223,9 +242,16 @@ CLIPS = [
     ('P21.0-0.45', P('fort_F3', s=(1.12, 1.2), c=((0.45, 0.55), (0.5, 0.55)), desc='The post, summer'), 0.7),
     ('P21.1-0.3', AR('catlin_winter_chase', (0.5, 0.56, 0.95), (0.44, 0.62, 0.7)), 0.7),
     ('P21.2-0.3', P('fort_F2', s=(1.0, 1.1), c=((0.5, 0.5), (0.5, 0.48)), dust=SNOW, desc='The gate in winter'), 0.7),
-    ('P22.0-0.45', P('desk_W1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.52)), flicker=0.03, grade=dict(contrast=1.08, sat=1.08, temp=0.75, gamma=0.97),
-                     desc='Writing table by candlelight (generated prop document)'), 0.7),
-    ('P22.1-0.4', F(gfx.order_terms, "Graphic: the order's main terms, paraphrased"), 0.6),
+    ('P22.0-0.45', DOC('proclamation', (0.5, 0.5, 2.3), (0.5, 0.80, 1.0), [('date_given', 1.5, 1.0), ('signed', 2.9, 1.0)], ease='out',
+                       desc='The proclamation, whole page, then the date and the governor\'s signature'), 0.7),
+    ('P22.1-0.4', DOC('proclamation', (0.5, 0.40, 1.2), (0.5, 0.36, 0.92), [('one_year', 0.5, 0.9), ('take_out', 3.0, 1.4)],
+                      desc='"for one twelvemonth from the date hereof"; "shall take out any provisions"'), 0.6),
+    ('P22.2-0.3', DOC('proclamation', (0.62, 0.34, 1.0), (0.60, 0.34, 0.74), [('foods', 0.5, 2.4)],
+                      desc='"either of flesh, fish, grain, or vegetable"'), 0.5),
+    ('P22.3-0.3', DOC('proclamation', (0.5, 0.49, 1.12), (0.5, 0.52, 0.94), [('except', 0.6, 2.0), ('licence', 3.9, 1.3)],
+                      desc='"save and except what may be judged necessary ... obtain a licence"'), 0.5),
+    ('P22.4-0.3', DOC('proclamation', (0.5, 0.64, 1.1), (0.5, 0.66, 1.0), [('forfeited', 0.5, 0.9), ('paid', 2.0, 1.1)],
+                      desc='"shall be forfeited"; "paid for by British bills"'), 0.5),
     ('P23.0-0.45', F(gfx.paper_practice, 'Graphic: on paper vs in practice'), 0.6),
     ('P24.0-0.45', P('fort_F3', s=(1.18, 1.26), c=((0.55, 0.55), (0.6, 0.55)), desc='The post, summer, closer'), 0.6),
     ('P24.1-0.3', F(MS.souris, "Map: the colony to the North West Company post on the Souris"), 0.6),
@@ -250,7 +276,7 @@ CLIPS = [
     ('P32.3-0.3', P('plain_B3', s=(1.15, 1.25), c=((0.55, 0.5), (0.45, 0.5)), p=0.05, desc='Cart line'), 0.7),
     ('P33.0-0.45', P('plain_G3', s=(1.15, 1.2), c=((0.45, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Dusk'), 0.6),
     ('P33.1-0.3', F(MS.fort_william_map, 'Map: Selkirk seizes Fort William, 1816'), 0.6),
-    ('P33.2-0.3', P('desk_W2', s=(1.0, 1.08), c=((0.5, 0.5), (0.45, 0.52)), flicker=0.025, desc='Pen and paper: lawsuits and inquiries'), 0.6),
+    ('P33.2-0.3', DOC('title', (0.5, 0.21, 1.05), (0.5, 0.50, 1.05), desc='Title page of the report on the 1818 York assizes: the lawsuits'), 0.6),
     ('P33.3-0.3', F(gfx.merger, 'Graphic: 1821 merger'), 0.6),
     ('CH5', chapter('V', 'The Last Hunts', 'plain_B2'), -1.0),
     # ---------------- V. The Last Hunts
@@ -280,7 +306,7 @@ CLIPS = [
     ('P41.3-0.3', AR('zoo_bison_2014', (0.5, 0.5, 1.0), (0.52, 0.46, 0.78)), 0.8),
     ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, rack=dict(layer='fg', sigma=(7.0, 0.0), span=(0.1, 0.7)),
                      desc='The bag: focus pull'), 0.9),
-    ('P42.1-0.2', P('desk_W2', s=(1.15, 1.2), c=((0.55, 0.5), (0.55, 0.5)), flicker=0.025, desc='The order'), 0.3),
+    ('P42.1-0.2', DOC('proclamation', (0.5, 0.78, 1.7), (0.5, 0.84, 0.95), [('signed', 0.7, 1.3)], desc='The order: the governor\'s signature'), 0.3),
     ('P42.2-0.2', P('plain_G2', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), grade=G_DUSK, desc='The plain', rack=DENOISE_FG), 0.3),
     ('P42.3-0.2', P('dock_C3b', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Cargo'), 0.3),
     ('P42.4-0.3', P('dock_D4', s=(1.12, 1.0), c=((0.5, 0.5), (0.5, 0.5)), p=0.05, desc='Pull back from the landing'), 0.9),
@@ -315,15 +341,12 @@ def ovl(fn, *args):
 
 def build_overlays():
     o = []
-    o.append(recon(1.0, 8.0, 'Reconstruction  ·  3D'))
+    o.append(recon(1.0, A('P01.1-0.1'), 'Reconstruction  ·  3D'))
     o.append(sup('Red River colony', '8 January 1814', A('P02.1+0.6'), A('P02.1+6.3')))
     o.append(recon(A('P02.1+0.2'), A('P02.1+6.2'), 'Reconstruction'))
-    o.append(recon(A('P02.1+6.7'), A('P02.1e+0.6'), 'Generated prop document'))
     o.append(recon(A('P04.0-0.2'), A('P04.1-0.4'), 'Reconstruction'))
     o.append(recon(A('P12.0-0.2'), A('P12.0+4.0'), 'Reconstruction'))
-    o.append(recon(A('P22.0-0.3'), A('P22.1-0.5'), 'Generated prop document'))
     o.append(sup('Frog Plain', '19 June 1816', A('P04.0+0.6'), A('P04.1-0.4')))
-    o.append(recon(A('P05.1+2.8'), A('P05.1+6.5'), 'Reconstruction'))
     o.append((A('TITLE.e'), A('TITLE.e+4.4'), _d(lambda L, t: T.chapter_label(L, t, A('TITLE.e') + 0.2, 'I', 'Meat That Keeps'),
                                                  'Chapter label: I Meat That Keeps')))
     o.append(lt('Thomas Douglas, Earl of Selkirk', "Hudson's Bay Company shareholder", A('P20.0+1.5'), A('P20.0+8.0')))

@@ -2,6 +2,8 @@
 
   Plate    2.5D move over Blender background/foreground plates (parallax, fog, particles, grade)
   Still    a single image (render or graphic) with a slow move
+  Archive, Diptych, Sequence   archival paintings/photographs (rostrum moves)
+  DocPage  a real scanned document page with highlighter marks
   Func     any callable fn(tl, dur) -> RGB (maps, graphics, cards)
 """
 import os, json, math, functools
@@ -370,6 +372,105 @@ class Sequence(Shot):
             if k > 0:
                 out = out * (1 - k) + _ground() * k
         return out
+
+
+@functools.lru_cache(maxsize=1)
+def _doc_marks():
+    return json.load(open(os.path.join(core.ROOT, 'assets/archival/work/doc_marks.json')))
+
+
+def _doc_view(path, cx, cy, w, tone, lamp):
+    """A scanned page seen through a 16:9 window: centre (cx, cy) in page coords (0..1), window width w as a
+    fraction of the page width. w > 1 shows the page lying on a dark ground (with a soft shadow). Returns the frame
+    and the page-to-frame mapping (scale, ox, oy) in px so highlights can be drawn in frame coordinates."""
+    pyr = _arch_pyr(path)
+    H0, W0 = pyr[0].shape[:2]
+    ow, oh = core.W, core.H
+    ww = w * W0
+    wh = ww * oh / ow
+    cxp, cyp = cx * W0, cy * H0
+    if ww <= W0:
+        cxp = min(max(cxp, ww / 2), W0 - ww / 2)
+    if wh <= H0:
+        cyp = min(max(cyp, wh / 2), H0 - wh / 2)
+    s = ow / ww
+    k = 0
+    while k + 1 < len(pyr) and s * 2 ** (k + 1) <= 1.0:
+        k += 1
+    f = 2 ** k
+    sk = s * f
+    M = np.array([[sk, 0, ow / 2 - sk * cxp / f], [0, sk, oh / 2 - sk * cyp / f]], np.float32)
+    flag = cv2.INTER_CUBIC if sk > 1.0 else cv2.INTER_LINEAR
+    page = cv2.warpAffine(pyr[k], M, (ow, oh), flags=flag, borderMode=cv2.BORDER_REPLICATE).astype(np.float32) / 255.0
+    page = page * np.array(tone, np.float32)
+    yy, xx = np.mgrid[0:oh, 0:ow].astype(np.float32)
+    lx, ly, lo = lamp
+    page = page * (1.0 - lo * np.clip(((xx / ow - lx) / 0.75) ** 2 + ((yy / oh - ly) / 0.8) ** 2, 0, 1))[:, :, None]
+    ox, oy = ow / 2 - s * cxp, oh / 2 - s * cyp
+    if ww > W0 * 0.985 or wh > H0 * 0.985:                           # the page edge is in view: put it on the ground
+        a = cv2.warpAffine(np.ones((pyr[k].shape[0], pyr[k].shape[1]), np.float32), M, (ow, oh), flags=cv2.INTER_LINEAR,
+                           borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+        sh = cv2.GaussianBlur(np.roll(a, (int(oh * 0.012), int(ow * 0.006)), (0, 1)), (0, 0), 14) * 0.6
+        out = _ground() * (1 - sh[:, :, None])
+        out = out * (1 - a[:, :, None]) + page * a[:, :, None]
+    else:
+        out = page
+    return out, (s, ox, oy)
+
+
+_HILITE = np.array([1.0, 0.84, 0.36], np.float32)                  # highlighter ink (multiplied onto the page)
+
+
+class DocPage(Shot):
+    """A real document page (scan) filmed like a rostrum camera, with highlighter marks that draw on.
+
+    key     page name in work/doc_marks.json (file work/doc_<key>.jpg)
+    a, b    framings (cx, cy, w) as for Archive, but w may exceed 1 (the whole page on a dark ground)
+    marks   [(phrase, t0, dur)] or [(phrase, t0, dur, t_off)] phrases of doc_marks.json: the marker runs along the
+            phrase line by line from t0 for dur seconds and fades at t_off (default: stays)
+    """
+
+    def __init__(self, key, a, b=None, marks=(), ease='io', tone=(0.96, 0.90, 0.78), lamp=(0.5, 0.4, 0.38),
+                 grade=None, desc='', source=''):
+        self.key, self.a, self.b, self.marks, self.ease, self.tone, self.lamp, self.grd = key, a, b or a, marks, ease, tone, lamp, grade or {}
+        self.path = os.path.join(core.ROOT, f'assets/archival/work/doc_{key}.jpg')
+        self.desc, self.source = desc, source
+        self.name = f'archive:doc_{key}'
+
+    def frame(self, tl, dur, t):
+        e = _ease(self.ease, seg(tl, 0, dur))
+        cx, cy, w = (lerp(p, q, e) for p, q in zip(self.a, self.b))
+        out, (s, ox, oy) = _doc_view(self.path, cx, cy, w, self.tone, self.lamp)
+        pyr = _arch_pyr(self.path)
+        H0, W0 = pyr[0].shape[:2]
+        pm = _doc_marks()[self.key]
+        ink = np.zeros(out.shape[:2], np.float32)
+        for m in self.marks:
+            name, t0, d = m[:3]
+            t_off = m[3] if len(m) > 3 else None
+            u = ease_io(seg(tl, t0, t0 + d))
+            if t_off is not None:
+                u *= 1.0 - ease_io(seg(tl, t_off, t_off + 0.6)) * 0.85
+            if u <= 0:
+                continue
+            boxes = pm[name]
+            full = ease_io(seg(tl, t0, t0 + d))
+            n = len(boxes)
+            for i, (x0, y0, x1, y1) in enumerate(boxes):
+                f = clamp(full * n - i)                              # this line's share of the stroke
+                if f <= 0:
+                    continue
+                X0, X1 = ox + s * x0 * W0, ox + s * x1 * W0
+                Y0, Y1 = oy + s * y0 * H0, oy + s * y1 * H0
+                h = (Y1 - Y0)
+                Y0, Y1 = Y0 + h * 0.10, Y1 - h * 0.06                # a marker sits on the x-height, not the whole box
+                xe = X0 + (X1 - X0) * f
+                cv2.rectangle(ink, (int(round(X0)), int(round(Y0))), (int(round(xe)), int(round(Y1))),
+                              float(u * 0.8), -1, cv2.LINE_AA)
+        if ink.any():
+            ink = cv2.GaussianBlur(ink, (0, 0), max(1.0, s * 3.0))
+            out = out * (1.0 - ink[:, :, None] * (1.0 - _HILITE)[None, None])     # multiply: print stays black under the ink
+        return core.grade(out, **self.grd) if self.grd else out
 
 
 class Func(Shot):

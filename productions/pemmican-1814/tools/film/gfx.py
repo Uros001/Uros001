@@ -108,9 +108,12 @@ def title_card(tl, dur, t):
     return comp(out, L)
 
 
-def chapter(num, title, plate=None):
+def chapter(num, title, plate=None, bg=None):
     def fn(tl, dur, t):
-        out = bg_live(plate, tl, dur, t, dim=0.42, s=(1.04, 1.1)) if plate else bg_dark(t, 0.14)
+        if bg:                                   # a real document page, dimmed and softened so the title reads
+            out = np.clip(cv2.GaussianBlur(bg(tl, dur, t), (0, 0), 5) * 0.36, 0, 1).astype(np.float32)
+        else:
+            out = bg_live(plate, tl, dur, t, dim=0.42, s=(1.04, 1.1)) if plate else bg_dark(t, 0.14)
         L = Layer()
         T.chapter_card(L, tl, 0.0, dur, num, title)
         return comp(out, L)
@@ -155,7 +158,7 @@ def credits(tl, dur, t):
                     ('', 'sans', 10, INK, 0),
                     ('Narration: synthetic voice (Kokoro-82M, Apache-2.0); not a human recording', 'sans', 22, INK_DIM, 1),
                     ('3D scenes: original Blender reconstructions — illustrative, not historical records', 'sans', 22, INK_DIM, 1),
-                    ('Documents on screen are generated props, not facsimiles', 'sans', 22, INK_DIM, 1),
+                    ('Document pages: an 1819 printed report (Internet Archive, public domain); highlighting added for this film', 'sans', 22, INK_DIM, 1),
                     ('Paintings, engravings and historical photographs: Smithsonian Institution Open Access (CC0)', 'sans', 22, INK_DIM, 1),
                     ('and the Library of Congress (no known restrictions on publication); each is credited when shown', 'sans', 22, INK_DIM, 1)]),
         (7.6, dur, [('Maps: Natural Earth (public domain); relief: NASA/NOAA via basemap (public domain)', 'sans', 22, INK_DIM, 1),

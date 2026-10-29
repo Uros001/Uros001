@@ -141,6 +141,7 @@ def main():
                         catalog_title=rec.get('title', ''), catalog_date=str(rec.get('created_published', [''])[0]),
                         catalog_artist='; '.join(rec.get('contributor_names') or []))
         print(key, im.shape[1], 'x', im.shape[0], rec.get('rights_advisory'))
+    out.update({k: v for k, v in prev.items() if k.startswith('doc_')})        # document pages: written by tools/doc_marks.py
     json.dump(out, open(os.path.join(A, 'ARCHIVAL_SOURCES.json'), 'w'), indent=1, ensure_ascii=False)
     muybridge(os.path.join(A, 'si_tif/SIA-2004-44793.tif'), os.path.join(A, 'work/muybridge_gallop'))
 

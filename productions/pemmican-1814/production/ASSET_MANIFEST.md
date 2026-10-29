@@ -1,7 +1,8 @@
 # Asset & Licence Manifest — The Pemmican War
 
 Every element in the final film is listed here with its origin and licence. Archival paintings and photographs
-come from Smithsonian Institution Open Access and are all marked CC0 (section 1b). Nothing in the film is stock
+come from Smithsonian Institution Open Access (CC0) and the Library of Congress (no known restrictions); three document
+pages come from a printed book of 1819 on the Internet Archive (section 1b). Nothing in the film is stock
 footage or AI-generated image/video. No paid service was used.
 
 ## 1. Picture
@@ -13,7 +14,7 @@ footage or AI-generated image/video. No paid service was used.
 | Blender (software) | Renderer | blender.org, `bpy` from PyPI | GPL (tool only; output is not GPL-encumbered) |
 | Leaf atlas (`assets/textures/leaf_atlas.png`) | Four bur-oak-style leaves with alpha, used as leaf cards on the oaks | `tools/make_leaf_tex.py` (procedural) | Original work |
 | Blender scene files (`assets/blender/blend/*.blend`, 12 variants) | Saved scenes as built by the `scene_*.py` scripts, with named cameras for every shot; generated fur and grass curves are left out to keep files under 100 MB (re-run the scene script to regenerate them) | `assets/blender/make_blends.py` | Original work |
-| Paper texture (`assets/textures/paper_scribble.png`) | Aged sheet with illegible generated pen strokes | `tools/make_paper_tex.py` | Original work. **Not a facsimile** of any document |
+| Paper texture (`assets/textures/paper_scribble.png`) | Aged sheet with illegible generated pen strokes (used on the Blender writing-table props, which no longer appear in the film since version 4) | `tools/make_paper_tex.py` | Original work. **Not a facsimile** of any document |
 | Map vectors (`assets/maps/ne_*.geojson`) | Land, lakes, rivers, coastlines, borders, graticules, Italy outline | Natural Earth (naturalearthdata.com, via GitHub mirror) | Public domain (`assets/maps/NE_LICENSE.txt`) |
 | Shaded relief | Global relief raster, re-tinted | `shadedrelief.jpg` from the matplotlib basemap data package (NASA/NOAA derived) | Public domain |
 | Map styling and routes (`tools/film/maps.py`, `mapseq.py`) | Projection, routes, markers, Assiniboia outline (approximate, scaled to ~300,000 km²) | Original code; waypoints approximate (see FACT_CHECK) | Original work |
@@ -56,6 +57,9 @@ Wikimedia Commons answered with HTTP 429 (too many requests from this shared add
 | `tavernier_slaughtered_for_the_hide` | Slaughtered for the hide / Frenzeny & Tavernier., [New York] : [Harper & Brothers], 1874. | Frenzeny & Tavernier | Library of Congress · [LC-DIG-ds-12612](https://www.loc.gov/item/2019630603/) | LOC rights advisory: No known restrictions on publication. |
 | `tavernier_curing_hides_and_bones` | Sketches in the far West--curing hides and bones / Frenzeny & Tavernier., 1874. | Frenzeny & Tavernier | Library of Congress · [LC-USZ62-100250](https://www.loc.gov/item/90710851/) | LOC rights advisory: No known restrictions on publication. |
 | `nyzp_nucleus_of_the_buffalo_herd` | Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C.J. Jones, [between 1900 and 1920] | Photographer unknown | Library of Congress · [LC-DIG-ds-16139](https://www.loc.gov/item/2023632555/) | LOC rights advisory: No known restrictions on publication. |
+| `doc_proclamation` | Macdonell's proclamation, 8 January 1814, as printed on p. 134 of the *Report of the proceedings … at the assizes, held at York in Upper Canada, October 1818* (Montreal: Lane and Mower, 1819); cropped from the page scan | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n167](https://archive.org/details/reportofproceedi00wilc/page/n167); scan from the University of Toronto (Thomas Fisher Library) | Public domain (printed 1819) |
+| `doc_glossary` | Glossary of the same book, p. xiv ("Pemican", "Taureau"); cropped | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n19](https://archive.org/details/reportofproceedi00wilc/page/n19) | Public domain (printed 1819) |
+| `doc_title` | Title page of the same book; cropped | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n6](https://archive.org/details/reportofproceedi00wilc/page/n6) | Public domain (printed 1819) |
 
 How they are used:
 - Catlin painted on the upper Missouri in 1832 among Plains nations including the Assiniboine, Plains Cree and
@@ -71,6 +75,13 @@ How they are used:
 - The two Harper's Weekly engravings of 1874 (Frenzeny & Tavernier) illustrate the line about the 1870s hide trade.
 - "Nucleus of the buffalo herd" (album of the New York Zoological Park, 1900–1920) is used for "Bison have slowly come
   back"; the caption repeats the record's title and date only.
+- The three pages of the 1819 book replace the earlier generated "prop" documents. Page 134 is the real printed text of
+  the proclamation, filmed like a rostrum camera over the page; yellow highlighter marks are drawn on as each term is
+  spoken, located with the scan's own OCR word boxes (`tools/doc_marks.py`), and the credit says "highlighting added".
+  It is a printing of the order in a trial report, not the manuscript; the wording differs slightly between 1819
+  printings (see `research/FACT_CHECK.md`, C4). The glossary page is shown with the 90 lb bag and the definition of
+  pemican; the title page with the lawsuits. Original page images are fetched from archive.org (`tools/fetch_documents.sh`)
+  and are not kept in git; the cropped working copies and the highlight positions (`doc_marks.json`) are.
 
 ## 2. Sound
 
@@ -100,6 +111,6 @@ kokoro-onnx + onnxruntime, sherpa-onnx, FFmpeg 6.1.1 (libx264, AAC). No paid API
 - Every archival painting or photograph carries an on-screen credit (title, date, maker, collection) while shown.
 - "Reconstruction" tags on the first appearance of 3D scenes; end credits state that 3D scenes are illustrative,
   not historical records, and that the narration is a synthetic voice.
-- The order of 8 January 1814 is shown only as a *paraphrase of its main terms*, labelled as such; the desk prop
-  sheet is generated and illegible.
+- The order of 8 January 1814 is shown as the real printed page of 1819 (credited, "highlighting added"). No generated
+  document is shown any more; the former "Generated prop document" tags and the paraphrase graphic were removed in version 4.
 - Map captions mark approximate boundaries, homelands, routes and positions.
