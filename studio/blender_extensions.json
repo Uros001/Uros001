@@ -1,0 +1,92 @@
+{
+ "sun_position": {
+  "version": "4.4.0",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:b8a83c2ff04fad709687de51065faf6add52e824ec06fef22b4a95fe98955856/add-on-sun-position-v4.4.0.zip",
+  "hash": "sha256:b8a83c2ff04fad709687de51065faf6add52e824ec06fef22b4a95fe98955856",
+  "website": "https://extensions.blender.org/add-ons/sun-position/"
+ },
+ "sapling_tree_gen": {
+  "version": "0.3.7",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:27a478262e1c86612a9c3daffe7f4dce2802f5bc2294033462e5adc6d9c0080f/add-on-sapling-tree-gen-v0.3.7.zip",
+  "hash": "sha256:27a478262e1c86612a9c3daffe7f4dce2802f5bc2294033462e5adc6d9c0080f",
+  "website": "https://extensions.blender.org/add-ons/sapling-tree-gen/"
+ },
+ "modular_tree": {
+  "version": "5.6.0",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:698cf57c2fc9e695d241aea7d232493f48027b5930538e6062a6e9e320c9044a/add-on-modular-tree-v5.6.0-linux-x64.zip",
+  "hash": "sha256:698cf57c2fc9e695d241aea7d232493f48027b5930538e6062a6e9e320c9044a",
+  "website": "https://extensions.blender.org/add-ons/modular-tree/"
+ },
+ "antlandscape": {
+  "version": "0.2.0",
+  "license": [
+   "SPDX:GPL-2.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:230571bc14c50952f3af99b70fdb365cf0cee503382975dc38149407a5a4c8c0/add-on-antlandscape-v0.2.0.zip",
+  "hash": "sha256:230571bc14c50952f3af99b70fdb365cf0cee503382975dc38149407a5a4c8c0",
+  "website": "https://extensions.blender.org/add-ons/antlandscape/"
+ },
+ "erosion_terrain_extension": {
+  "version": "1.0.0",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:286a6033d576511099b35f1ac48dc6a35c0854c087d26199a9f9769ad8d04b2d/add-on-erosion-terrain-extension-v1.0.0.zip",
+  "hash": "sha256:286a6033d576511099b35f1ac48dc6a35c0854c087d26199a9f9769ad8d04b2d",
+  "website": "https://extensions.blender.org/add-ons/erosion-terrain-extension/"
+ },
+ "srtm_terrain_importer": {
+  "version": "1.0.5",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:72299885ab8bb5623bd3643e4b918cf2e29c56fe6010ead0f55e61796498f454/add-on-srtm-terrain-importer-v1.0.5.zip",
+  "hash": "sha256:72299885ab8bb5623bd3643e4b918cf2e29c56fe6010ead0f55e61796498f454",
+  "website": "https://extensions.blender.org/add-ons/srtm-terrain-importer/"
+ },
+ "weathered_board": {
+  "version": "0.1.6",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:f10365b7ec31699b3f720522edd6cc01a054e1776097e3766a1623166735ba3c/add-on-weathered-board-v0.1.6.zip",
+  "hash": "sha256:f10365b7ec31699b3f720522edd6cc01a054e1776097e3766a1623166735ba3c",
+  "website": "https://extensions.blender.org/add-ons/weathered-board/"
+ },
+ "scatter_objects": {
+  "version": "0.2.0",
+  "license": [
+   "SPDX:GPL-2.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:3fda488f56523b799e3937c802119f1da986391e193cb4d443177e6e132c764b/add-on-scatter-objects-v0.2.0.zip",
+  "hash": "sha256:3fda488f56523b799e3937c802119f1da986391e193cb4d443177e6e132c764b",
+  "website": "https://extensions.blender.org/add-ons/scatter-objects/"
+ },
+ "extra_mesh_objects": {
+  "version": "0.4.1",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:c85ce4bb2820d5af26b4dad66bf1a0fdeb4bfeffc668c5e4f098f1e416ed434b/add-on-extra-mesh-objects-v0.4.1.zip",
+  "hash": "sha256:c85ce4bb2820d5af26b4dad66bf1a0fdeb4bfeffc668c5e4f098f1e416ed434b",
+  "website": "https://extensions.blender.org/add-ons/extra-mesh-objects/"
+ },
+ "dynamic_sky": {
+  "version": "1.1.0",
+  "license": [
+   "SPDX:GPL-3.0-or-later"
+  ],
+  "url": "https://extensions.blender.org/download/sha256:49793b3c6ca8363c6b40e8e6d6024b048b6f0816bca3e6d19733ec74f70a45ef/add-on-dynamic-sky-v1.1.0.zip",
+  "hash": "sha256:49793b3c6ca8363c6b40e8e6d6024b048b6f0816bca3e6d19733ec74f70a45ef",
+  "website": "https://extensions.blender.org/add-ons/dynamic-sky/"
+ }
+}
