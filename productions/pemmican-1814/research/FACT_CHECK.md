@@ -116,6 +116,24 @@
 - The bison collapse is not presented as a simple villain story. Multiple causes (long-term trade pressure, commercial hide hunting, drought, cattle disease, policy) are acknowledged in compressed form.
 - The narration does not speak *for* any community. Pemmican is described as living knowledge that is still practised.
 
+## J. Archival images: what each caption claims (added with the archival pass)
+
+All from Smithsonian Institution Open Access catalogue records (media marked CC0); IDs in `assets/archival/ARCHIVAL_SOURCES.json`.
+
+| # | On-screen credit / use | Status | Source |
+|---|---|---|---|
+| J1 | George Catlin, *Buffalo Chase, Mouth of the Yellowstone*, 1832–33; *Buffalo Herds Crossing the Upper Missouri*, 1832; *Buffalo Chase in Winter, Indians on Snowshoes*, 1832–33; *Buffalo Bulls Fighting in Running Season, Upper Missouri*, 1837–39 — used for the bison hunt and the size of the herds, never for the 1870s hide trade | ✅ | SAAM records 1985.66.415, .400, .416, .424 (titles and dates as catalogued) |
+| J2 | Catlin, *Sioux Encamped on the Upper Missouri, Dressing Buffalo Meat and Robes*, 1832 — camp with meat drying on racks | ✅ | SAAM 1985.66.377 |
+| J3 | Catlin, *Tow-ée-ka-wet, a Cree Woman*, 1832, and *Assiniboine Woman and Child*, 1832 — under "Plains peoples, among them the Cree and the Assiniboine" | ✅ | SAAM 1985.66.178, .181 (catalogue spells "Assiniboin"; the film uses the current spelling) |
+| J4 | Catlin, *Comanche Village, Women Dressing Robes and Drying Meat*, 1834–35 — under "Most of that work was done by women"; the caption names a Comanche village (southern plains), as an example of the shared practice, not of the northern peoples | ✅ | SAAM 1985.66.346 |
+| J5 | Catlin, *Canoe Race near Sault Ste. Marie*, 1836–37 — under the fur-trade canoe industry; Sault Ste. Marie lies on the Montreal–Lake Superior canoe route | ✅ | SAAM 1985.66.434 |
+| J6 | Catlin, *Fort Union, Mouth of the Yellowstone River*, 1832 — a fur-trade post (American Fur Company) with lodges around it, shown when the narration introduces the Métis and the fur-trade world; not presented as a North West Company or Red River post | ✅ | SAAM 1985.66.388 |
+| J7 | Eadweard Muybridge, *Buffalo gallop*, Animal Locomotion, 1884–86, made in Philadelphia; the sheet has 24 lateral views; 8 consecutive views are animated | ✅ | NMAH record 1855833 (catalog 3856.0665, maker number 1160) |
+| J8 | Photograph of William T. Hornaday in the model and taxidermy shop, 1884–87 | ✅ | SIA record (MNH-3687) |
+| J9 | "Group of Bisons or American Buffaloes … Collected and Mounted by W.T. Hornaday, 1886–87", U.S. National Museum, photographed 1887 — under Hornaday's 1889 count | ✅ | SIA RU 95, SIA_000095_B43_F01_005 (record notes quoted) |
+| J10 | Bison cow "May" and calf, National Zoological Park, c. 1898 (cow born at the park 2 Nov 1890) — under "Bison have slowly come back" | ✅ | SIA RU 95, SIA_000095_B46_F13_014 |
+| J11 | American bison, Smithsonian's National Zoo, 2014 — present-day animal, labelled with its year | ✅ | NZP image NZP-20141105-008CPM |
+
 ## I. Primary and further reading (for the video description)
 - Canadian Encyclopedia: "Pemmican"; "Pemmican Proclamation"; "Battle of Seven Oaks"; "Cuthbert Grant"
 - Dictionary of Canadian Biography: "MACDONELL, MILES"

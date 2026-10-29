@@ -169,6 +169,16 @@ def caption(L, t, t0, t1, txt, x=960, y=1010, size=20):
     L.text(txt, x, y, font('sans', size, 400), INK_DIM, a, align='center', tracking=0.6, shadow=0.8)
 
 
+def credit(L, t, t0, t1, title, line2, x=1840, y=1000):
+    """Credit for an archival image, bottom right: title and date, then maker and collection."""
+    a = fade_window(t, t0, t1, 0.8, 0.6)
+    if a <= 0:
+        return
+    L.gradient_rect(1100, y - 70, 820, 150, [(0, DARK, 0.0), (0.6, DARK, 0.32 * a), (1, DARK, 0.4 * a)], vertical=False)
+    L.text(title, x, y, font('serif_i', 25, 500), INK, a * 0.95, align='right', shadow=0.8)
+    L.text(line2.upper(), x, y + 32, font('sans', 14, 600), INK_DIM, a * 0.9, align='right', tracking=2.4, shadow=0.8)
+
+
 def chapter_label(L, t, t0, num, title, dur=4.2):
     a = fade_window(t, t0, t0 + dur, 0.9, 0.9)
     if a <= 0:

@@ -219,6 +219,159 @@ class Still(Shot):
         return core.grade(out, **self.grd) if self.grd else out
 
 
+@functools.lru_cache(maxsize=6)
+def _arch_pyr(path):
+    """uint8 RGB image pyramid (full size down to ~1600 px) for archival stills."""
+    im = cv2.imread(path, cv2.IMREAD_COLOR)
+    if im is None:
+        raise FileNotFoundError(path)
+    pyr = [np.ascontiguousarray(im[:, :, ::-1])]
+    while max(pyr[-1].shape[:2]) > 1600:
+        pyr.append(cv2.pyrDown(pyr[-1]))
+    return pyr
+
+
+def _arch_view(path, cx, cy, w, out_w, out_h):
+    """The window of width w (fraction of image width, 16:9 or out aspect) centred at (cx, cy) in normalized
+    image coords, resampled to out_w x out_h. The window is kept inside the image (no mirrored edges)."""
+    pyr = _arch_pyr(path)
+    H0, W0 = pyr[0].shape[:2]
+    w = min(w, H0 * out_w / out_h / W0)
+    ww, wh = w * W0, w * W0 * out_h / out_w
+    cxp = min(max(cx * W0, ww / 2), W0 - ww / 2)
+    cyp = min(max(cy * H0, wh / 2), H0 - wh / 2)
+    s = out_w / ww
+    k = 0
+    while k + 1 < len(pyr) and s * 2 ** (k + 1) <= 1.0:
+        k += 1
+    f = 2 ** k
+    sk = s * f
+    M = np.array([[sk, 0, out_w / 2 - sk * cxp / f], [0, sk, out_h / 2 - sk * cyp / f]], np.float32)
+    out = cv2.warpAffine(pyr[k], M, (out_w, out_h), flags=cv2.INTER_CUBIC if sk > 1.0 else cv2.INTER_LINEAR,
+                         borderMode=cv2.BORDER_REPLICATE)
+    return out.astype(np.float32) / 255.0
+
+
+def _mono(img, amount, tone=(1.0, 0.97, 0.9)):
+    if not amount:
+        return img
+    y = (img @ core._LUM.T)
+    return img * (1 - amount) + y * np.array(tone, np.float32) * amount
+
+
+class Archive(Shot):
+    """Archival painting or photograph filmed like a rostrum camera: an eased move between two framings.
+
+    a, b  framings (cx, cy, w): centre in normalized image coords and the width of the frame window as a
+          fraction of the image width. The window never leaves the image.
+    mono  0..1 desaturation (photographs); grade: core.grade kwargs.
+    """
+
+    def __init__(self, path, a=(0.5, 0.5, 1.0), b=None, ease='io', mono=0.0, grade=None, desc='', source=''):
+        self.path, self.a, self.b, self.ease, self.mono, self.grd = path, a, b or a, ease, mono, grade or {}
+        self.desc, self.source = desc, source
+        self.name = 'archive:' + os.path.basename(path)
+
+    def frame(self, tl, dur, t):
+        e = _ease(self.ease, seg(tl, 0, dur))
+        cx, cy, w = (lerp(p, q, e) for p, q in zip(self.a, self.b))
+        out = _mono(_arch_view(self.path, cx, cy, w, core.W, core.H), self.mono)
+        return core.grade(out, **self.grd) if self.grd else out
+
+
+@functools.lru_cache(maxsize=4)
+def _ground(seed=3):
+    """Dark, faintly textured ground for prints and portraits (like a museum wall or a mount board)."""
+    rng = np.random.default_rng(seed)
+    n = cv2.resize(rng.normal(0, 1, (core.H // 8, core.W // 8)).astype(np.float32), (core.W, core.H),
+                   interpolation=cv2.INTER_CUBIC)
+    n = cv2.GaussianBlur(n, (0, 0), 6) * 0.012
+    yy, xx = np.mgrid[0:core.H, 0:core.W].astype(np.float32)
+    v = 1.0 - 0.35 * (((xx / core.W - 0.5) * 1.3) ** 2 + ((yy / core.H - 0.5) * 1.6) ** 2)
+    base = np.array(core.hexc('#17140f'), np.float32)
+    return np.clip(base[None, None] * v[:, :, None] + n[:, :, None], 0, 1).astype(np.float32)
+
+
+def _fit(path, box_h):
+    """Whole image resized so its height is box_h px (float RGB)."""
+    pyr = _arch_pyr(path)
+    k = 0
+    while k + 1 < len(pyr) and pyr[k + 1].shape[0] >= box_h:
+        k += 1
+    im = pyr[k]
+    w = int(round(im.shape[1] * box_h / im.shape[0]))
+    return cv2.resize(im, (w, int(box_h)), interpolation=cv2.INTER_AREA).astype(np.float32) / 255.0
+
+
+def _place(dst, img, cx, cy, shadow=0.55):
+    """Paste img centred at (cx, cy) px with a soft drop shadow."""
+    h, w = img.shape[:2]
+    x0, y0 = int(round(cx - w / 2)), int(round(cy - h / 2))
+    sh = np.zeros(dst.shape[:2], np.float32)
+    sh[max(0, y0 + 10):y0 + h + 10, max(0, x0 + 6):x0 + w + 6] = 1.0
+    sh = cv2.GaussianBlur(sh, (0, 0), 14) * shadow
+    dst = dst * (1 - sh[:, :, None])
+    ya, yb, xa, xb = max(0, y0), min(dst.shape[0], y0 + h), max(0, x0), min(dst.shape[1], x0 + w)
+    dst[ya:yb, xa:xb] = img[ya - y0:yb - y0, xa - x0:xb - x0]
+    return dst
+
+
+class Diptych(Shot):
+    """Two portraits side by side on a dark ground with a slow push; captions drawn under each."""
+
+    def __init__(self, paths, captions, zoom=(1.0, 1.05), desc='', source=''):
+        self.paths, self.captions, self.zoom, self.desc, self.source = paths, captions, zoom, desc, source
+        self.name = 'archive:diptych'
+
+    def frame(self, tl, dur, t):
+        from . import text as T
+        e = ease_io(seg(tl, 0, dur))
+        z = lerp(self.zoom[0], self.zoom[1], e)
+        out = _ground().copy()
+        box = core.H * 0.70 * z
+        for i, p in enumerate(self.paths):
+            img = _fit(p, box)
+            out = _place(out, img, core.W * (0.32 + 0.36 * i), core.H * 0.45)
+        L = T.Layer()
+        for i, (l1, l2) in enumerate(self.captions):
+            x = 1920 * (0.32 + 0.36 * i)
+            a = T.fade_window(tl, 0.6 + 0.5 * i, dur + 1, 0.8, 0.1)
+            L.text(l1, x, 1080 * 0.45 + 1080 * 0.35 * z + 58, T.font('serif_i', 30, 500), T.INK, a, align='center', shadow=0.6)
+            L.text(l2.upper(), x, 1080 * 0.45 + 1080 * 0.35 * z + 92, T.font('sans', 15, 600), T.INK_DIM, a,
+                   align='center', tracking=2.5, shadow=0.6)
+        return core.over(out, L.rgba())
+
+
+class Sequence(Shot):
+    """Animated photographic sequence (Muybridge) shown as a mounted print on a dark ground.
+
+    frames  list of image paths played in a loop at fps; zoom: print scale over the shot;
+    fade    (u0, u1): the print fades out over this part of the shot (normalized time).
+    """
+
+    def __init__(self, frames, fps=10.0, height=0.5, zoom=(1.0, 1.06), fade=None, mono=0.0, desc='', source=''):
+        self.frames, self.fps, self.height, self.zoom, self.fade, self.mono = frames, fps, height, zoom, fade, mono
+        self.desc, self.source = desc, source
+        self.name = 'archive:sequence'
+
+    def frame(self, tl, dur, t):
+        e = ease_io(seg(tl, 0, dur))
+        z = lerp(self.zoom[0], self.zoom[1], e)
+        i = int(math.floor(max(tl, 0.0) * self.fps)) % len(self.frames)
+        h = int(core.H * self.height * z)
+        img = _mono(_fit(self.frames[i], h), self.mono)
+        m = int(round(h * 0.045))                                   # cream paper margin of the print
+        card = np.empty((img.shape[0] + 2 * m, img.shape[1] + 2 * m, 3), np.float32)
+        card[:] = np.array(core.hexc('#e9e1cf'), np.float32)
+        card[m:-m, m:-m] = img
+        out = _place(_ground().copy(), card, core.W / 2, core.H * 0.47)
+        if self.fade:
+            k = ease_io(seg(tl / max(dur, 1e-6), *self.fade))
+            if k > 0:
+                out = out * (1 - k) + _ground() * k
+        return out
+
+
 class Func(Shot):
     def __init__(self, fn, desc='', source=''):
         self.fn, self.desc, self.source = fn, desc, source

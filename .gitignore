@@ -18,3 +18,6 @@ productions/*/delivery/*.log
 productions/*/delivery/.chunk_plates_*.json
 productions/*/delivery/picture.mp4
 productions/*/delivery/*_1080p.mp4
+productions/*/assets/archival/si/
+productions/*/assets/archival/si_tif/
+productions/*/delivery/The_Pemmican_War_1080p_v2.mp4

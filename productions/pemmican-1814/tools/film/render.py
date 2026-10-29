@@ -7,7 +7,7 @@
 Video is rendered in chunks by parallel workers, each piping RGB frames into its own x264 encoder,
 then the chunks are concatenated without re-encoding.
 """
-import os, sys, math, bisect, argparse, subprocess, time, json
+import os, sys, math, bisect, argparse, subprocess, time, json, hashlib
 import numpy as np
 import cv2
 
@@ -116,6 +116,35 @@ def _encoder(path, w, h, fps, crf, preset='medium'):
     return subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
 
+def _safe(v):
+    """JSON-able, address-free description of a shot attribute (for chunk signatures)."""
+    if isinstance(v, (str, int, bool)) or v is None:
+        return v
+    if isinstance(v, float):
+        return round(v, 4)
+    if isinstance(v, (list, tuple)):
+        return [_safe(x) for x in v[:64]]
+    if isinstance(v, dict):
+        return {str(k): _safe(x) for k, x in sorted(v.items(), key=lambda kv: str(kv[0]))}
+    if isinstance(v, np.ndarray):
+        return ['array', list(v.shape)]
+    if callable(v):
+        return getattr(v, '__qualname__', type(v).__name__)
+    return type(v).__name__
+
+
+def chunk_signature(film, a, b):
+    """Hash of everything in the edit that can reach frames a..b: the clips around them (timing, transition,
+    shot type and parameters) and the overlays. A finished chunk whose signature changed is re-rendered."""
+    fps = film.core.FPS
+    t0, t1 = a / fps - 1.5, b / fps + 1.5
+    clips = [[round(c['start'], 3), round(c['end'], 3), c['xfade'], type(c['shot']).__name__,
+              {k: _safe(v) for k, v in vars(c['shot']).items() if not k.startswith('_')}]
+             for c in film.clips if c['end'] >= t0 and c['start'] <= t1]
+    ovs = [[round(o0, 3), round(o1, 3), getattr(fn, 'desc', '')] for o0, o1, fn in film.ovs if o1 >= t0 and o0 <= t1]
+    return hashlib.sha1(json.dumps([clips, ovs], sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
 def _claim(path):
     """Atomically claim a chunk via path.lock (holding the worker PID) so several render processes can share
     the chunk list; a lock whose owner is gone is taken over."""
@@ -140,7 +169,7 @@ def _claim(path):
 
 
 def _work(args):
-    f0, f1, path, scale, crf = args
+    f0, f1, path, scale, crf, sig = args
     if os.path.exists(path + '.ok') or not _claim(path):
         return path + '.skip', 0, 1.0          # done or being rendered by another process
     try:
@@ -154,7 +183,7 @@ def _work(args):
         if enc.wait() != 0:
             raise RuntimeError(f'encoder failed for {path}')
         dt = time.time() - t
-        open(path + '.ok', 'w').write(f'{f1 - f0} {dt:.1f}\n')
+        open(path + '.ok', 'w').write(f'{f1 - f0} {dt:.1f}\n{sig}\n')
     finally:
         os.remove(path + '.lock')
     return path, f1 - f0, dt
@@ -177,10 +206,11 @@ def _plan(chunk):
     return cp
 
 
-def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, pending=None, redo=None):
+def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, pending=None, redo=None, stamp=False):
     import multiprocessing as mp
     from concurrent.futures import ProcessPoolExecutor, as_completed
-    core = _setup(scale)[0]
+    film = Film(scale)
+    core = film.core
     fps = core.FPS
     n_total = int(round(core.timing()['total'] * fps))
     f0 = int(round(t_from * fps))
@@ -194,6 +224,22 @@ def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, p
     if pending:
         skip = {k for k, v in cp.items() if v & pending}
         print(f'{len(skip)} chunks wait for pending plates', flush=True)
+    # invalidate finished chunks whose edit changed (signature stored in the .ok file); --stamp records the
+    # current signature in .ok files written before signatures existed
+    sigs = {(a, b): chunk_signature(film, a, b) for (a, b) in cp}
+    for (a, b), sg in sigs.items():
+        p = os.path.join(out + '.parts', f'{a:06d}_{b:06d}.mp4')
+        if not os.path.exists(p + '.ok'):
+            continue
+        lines = open(p + '.ok').read().split()
+        if len(lines) >= 3 and lines[2] != sg:
+            os.remove(p + '.ok')
+            print(f'  edit changed in chunk {a}-{b}', flush=True)
+        elif len(lines) < 3 and stamp:
+            open(p + '.ok', 'a').write(sg + '\n')
+    if stamp:
+        print('signatures stamped', flush=True)
+        return
     # invalidate finished chunks whose plates were re-rendered after the chunk was encoded,
     # or that use plates whose compositing settings changed since (--redo)
     pdir = os.path.join(core.ROOT, 'renders/plates')
@@ -217,7 +263,7 @@ def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, p
         p = os.path.join(tmp, f'{a:06d}_{b:06d}.mp4')
         if os.path.exists(p) and os.path.getsize(p) > 1000 and os.path.exists(p + '.ok'):
             continue
-        jobs.append((a, b, p, scale, crf))
+        jobs.append((a, b, p, scale, crf, sigs.get((a, b), '')))
     print(f'{len(jobs)} chunks to render ({f1 - f0} frames total range)', flush=True)
     t = time.time()
     # an executor (unlike Pool) fails fast if a worker is killed, e.g. by the OOM killer; finished chunks are kept
@@ -283,11 +329,12 @@ if __name__ == '__main__':
     ap.add_argument('--chunk', type=int, default=600)
     ap.add_argument('--pending', default='', help='comma-separated plate names not final yet: skip chunks that use them')
     ap.add_argument('--redo', default='', help='comma-separated plate names whose finished chunks must be re-rendered')
+    ap.add_argument('--stamp', action='store_true', help='record edit signatures in finished chunks that have none')
     a = ap.parse_args()
     if a.mode == 'video':
         pend = set(x for x in a.pending.split(',') if x)
         redo = set(x for x in a.redo.split(',') if x)
-        video(a.out, a.workers, a.scale, a.t_from, a.t_to, a.crf, a.chunk, pend or None, redo or None)
+        video(a.out, a.workers, a.scale, a.t_from, a.t_to, a.crf, a.chunk, pend or None, redo or None, a.stamp)
     elif a.mode == 'stills':
         stills(a.out, a.times, a.scale)
     elif a.mode == 'sheet':

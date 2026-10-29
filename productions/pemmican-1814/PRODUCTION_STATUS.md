@@ -33,7 +33,8 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
 
 ## Decisions
 - Voice: Kokoro `af_heart`; speed 0.82 (~165 wpm while speaking). Whisper WER ≈ 4% (formatting only).
-- No AI-generated imagery. All visuals: original Blender reconstructions, Natural Earth maps, original graphics.
+- No AI-generated imagery. Visuals: Smithsonian CC0 paintings and photographs (v2), original Blender
+  reconstructions, Natural Earth maps, original graphics.
 - **User feedback (mid-production): "The video needs to look realistic, not generic."** Response:
   - Bison: lofted anatomy reworked (hump, low head, beard), dense hair-curve fur (200k strands per prototype); herd shots re-framed as backlit telephoto wildlife shots (B1 100 mm, B2 135 mm sunset).
   - Trees: leaf-card canopies from a generated oak-leaf atlas (250k cards), straighter, thicker trunks with root flare.
@@ -44,6 +45,23 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
   - Graphics moved onto the live moving 3D shots instead of black backgrounds; two long maps split with live shots.
   - Fixed square sun glow (HDR clamp before the fog blur).
 - Ration line corrected: "roughly two weeks of food" conflicted with the 2 lb/day figure, so P16 was re-voiced and the timing re-solved.
+
+## Archival pass (v2) — "realistic, with real images and scenes"
+- Network policy still blocks Wikimedia, LOC, archive.org, Pexels and similar; the Smithsonian Open Access bucket
+  (`smithsonian-open-access.s3-us-west-2.amazonaws.com`) is reachable. Its catalogue was searched (SAAM, SIA,
+  NMAH, NZP, NMAI, NAA, NMNH) for CC0 items; 15 images were chosen (see production/ASSET_MANIFEST.md §1b,
+  research/FACT_CHECK.md §J).
+- All 3D bison shots were replaced with real material: Catlin's 1832–39 hunt and herd paintings, Muybridge's
+  1884–86 photographs of a galloping bison (animated from 8 consecutive views), Hornaday and his 1887 bison group,
+  zoo bison about 1898 and in 2014. Catlin's camp (meat drying), a Cree woman and an Assiniboine woman (1832),
+  the Comanche village (women's work), the Sault Ste. Marie canoe race and Fort Union (1832) replace other 3D or
+  generic shots. The bag, cutaway diagrams, maps and Frog Plain stay 3D/graphic (no authentic imagery exists).
+- New shot types in tools/film/shots.py: `Archive` (rostrum-camera move kept inside the image), `Diptych`
+  (portraits), `Sequence` (Muybridge print); on-screen credits for every archival image (edl.archive_credits).
+- Sound: archival shots get place beds (wind, water, room) instead of graphic whooshes; hoofbeats under the
+  Muybridge loop; bison calls under the herd paintings.
+- Renderer: each finished chunk now stores a signature of the edit around it, so only chunks whose edit changed
+  are re-rendered (`--stamp` recorded signatures for chunks rendered before).
 
 ## Errors and recoveries (render stage)
 - OOM: the furred bison close-up (B1, ~7 GB in Blender) plus two compositor workers exceeded 15 GB; the kernel killed

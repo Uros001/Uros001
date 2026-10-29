@@ -5,8 +5,9 @@ the next clip's start. xfade > 0 dissolves into the clip over that many seconds,
 a negative xfade dips through black for |xfade| seconds.
 OVERLAYS: (t0, t1, fn(L, t)) drawn on a Skia layer over the graded picture.
 """
+import json, os
 from . import core, gfx, mapseq as MS, text as T
-from .shots import Plate, Func, Black
+from .shots import Plate, Func, Black, Archive, Diptych, Sequence
 from .core import anchor as A
 
 # ------------------------------------------------------------------ atmosphere presets
@@ -101,6 +102,47 @@ def P(name, s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), **kw):
     return Plate(name, s=s, c=c, **d)
 
 
+# ------------------------------------------------------------------ archival images (Smithsonian Open Access, CC0)
+_ARCH = json.load(open(os.path.join(core.ROOT, 'assets/archival/ARCHIVAL_SOURCES.json')))
+G_ARCH = dict(sat=0.86, contrast=1.04, temp=0.12)            # paintings sit with the film's muted palette
+
+
+def _credit_lines(key):
+    m = _ARCH[key]
+    if m['maker'].startswith('Photographer') or m['maker'] in m['collection'] or m['collection'] in m['maker']:
+        who = m['maker'] if m['collection'] in m['maker'] else m['collection']
+    else:
+        who = f"{m['maker']}  ·  {m['collection']}"
+    return f"{m['title']}, {m['date']}", who
+
+
+def AR(key, a, b=None, desc='', detail=False, **kw):
+    """Archival still with a rostrum move (see shots.Archive); credited on screen automatically."""
+    m = _ARCH[key]
+    kw.setdefault('grade', G_ARCH if m['maker'] == 'George Catlin' else {})
+    sh = Archive(os.path.join(core.ROOT, m['file']), a, b, desc=desc or f"{m['maker']}: {m['title']} ({m['date']})",
+                 source=f"{m['collection']}, {m['smithsonian_id']} (CC0)", **kw)
+    l1, l2 = _credit_lines(key)
+    sh.credit = (l1 + '  (detail)' if detail else l1, l2)
+    return sh
+
+
+def DIP(k1, k2, desc):
+    sh = Diptych([os.path.join(core.ROOT, _ARCH[k]['file']) for k in (k1, k2)],
+                 [(f"{_ARCH[k]['title']}, {_ARCH[k]['date']}", f"{_ARCH[k]['maker']}") for k in (k1, k2)],
+                 desc=desc, source='Smithsonian American Art Museum (CC0)')
+    sh.credit = (None, 'Smithsonian American Art Museum')
+    return sh
+
+
+def SEQ(desc, **kw):
+    d = os.path.join(core.ROOT, 'assets/archival/work/muybridge_gallop')
+    sh = Sequence([os.path.join(d, f) for f in sorted(os.listdir(d)) if f.endswith('.png')], desc=desc,
+                  source='Smithsonian, Muybridge "Buffalo gallop" (CC0), frames 9-16 of 24', **kw)
+    sh.credit = _credit_lines('muybridge_gallop_sheet')
+    return sh
+
+
 def F(fn, desc, source='Original motion graphic'):
     return Func(fn, desc=desc, source=source)
 
@@ -135,17 +177,18 @@ CLIPS = [
     ('TITLE', F(gfx.title_card, 'Title card'), -1.0),
     # ---------------- I. Meat That Keeps
     ('TITLE.e', F(gfx.water, 'Graphic: fresh meat is about three-quarters water'), -1.0),
-    ('P06.2-0.3', P('plain_B1', s=(1.04, 1.12), c=((0.42, 0.5), (0.58, 0.5)), p=0.05, desc='Bison herd on the northern plains (reconstruction)'), 0.6),
-    ('P06.3-0.3', P('camp_R1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.5)), desc='Plains camp with drying racks'), 0.6),
+    ('P06.2-0.3', AR('catlin_yellowstone_chase', (0.5, 0.56, 0.94), (0.4, 0.66, 0.6)), 0.6),
+    ('P06.3-0.3', AR('catlin_sioux_camp', (0.5, 0.6, 0.92), (0.26, 0.62, 0.56)), 0.6),
     ('P07.0-0.45', P('dock_C2', s=(1.04, 1.12), c=((0.45, 0.5), (0.55, 0.5)), desc='Canoe from water level'), 0.6),
-    ('P07.2-0.3', F(MS.plains_peoples, 'Map: Cree and Assiniboine lands where they met the fur trade'), 0.7),
+    ('P07.1-0.2', DIP('catlin_cree_woman', 'catlin_assiniboine_woman', 'Portraits painted by George Catlin in 1832: a Cree woman; an Assiniboine woman and child'), 0.6),
+    ('P07.2+3.5', F(MS.plains_peoples, 'Map: Cree and Assiniboine lands where they met the fur trade'), 0.7),
     ('P07.3-0.3', F(gfx.word_card, 'Word card: pimîhkân (Cree)'), 0.6),
     ('P08.0-0.25', P('camp_R2', s=(1.0, 1.12), c=((0.5, 0.45), (0.5, 0.52)), p=0.08, desc='Thin-cut meat drying on a rack'), 0.6),
     ('P08.1-0.3', P('camp_K1', s=(1.14, 1.24), c=((0.5, 0.5), (0.47, 0.5)), p=0.05, desc='Pounding on a spread hide'), 0.5),
     ('P08.2-0.3', P('camp_K2', s=(1.0, 1.1), c=((0.5, 0.55), (0.5, 0.5)), dust=EMBERS, flicker=0.04, desc='Rendering fat in a trade kettle'), 0.5),
     ('P08.3-0.3', P('camp_K3', s=(1.02, 1.12), c=((0.5, 0.5), (0.5, 0.48)), p=0.05, desc='Dried berries in a wooden bowl'), 0.5),
     ('P08.4-0.3', P('dock_D2', s=(1.2, 1.28), c=((0.6, 0.45), (0.48, 0.5)), p=0.05, desc='Laced seam of a rawhide bag'), 0.6),
-    ('P09.0-0.45', P('camp_R3', s=(1.0, 1.08), c=((0.48, 0.5), (0.53, 0.5)), desc='Camp: hide frame, racks and lodges'), 0.7),
+    ('P09.0-0.45', AR('catlin_comanche_village', (0.6, 0.6, 0.78), (0.78, 0.68, 0.42), desc='Women dressing robes and drying meat (Catlin, 1834–35)'), 0.7),
     ('P10.0-0.45', F(gfx.steps, 'Graphic: what each step does'), 0.6),
     ('P10.2-0.3', F(gfx.ratio, 'Graphic: 5–6 lb fresh meat to 1 lb dried'), 0.5),
     ('P11.0-0.3', F(gfx.energy, 'Graphic: energy per gram, fat vs protein'), 0.5),
@@ -155,7 +198,7 @@ CLIPS = [
     ('P12.3-0.3', P('dock_C3b', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), desc='Bags and bales loaded in the canoe'), 0.6),
     ('CH2', chapter('II', 'The Canoe Road', 'dock_C2'), -1.0),
     # ---------------- II. The Canoe Road
-    ('CH2.e', P('dock_C2', s=(1.12, 1.2), c=((0.6, 0.5), (0.45, 0.5)), p=0.06, desc='Canoe, low side angle'), -1.0),
+    ('CH2.e', AR('catlin_canoe_race', (0.5, 0.58, 0.95), (0.42, 0.66, 0.6)), -1.0),
     ('P14.0-0.5', F(MS.canoe_road, 'Map: the North West Company canoe road, Montreal to Athabasca'), 0.7),
     ('P15.0-0.4', P('dock_C1', s=(1.1, 1.2), c=((0.45, 0.5), (0.55, 0.52)), desc='Canoe at the landing, mist'), 0.7),
     ('P15.2-0.3', F(gfx.cargo, 'Graphic: food versus cargo in one load'), 0.5),
@@ -163,11 +206,11 @@ CLIPS = [
     ('P16.0-0.45', F(gfx.ration, 'Graphic: about 2 lb a day'), 0.6),
     ('P16.2-0.3', F(MS.depots, 'Map: plains provisioning and depots on the route'), 0.6),
     ('P16.4-0.3', F(gfx.depot_math, 'Graphic: four 90-lb bags per canoe'), 0.6),
-    ('P17.0-0.45', P('fort_F3', s=(1.0, 1.08), c=((0.5, 0.5), (0.48, 0.5)), desc='A trading post on the river in summer'), 0.7),
+    ('P17.0-0.45', AR('catlin_fort_union', (0.5, 0.55, 0.96), (0.5, 0.6, 0.62)), 0.7),
     ('P17.1-0.3', F(MS.metis_rivers, 'Map: Métis communities on the Red and Assiniboine'), 0.6),
     ('P17.2-0.3', P('plain_B3', s=(1.0, 1.1), c=((0.42, 0.5), (0.55, 0.5)), p=0.05, desc='A line of Red River carts on the plains'), 0.7),
     ('P17.3-0.3', P('store_S1', s=(1.12, 1.2), c=((0.42, 0.55), (0.38, 0.55)), desc='Bags stacked at a post'), 0.6),
-    ('P18.0-0.45', P('plain_B1', s=(1.15, 1.25), c=((0.55, 0.52), (0.45, 0.52)), p=0.05, desc='Bison herd, closer'), 0.7),
+    ('P18.0-0.45', AR('catlin_herds_crossing', (0.5, 0.62, 0.96), (0.44, 0.72, 0.6)), 0.7),
     ('P18.1-0.3', F(MS.furs_fuel, 'Map: furs from the north, fuel from bison country'), 0.6),
     ('P19.0-0.45', P('fort_F3', s=(1.06, 1.12), c=((0.5, 0.5), (0.52, 0.5)), desc='A post on the river'), 0.7),
     ('P19.1-0.35', F(cont(MS.two_routes, 'P19.0-0.45', 'CH3'), "Map: Hudson's Bay Company by sea vs North West Company by canoe; zoom to the Forks"), 0.6),
@@ -177,7 +220,7 @@ CLIPS = [
     ('P20.2-0.3', P('plain_G4', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.48)), desc='Open land under a bur oak'), 0.6),
     ('P20.3-0.35', F(cont(MS.assiniboia_map, 'CH3.e', 'P21.0-0.45'), 'Map: Assiniboia, the Forks'), 0.6),
     ('P21.0-0.45', P('fort_F3', s=(1.12, 1.2), c=((0.45, 0.55), (0.5, 0.55)), desc='The post, summer'), 0.7),
-    ('P21.1-0.3', P('camp_R3b', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks at dusk'), 0.7),
+    ('P21.1-0.3', AR('catlin_winter_chase', (0.5, 0.56, 0.95), (0.44, 0.62, 0.7)), 0.7),
     ('P21.2-0.3', P('fort_F2', s=(1.0, 1.1), c=((0.5, 0.5), (0.5, 0.48)), dust=SNOW, desc='The gate in winter'), 0.7),
     ('P22.0-0.45', P('desk_W1', s=(1.0, 1.08), c=((0.5, 0.5), (0.52, 0.52)), flicker=0.03, grade=dict(contrast=1.08, sat=1.08, temp=0.75, gamma=0.97),
                      desc='Writing table by candlelight (generated prop document)'), 0.7),
@@ -215,20 +258,21 @@ CLIPS = [
     ('P34.3-0.3', F(MS.globe_pole, "Globe: pemmican to the South Pole with Amundsen's party, 1911"), 0.7),
     ('P35.0-0.45', P('dock_D3', s=(1.12, 1.2), c=((0.5, 0.52), (0.5, 0.5)), p=0.08, desc='The bag in the mist'), 0.8),
     ('P36.0-0.45', P('dock_D5', s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), p=0.06, desc='The bag, side angle'), 0.7),
-    ('P36.1-0.3', P('plain_G1', s=(1.18, 1.26), c=((0.5, 0.5), (0.55, 0.5)), desc='The open plain'), 0.6),
-    ('P36.2-0.3', P('plain_B1', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), desc='The herd'), 0.7),
-    ('P37.0-0.45', P('plain_B1', s=(1.06, 1.0), c=((0.5, 0.5), (0.5, 0.5)), desc='The herd, pulling back'), 0.4),
+    ('P36.1-0.3', AR('muybridge_gallop_sheet', (0.5, 0.5, 0.72), (0.5, 0.56, 0.4), mono=0.4, desc='Muybridge\'s mounted sheet of 24 views of a galloping bison'), 0.6),
+    ('P36.2-0.3', SEQ('Muybridge\'s bison in motion: eight consecutive views played as a loop, fading out', fps=10.0, fade=(0.72, 1.0), mono=0.4), 0.6),
+    ('P37.0-0.45', AR('catlin_bulls_running_season', (0.42, 0.62, 0.55), (0.5, 0.55, 0.98)), 0.6),
     ('P37.2-0.3', P('camp_R3b', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks at dusk'), 0.7),
     ('P37.3-0.3', P('plain_B2', s=(1.0, 1.05), c=((0.5, 0.5), (0.5, 0.5)), p=0.02, dust=None, grade=dict(G_GOLD, temp=0.5),
                     fade_parts=(A('P37.3+1.5'), A('P38.1+2.0')), desc='Bison on the ridge, disappearing one by one'), 0.8),
     ('P38.2-0.3', P('plain_G3', s=(1.0, 1.05), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty plain at dusk'), 0.8),
-    ('P39.0-0.45', P('plain_B2', s=(1.05, 1.1), c=((0.5, 0.5), (0.5, 0.5)), p=0.02, dust=None, fg_alpha=0.0, grade=dict(G_DUSK, temp=0.2),
-                     desc='The empty ridge'), 0.8),
+    ('P39.0-0.45', AR('hornaday_shop', (0.6, 0.5, 0.82), (0.64, 0.45, 0.62), mono=1.0), 0.8),
+    ('P39.1-0.3', AR('hornaday_bison_group', (0.5, 0.56, 0.86), (0.52, 0.6, 0.66), mono=1.0, grade=dict(gain=0.82, contrast=1.06)), 0.6),
     ('P40.0-0.6', P('camp_R3b', s=(1.1, 1.16), c=((0.45, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Empty racks'), 0.8),
-    ('P41.0-0.45', P('plain_B1', s=(1.2, 1.28), c=((0.45, 0.5), (0.55, 0.5)), p=0.05, desc='Bison returning'), 0.8),
+    ('P41.0-0.45', AR('zoo_cow_and_calf', (0.5, 0.38, 0.92), (0.5, 0.4, 0.7), mono=1.0), 0.8),
     ('P41.1-0.3', P('camp_K3', s=(1.12, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Berries for pemmican'), 0.6),
     ('P41.1+4.0', P('camp_K1', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.5)), desc='Pounded meat on a hide'), 0.6),
     ('P41.2-0.3', F(MS.treaty_map, 'Map: the Buffalo Treaty, 2014'), 0.7),
+    ('P41.3-0.3', AR('zoo_bison_2014', (0.5, 0.5, 1.0), (0.52, 0.46, 0.78)), 0.8),
     ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, rack=dict(layer='fg', sigma=(7.0, 0.0), span=(0.1, 0.7)),
                      desc='The bag: focus pull'), 0.9),
     ('P42.1-0.2', P('desk_W2', s=(1.15, 1.2), c=((0.55, 0.5), (0.55, 0.5)), flicker=0.025, desc='The order'), 0.3),
@@ -277,7 +321,6 @@ def build_overlays():
     o.append(recon(A('P05.1+2.8'), A('P05.1+6.5'), 'Reconstruction'))
     o.append((A('TITLE.e'), A('TITLE.e+4.4'), _d(lambda L, t: T.chapter_label(L, t, A('TITLE.e') + 0.2, 'I', 'Meat That Keeps'),
                                                  'Chapter label: I Meat That Keeps')))
-    o.append(recon(A('P06.2'), A('P06.2+4.0'), 'Reconstruction'))
     o.append(lt('Thomas Douglas, Earl of Selkirk', "Hudson's Bay Company shareholder", A('P20.0+1.5'), A('P20.0+8.0')))
     o.append(lt('Miles Macdonell', 'Governor of the Red River colony', A('P21.0+0.3'), A('P21.0e+0.2')))
     o.append(lt('Robert Semple', 'Governor from the fall of 1815', A('P26.1+1.0'), A('P26.1e+0.3')))
@@ -292,17 +335,35 @@ def build_overlays():
     o.append(lt('William T. Hornaday', 'Naturalist', A('P39.0+0.4'), A('P39.0e')))
     o.append((A('P39.1-0.1'), A('P40.0-0.8'), ovl(gfx.ov_counter, A('P39.1-0.1'), A('P40.0-0.8'), 1091,
                                                    'bison left in North America', "Hornaday's 1889 count")))
-    o.append(recon(A('P41.0'), A('P41.0e'), 'Reconstruction'))
     return o
 
 
 OVERLAYS = None
 
 
+def archive_credits():
+    """An on-screen credit (title, date / maker, collection) for every archival clip, while it is on screen."""
+    spans = []
+    for c in resolved():
+        cr = getattr(c['shot'], 'credit', None)
+        if not cr or not cr[0]:
+            continue
+        if spans and spans[-1][2] == cr and c['start'] - spans[-1][1] < 0.5:     # same image across a cut: one credit
+            spans[-1][1] = c['end']
+        else:
+            spans.append([c['start'], c['end'], cr])
+    o = []
+    for s0, s1, cr in spans:
+        t0, t1 = s0 + 0.6, s1 - 0.35
+        o.append((t0, t1, _d(lambda L, t, t0=t0, t1=t1, cr=cr: T.credit(L, t, t0, t1, cr[0], cr[1]),
+                             f'Credit: {cr[0]} — {cr[1]}')))
+    return o
+
+
 def overlays():
     global OVERLAYS
     if OVERLAYS is None:
-        OVERLAYS = build_overlays()
+        OVERLAYS = build_overlays() + archive_credits()
     return OVERLAYS
 
 

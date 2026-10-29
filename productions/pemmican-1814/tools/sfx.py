@@ -9,7 +9,7 @@ from scipy import signal
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from film import core, edl
-from film.shots import Plate
+from film.shots import Plate, Archive, Diptych, Sequence
 
 SR = 48000
 rng = np.random.default_rng(11)
@@ -122,9 +122,29 @@ def bed(kind, n):
     return np.tile(b, (reps, 1))[off:off + n]
 
 
+ARCH_BEDS = {           # archival stills: the place in the picture, kept low under the narration
+    'catlin_canoe_race': [('water', -8), ('wind', -16)],
+    'catlin_herds_crossing': [('water', -9), ('wind', -12)],
+    'hornaday_shop': [('room', -9)],
+    'hornaday_bison_group': [('room', -9)],
+    'muybridge_gallop_sheet': [('room', -12)],
+    'zoo_cow_and_calf': [('wind', -13)],
+    'zoo_bison_2014': [('wind', -12)],
+}
+ARCH_BISON = ('catlin_yellowstone_chase', 'catlin_herds_crossing', 'catlin_bulls_running_season', 'catlin_winter_chase')
+
+
+def arch_key(sh):
+    return os.path.basename(getattr(sh, 'path', '')).rsplit('.', 1)[0]
+
+
 def clip_beds(c):
     """[(kind, gain dB)] for a clip, from its shot."""
     sh = c['shot']
+    if isinstance(sh, Archive):
+        return ARCH_BEDS.get(arch_key(sh), [('wind', -10)])
+    if isinstance(sh, (Diptych, Sequence)):
+        return [('room', -12), ('wind', -22)]
     if isinstance(sh, Plate):
         n = sh.name
         fam, cam = n.split('_')[0], n.split('_')[1]
@@ -288,7 +308,16 @@ def main():
                     dd = rng.uniform(1.0, 2.6)
                     place(fx, squeal(dd), t, -24 + rng.uniform(-4, 0), rng.uniform(-0.5, 0.5))
                     t += rng.uniform(0.4, 1.4)
-        else:
+        elif isinstance(sh, Sequence):
+            # muffled hoofbeats in the rhythm of the looping gallop (one stride per loop of frames)
+            stride = len(sh.frames) / sh.fps
+            t = c['start'] + 0.2
+            while t < c['end'] - 0.4:
+                for off in (0.0, 0.11, 0.29, 0.4):
+                    if t + off < c['end'] - 0.3:
+                        place(fx, thud(), t + off, -27 + rng.uniform(-2, 1), rng.uniform(-0.15, 0.15))
+                t += stride
+        elif not isinstance(sh, (Archive, Diptych)):
             if c['start'] > 1:
                 place(fx, whoosh(0.9, True), c['start'] - 0.45, -24)
     # natural cues: loons over the misty river (cold open, ending), bison grunts under herd shots
@@ -296,7 +325,7 @@ def main():
         place(fx, loon(rng.uniform(2.6, 3.4)), t0, -22, rng.uniform(-0.6, 0.6))
     for c in clips:
         sh = c['shot']
-        if isinstance(sh, Plate) and sh.name == 'plain_B1':
+        if (isinstance(sh, Plate) and sh.name == 'plain_B1') or (isinstance(sh, Archive) and arch_key(sh) in ARCH_BISON):
             t = c['start'] + rng.uniform(0.8, 2.0)
             while t < c['end'] - 1.0:
                 place(fx, bison_grunt(rng.uniform(0.6, 1.1)), t, -24 + rng.uniform(-5, 0), rng.uniform(-0.5, 0.5))

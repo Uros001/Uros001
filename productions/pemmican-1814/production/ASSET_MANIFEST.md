@@ -1,7 +1,8 @@
 # Asset & Licence Manifest — The Pemmican War
 
-Every element in the final film is listed here with its origin and licence. Nothing in the film is
-third-party footage, stock imagery, archival imagery, or AI-generated image/video. No paid service was used.
+Every element in the final film is listed here with its origin and licence. Archival paintings and photographs
+come from Smithsonian Institution Open Access and are all marked CC0 (section 1b). Nothing in the film is stock
+footage or AI-generated image/video. No paid service was used.
 
 ## 1. Picture
 
@@ -20,6 +21,42 @@ third-party footage, stock imagery, archival imagery, or AI-generated image/vide
 | Fonts | Cormorant Garamond, Oswald | Google Fonts repositories on GitHub | SIL Open Font License 1.1 (`assets/fonts/*_OFL.txt`) |
 | Fonts | Inter, EB Garamond | Ubuntu packages (`fonts-inter`, `fonts-ebgaramond`) | SIL Open Font License 1.1 |
 
+## 1b. Archival images (Smithsonian Institution Open Access, CC0)
+
+Found in the Smithsonian's Open Access catalogue and fetched from its public bucket (`smithsonian-open-access`,
+`media/<unit>/<id>`), because the usual archive and stock sites are blocked from this environment. Only items whose
+media are marked CC0 were used. Each one is credited on screen (title, date, maker, collection) while it is shown;
+`tools/fetch_archival.sh` and `tools/prep_archival.py` rebuild the working copies; full records are in
+`assets/archival/ARCHIVAL_SOURCES.json`.
+
+| Key (file in `assets/archival/work/`) | Title, date | Maker | Collection · Smithsonian ID | Licence |
+|---|---|---|---|---|
+| `catlin_yellowstone_chase` | Buffalo Chase, Mouth of the Yellowstone, 1832-1833 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.415_1](https://americanart.si.edu/collections/search/artwork/?id=3956) | CC0 |
+| `catlin_sioux_camp` | Sioux Encamped on the Upper Missouri, Dressing Buffalo Meat and Robes, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.377_1](https://americanart.si.edu/collections/search/artwork/?id=4367) | CC0 |
+| `catlin_comanche_village` | Comanche Village, Women Dressing Robes and Drying Meat, 1834-1835 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.346_1](https://americanart.si.edu/collections/search/artwork/?id=4011) | CC0 |
+| `catlin_cree_woman` | Tow-ée-ka-wet, a Cree Woman, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.178_1](https://americanart.si.edu/collections/search/artwork/?id=4418) | CC0 |
+| `catlin_assiniboine_woman` | Assiniboin Woman and Child, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.181_1](https://americanart.si.edu/collections/search/artwork/?id=3878) | CC0 |
+| `catlin_canoe_race` | Canoe Race Near Sault Ste. Marie, 1836-1837 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.434_1](https://americanart.si.edu/collections/search/artwork/?id=3983) | CC0 |
+| `catlin_fort_union` | Fort Union, Mouth of the Yellowstone River, 2000 Miles above St. Louis, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.388_1](https://americanart.si.edu/collections/search/artwork/?id=4063) | CC0 |
+| `catlin_herds_crossing` | Buffalo Herds Crossing the Upper Missouri, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.400_1](https://americanart.si.edu/collections/search/artwork/?id=3964) | CC0 |
+| `catlin_winter_chase` | Buffalo Chase in Winter, Indians on Snowshoes, 1832-1833 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.416_1](https://americanart.si.edu/collections/search/artwork/?id=3958) | CC0 |
+| `catlin_bulls_running_season` | Buffalo Bulls Fighting in Running Season, Upper Missouri, 1837-1839 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.424_1](https://americanart.si.edu/collections/search/artwork/?id=3950) | CC0 |
+| `muybridge_gallop_sheet` | Buffalo gallop, 1884-1886 | Eadweard Muybridge | National Museum of American History · SIA-2004-44793 | CC0 |
+| `hornaday_shop` | William T. Hornaday in the Model and Taxidermy Shop, 1884; 1884-1887 | Photographer unknown | Smithsonian Institution Archives · [SIA-MNH-3687-000004](https://siarchives.si.edu/collections/siris_arc_389419) | CC0 |
+| `hornaday_bison_group` | Mammals Exhibit, South Hall, United States National Museum - American Bison Group, 1887 | Photographer unknown | Smithsonian Institution Archives · [SIA-SIA_000095_B43_F01_005](https://siarchives.si.edu/collections/siris_arc_401885) | CC0 |
+| `zoo_cow_and_calf` | National Zoological Park, American Bison Cow "May" and Calf, 1898; Between 1898 and 1900 (copied 1929) | Photographer unknown | Smithsonian Institution Archives · [SIA-SIA_000095_B46_F13_014](https://siarchives.si.edu/collections/siris_arc_399497) | CC0 |
+| `zoo_bison_2014` | American Bison, 2014:11:05 | Smithsonian's National Zoo | Smithsonian · [NZP-20141105-008CPM](https://nationalzoo.si.edu/object/nzp_NZP-20141105-008CPM) | CC0 |
+
+How they are used:
+- Catlin painted on the upper Missouri in 1832 among Plains nations including the Assiniboine, Plains Cree and
+  Blackfoot/Kainai, the economy the film describes. His paintings illustrate the bison hunt, camps drying meat, the
+  people and the fur-trade post world; captions give the place and year, so none stands in for Red River in 1814.
+  The Comanche village (southern plains, 1834–35) is used only for the line about women's work, with its own caption.
+- Muybridge's sheet (24 views, made in Philadelphia, 1884–86, per the NMAH record) is shown as the mounted print; 8 consecutive views
+  (rows 3–4) are played as a loop to show the animal moving, inside a frame, and named as his photographs.
+- The Hornaday photographs and zoo photographs are shown as what they are (1884–87 workshop, the 1887 museum group,
+  the National Zoo herd about 1898, a zoo bison in 2014). None is used for the 1870s commercial hunt.
+
 ## 2. Sound
 
 | Asset | What it is | Origin | Licence / status |
@@ -37,14 +74,15 @@ kokoro-onnx + onnxruntime, sherpa-onnx, FFmpeg 6.1.1 (libx264, AAC). No paid API
 
 ## 4. Things deliberately *not* used
 
-- **Historical artworks, photographs and documents.** Archival hosts were unreachable from this environment
-  (network policy), and unverified mirrors were not used. No painting, photo or manuscript appears, so none is
-  mislabelled.
+- **Historical documents and manuscripts.** No manuscript or document facsimile appears (the order is shown as a
+  labelled paraphrase). Archival images other than the Smithsonian CC0 items above were not reachable (network
+  policy) and unverified mirrors were not used.
 - **AI image/video generation.** Not used. (The Higgsfield account had 0 credits, and no purchase was made.)
 - **Third-party music or sound libraries** other than the CC0 VSCO samples above.
 
 ## 5. On-screen disclosures
 
+- Every archival painting or photograph carries an on-screen credit (title, date, maker, collection) while shown.
 - "Reconstruction" tags on the first appearance of 3D scenes; end credits state that 3D scenes are illustrative,
   not historical records, and that the narration is a synthetic voice.
 - The order of 8 January 1814 is shown only as a *paraphrase of its main terms*, labelled as such; the desk prop
