@@ -35,7 +35,7 @@ def srt_cues(path):
             h, m, rest = s.split(':')
             s2, ms = rest.split(',')
             return int(h) * 3600 + int(m) * 60 + int(s2) + int(ms) / 1000
-        out.append((sec(a), sec(z), ' '.join(lines[2:])))
+        out.append((sec(a), sec(z), '\n'.join(lines[2:])))
     return out
 
 

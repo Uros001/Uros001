@@ -986,7 +986,7 @@ def palisade(batch, pts, height=4.0, r=0.14, seed=0, gaps=(), mat_index=0):
             h = height * rnd.uniform(0.94, 1.06)
             rr = r * rnd.uniform(0.85, 1.1)
             lean = Vector((rnd.uniform(-0.03, 0.03), rnd.uniform(-0.03, 0.03), 0))
-            batch.tube([p + Vector((0, 0, -0.3)), p + Vector((0, 0, h * 0.5)) + lean * 0.5, p + Vector((0, 0, h)) + lean,
+            batch.tube([p + Vector((0, 0, -1.0)), p + Vector((0, 0, h * 0.5)) + lean * 0.5, p + Vector((0, 0, h)) + lean,
                         p + Vector((0, 0, h + rr * 2.2)) + lean], [rr, rr * 0.98, rr * 0.95, 0.01], segs=7)
 
 

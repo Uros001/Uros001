@@ -102,7 +102,9 @@ def build(variant='plain'):
     horn = P.mat_principled('Horn', '#1a1714', 0.4)
 
     T.mesh('Land_near', -160, 160, -80, 260, 160, 170, ground)
-    bpy.ops.mesh.primitive_plane_add(size=1.0, location=(0, 0, -1.0))
+    # far ground sheet: below the lowest hollow of the rolling terrain (TH dips to about -4 m), or it floods
+    # the hollows like a pale lake over the grass
+    bpy.ops.mesh.primitive_plane_add(size=1.0, location=(0, 0, -1.0 if T is TP else -6.0))
     fo = bpy.context.active_object; fo.name = 'Land_far'; fo.scale = (6000, 6000, 1); fo.data.materials.append(far)
     T2 = P.Terrain(amp=14.0, scale=0.003, seed=9, amp2=2.0, scale2=0.015)
     T2.mesh('Land_hills', -1500, 1500, 250, 2500, 120, 90, far)

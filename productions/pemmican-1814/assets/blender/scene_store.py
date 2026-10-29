@@ -87,8 +87,9 @@ def build(variant='default'):
         keg(f'Keg{k}', (-0.4 + k * 0.48, -1.9, 0.04), keg_m, hoop)
     for k in range(3):
         SD.make_bale(f'Bale{k}', (0.7, 0.5, 0.35), (1.6 + k * 0.1, 1.6 - k * 0.55, 0.22), (0, 0, rnd.uniform(-0.2, 0.2)), canvas, rope)
-    # a lantern-free interior: bounce fill from the doorway
-    lib.area_light('DoorBounce', (W / 2 - 0.2, 0.1, 1.0), (0, -90, 0), 1.4, 40.0, color=(1.0, 0.9, 0.75), size_y=2.0)
+    # a lantern-free interior: daylight bounced off the sunlit floor and door frame, facing into the room
+    # (rotation (0, 90, 0) emits toward -x; the first version faced out of the door and lit nothing inside)
+    lib.area_light('DoorBounce', (W / 2 - 0.3, 0.1, 1.1), (0, 90, 0), 1.4, 260.0, color=(1.0, 0.88, 0.72), size_y=2.0)
     for o in scn.objects:
         o['layer'] = 'bg' if o.name in ('Walls', 'Floor', 'Outside') else 'fg'
     return scn, bpy.data.objects.get('SBag4')

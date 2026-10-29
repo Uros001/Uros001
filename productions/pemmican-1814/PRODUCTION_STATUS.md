@@ -52,5 +52,15 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
 - Container restart mid-render (all background processes lost, files kept): resumed with `run_final.sh`; finished
   chunks (`delivery/picture.mp4.parts/*.ok`) are reused, stale ones (plates newer than the chunk) re-rendered.
 
+- Realism defects found while checking the realism-pass renders (all fixed):
+  - Winter fort: the foreground pass hid the ground, so the buried half of each snow drift showed as a dark band
+    under the palisade. Background objects are now holdouts in that pass (`fg_holdout`).
+  - Rolling-prairie shots (B1 bison close-up, B2 sunset herd, B3 cart line): the flat far-ground sheet sat at −1 m,
+    but the terrain dips to about −4 m there, so the sheet flooded the hollow like a pale lake over the grass, right
+    where the animals stand. Moved to −6 m; B1–B3 re-rendered.
+  - Grass close-up (G2): 16-sample render noise in the defocused oaks; softened with a constant foreground blur
+    (`DENOISE_FG`); B1 rendered at 32 samples.
+  - Short: captions were hard to read over snow (dark plate added); end-card title was wider than the 1080 px frame.
+
 ## Open issues
 - Final MP4 will exceed GitHub's 100 MB file limit: delivered in the working directory + sent to the user; committed to git as split parts with a join script.

@@ -80,6 +80,10 @@ def default_life(name):
     return L
 
 
+# out-of-focus foreground layers rendered at 16 samples keep speckle noise in the bokeh: soften it
+DENOISE_FG = dict(layer='fg', sigma=(3.0, 3.0), span=(0.0, 1.0))
+
+
 def P(name, s=(1.0, 1.08), c=((0.5, 0.5), (0.5, 0.5)), **kw):
     fam = name.split('_')[0]
     if 'life' not in kw:
@@ -125,7 +129,7 @@ CLIPS = [
     ('P02.1+6.5', P('desk_W2', s=(1.04, 1.16), c=((0.55, 0.5), (0.6, 0.48)), p=0.04, flicker=0.025, desc='Quill on a written sheet by candlelight'), 0.6),
     ('P02.1e+0.8', F(gfx.not_move, 'Typographic beat: "Not illegal to eat. Illegal to move."'), 0.5),
     ('P04.0-0.5', P('plain_G3', s=(1.0, 1.07), c=((0.5, 0.5), (0.5, 0.48)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='Frog Plain after sunset'), -0.9),
-    ('P04.1-0.25', P('plain_G2', s=(1.04, 1.12), c=((0.45, 0.55), (0.55, 0.55)), p=0.12, grade=G_DUSK, desc='Grass close-up, evening'), 0.6),
+    ('P04.1-0.25', P('plain_G2', s=(1.04, 1.12), c=((0.45, 0.55), (0.55, 0.55)), p=0.12, grade=G_DUSK, desc='Grass close-up, evening', rack=DENOISE_FG), 0.6),
     ('P05.0-0.35', P('dock_D3', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), p=0.08, desc='The bag, low angle, river mist'), 0.8),
     ('P05.1+2.6', P('camp_K1', s=(1.0, 1.1), c=((0.5, 0.5), (0.48, 0.52)), desc='Pounded meat on a spread hide, stone maul'), 0.7),
     ('TITLE', F(gfx.title_card, 'Title card'), -1.0),
@@ -192,7 +196,7 @@ CLIPS = [
     ('P27.1-0.3', F(gfx.timeline, "Timeline: Qu'Appelle seizure"), 0.6),
     ('P27.2-0.3', P('store_S2', s=(1.12, 1.22), c=((0.42, 0.5), (0.5, 0.5)), p=0.05, desc='Bags of pemmican'), 0.5),
     ('P28.0-0.45', F(lambda tl, dur, t: MS.frog_plain_map(tl, dur, t, 'route'), "Map: Grant's party toward Lake Winnipeg past the colony"), 0.6),
-    ('P28.3-0.25', P('plain_G2', s=(1.0, 1.06), c=((0.5, 0.5), (0.52, 0.5)), p=0.1, desc='Grass of the low plain'), 0.5),
+    ('P28.3-0.25', P('plain_G2', s=(1.0, 1.06), c=((0.5, 0.5), (0.52, 0.5)), p=0.1, desc='Grass of the low plain', rack=DENOISE_FG), 0.5),
     ('P29.0-0.45', P('plain_G1', s=(1.1, 1.18), c=((0.45, 0.5), (0.5, 0.5)), desc='Frog Plain, evening of 19 June (illustrative)'), 0.7),
     ('P30.0-0.6', P('plain_G3', s=(1.06, 1.14), c=((0.5, 0.5), (0.5, 0.5)), fog=DUSK_FOG, grade=G_DUSK, dust=None, desc='The plain at dusk'), 0.9),
     ('P30.4-0.3', P('plain_G4', s=(1.0, 1.06), c=((0.5, 0.5), (0.5, 0.48)), grade=dict(G_DUSK, gain=0.75), dust=None, desc='Under a bur oak, failing light'), 1.0),
@@ -228,7 +232,7 @@ CLIPS = [
     ('P42.0-0.5', P('dock_D5', s=(1.08, 1.14), c=((0.5, 0.5), (0.52, 0.5)), p=0.06, rack=dict(layer='fg', sigma=(7.0, 0.0), span=(0.1, 0.7)),
                      desc='The bag: focus pull'), 0.9),
     ('P42.1-0.2', P('desk_W2', s=(1.15, 1.2), c=((0.55, 0.5), (0.55, 0.5)), flicker=0.025, desc='The order'), 0.3),
-    ('P42.2-0.2', P('plain_G2', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), grade=G_DUSK, desc='The plain'), 0.3),
+    ('P42.2-0.2', P('plain_G2', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), grade=G_DUSK, desc='The plain', rack=DENOISE_FG), 0.3),
     ('P42.3-0.2', P('dock_C3b', s=(1.15, 1.2), c=((0.5, 0.5), (0.5, 0.5)), desc='Cargo'), 0.3),
     ('P42.4-0.3', P('dock_D4', s=(1.12, 1.0), c=((0.5, 0.5), (0.5, 0.5)), p=0.05, desc='Pull back from the landing'), 0.9),
     ('CREDITS', F(gfx.credits, 'Credits and disclosures'), -1.4),

@@ -1,0 +1,3 @@
+scene_fort F3 --samples 16 --force
+scene_store S2 --samples 32 --force
+scene_store S1 --samples 24 --force

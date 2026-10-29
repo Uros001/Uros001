@@ -39,14 +39,15 @@ def build(variant='winter'):
     if summer:
         lib.sky_world(scn, sun_elev_deg=9.0, sun_rot_deg=-35.0, strength=0.6, air=1.2, dust=1.8)
         lib.sun('SunKey', elev=9.0, azim=35, strength=3.0, color=(1.0, 0.75, 0.5), angle=1.0)
-        lib.area_light('Fill', (0, -90, 40), (55, 0, 0), 60.0, 9000.0, color=(0.6, 0.7, 0.95))
+        lib.area_light('Fill', (0, -90, 40), (55, 0, 0), 60.0, 3500.0, color=(0.6, 0.7, 0.95))
     else:
         lib.sky_world(scn, sun_elev_deg=6.0, sun_rot_deg=-60.0, strength=0.75, air=1.6, dust=3.5, ozone=1.2)
         lib.sun('SunKey', elev=6.0, azim=60, strength=1.3, color=(1.0, 0.8, 0.62), angle=3.0)
         lib.area_light('Fill', (0, -90, 50), (50, 0, 0), 80.0, 26000.0, color=(0.72, 0.8, 1.0))
 
     if summer:
-        gmat = P.mat_ground('Ground', '#6f6a3c', '#4a4a28', dry='#a09156', scale=0.05, bump=0.2)
+        gmat = P.mat_ground('Ground', '#5d5a32', '#3f4024', dry='#8a7d4a', scale=0.05, bump=0.2)
+        gmat.node_tree.nodes['Principled BSDF'].inputs['Specular IOR Level'].default_value = 0.12   # no backlit sheen
         far = P.mat_ground('FarGround', '#6c6a40', '#55532f', scale=0.01, emit='#b9b49a', emit_strength=0.1, bump=0)
     else:
         gmat = P.mat_ground('Snow', '#e9eef4', '#b9c4d3', scale=0.09, bump=0.25)
@@ -164,9 +165,18 @@ def build(variant='winter'):
             db.ico((x, y, ground_z(x, y) - 0.3 * r), r, (1.6, 1.6, 0.5), subdiv=3, jitter=0.15, seed=i)
         db.build('Drifts', [gmat])
     # dry grass and willow scrub poking through the snow in the foreground
-    gm = P.mat_strand('DryGrass', '#5a4c33', '#b59a6a', transl=0.2) if not summer else P.mat_strand('Grass', '#4a4a26', '#a99a5c', transl=0.3)
-    P.grass_curves('Grass_fg', _T, (-90, 60, -110, -24), 9 if not summer else 300, (0.15, 0.6), gm, seed=3,
-                   lean=(0.1, 0.05), lean_var=0.3, radius=0.0025, max_strands=420000, clump=0.5)
+    if not summer:
+        gm = P.mat_strand('DryGrass', '#5a4c33', '#b59a6a', transl=0.2)
+        P.grass_curves('Grass_fg', _T, (-90, 60, -110, -24), 9, (0.15, 0.6), gm, seed=3,
+                       lean=(0.1, 0.05), lean_var=0.3, radius=0.0025, max_strands=420000, clump=0.5)
+    else:
+        # June grass only where the F3 camera sees it (18-80 m in front of it), dense enough to hide the ground
+        gm = P.mat_strand('Grass', '#3f4a24', '#a8a060', transl=0.35)
+        P.grass_curves('Grass_fg', _T, (-45, 62, -64, -19), 230, (0.25, 0.7), gm, seed=3,
+                       lean=(0.06, 0.03), lean_var=0.18, radius=0.004, max_strands=1100000, clump=0.3)
+        for k, reg in enumerate([(22.5, 75, -19, 25), (-80, -22.5, -19, 25)]):     # beside the palisade
+            P.grass_curves(f'Grass_side{k}', _T, reg, 110, (0.25, 0.7), gm, seed=11 + k,
+                           lean=(0.06, 0.03), lean_var=0.18, radius=0.005, max_strands=600000, clump=0.3)
     sb = P.Batch()
     rnd3 = random.Random(17)
     for i in range(26):
@@ -200,7 +210,8 @@ CAMS = {
                fg_holdout=True),
     'F2': dict(cam=(9.0, -36.0, 1.75), tgt=(0.0, -18.0, 3.4), lens=30, fstop=8.0, focus_dist=21.0, variant='winter',
                fg_holdout=True),
-    'F3': dict(cam=(46.0, -66.0, 6.0), tgt=(0.0, 2.0, 3.0), lens=35, fstop=11.0, focus_dist=80.0, variant='summer'),
+    'F3': dict(cam=(46.0, -66.0, 6.0), tgt=(0.0, 2.0, 3.0), lens=35, fstop=11.0, focus_dist=80.0, variant='summer',
+               fg_holdout=True),
 }
 MIST = (30.0, 900.0)
 

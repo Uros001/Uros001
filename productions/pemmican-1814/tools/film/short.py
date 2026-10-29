@@ -28,7 +28,7 @@ def clips(core, edl):
         (A('P02.1+6.5'), P('desk_W2', s=(1.0, 1.1), c=((0.55, 0.5), (0.6, 0.5)), flicker=0.025)),
         (A('P02.1e+0.8'), 'NOTMOVE'),
         (A('P04.0-0.5'), P('plain_G3', s=(1.0, 1.06), c=((0.5, 0.5), (0.52, 0.5)), fog=edl.DUSK_FOG, grade=edl.G_DUSK, dust=None)),
-        (A('P04.1-0.25'), P('plain_G2', s=(1.0, 1.08), c=((0.45, 0.55), (0.55, 0.55)), grade=edl.G_DUSK)),
+        (A('P04.1-0.25'), P('plain_G2', s=(1.0, 1.08), c=((0.45, 0.55), (0.55, 0.55)), grade=edl.G_DUSK, rack=edl.DENOISE_FG)),
         (A('P05.0-0.35'), P('dock_D3', s=(1.0, 1.08), c=((0.4, 0.5), (0.42, 0.52)), p=0.08)),
         (A('P05.0e+0.6'), 'END'),
     ]
@@ -74,9 +74,9 @@ class Short:
         out = core.blank(core.hexc('#121110'))
         L = T.Layer()
         a = T.fade_window(tl, 0, 10, 0.5, 0.5)
-        self._text(L, 'THE PEMMICAN', 820, T.font('serif', 150 * 1920 / 1080, 600), T.INK, a)
-        self._text(L, 'WAR', 1000, T.font('serif', 150 * 1920 / 1080, 600), T.OCHRE, a)
-        self._text(L, 'Full documentary on the channel', 1220, T.font('serif_i', 80 * 1920 / 1080, 500), T.INK_DIM, a)
+        self._text(L, 'THE PEMMICAN', 840, T.font('serif', 100 * 1920 / 1080, 600), T.INK, a)
+        self._text(L, 'WAR', 980, T.font('serif', 100 * 1920 / 1080, 600), T.OCHRE, a)
+        self._text(L, 'Full documentary on the channel', 1180, T.font('serif_i', 56 * 1920 / 1080, 500), T.INK_DIM, a)
         return core.over(out, L.rgba())
 
     def _text(self, L, txt, y, f, col, a):
@@ -116,9 +116,13 @@ class Short:
                             cur = (cur + ' ' + w).strip()
                     lines.append(cur)
                     y0 = 1460 - (len(lines) - 1) * 46
+                    f = T.font('sans', 66 * 1920 / 1080, 700)
+                    # soft dark plate behind the words so they stay legible over snow and bright sky
+                    bw = max(L.measure(ln, f) for ln in lines) / L.s(1) + 56 * k
+                    L.rect(540 * k - bw / 2, (y0 - 78) * k, bw, ((len(lines) - 1) * 92 + 112) * k, T.DARK, 0.42,
+                           radius=22 * k)
                     for j, ln in enumerate(lines):
-                        L.text(ln, 540 * k, (y0 + j * 92) * k, T.font('sans', 66 * 1920 / 1080, 700), T.INK, 1.0,
-                               align='center', shadow=1.6)
+                        L.text(ln, 540 * k, (y0 + j * 92) * k, f, T.INK, 1.0, align='center', shadow=1.6)
                     break
                 t0 = t1
 
@@ -137,6 +141,8 @@ class Short:
 
 def _work(args):
     f0, f1, path = args
+    if os.path.exists(path + '.ok'):
+        return path
     sh = Short()
     core = sh.core
     cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', '1080x1920',
@@ -145,7 +151,8 @@ def _work(args):
     for i in range(f0, f1):
         p.stdin.write(sh.frame(i).tobytes())
     p.stdin.close()
-    p.wait()
+    if p.wait() == 0:
+        open(path + '.ok', 'w').write('ok\n')
     return path
 
 
@@ -157,7 +164,7 @@ def main():
     a = ap.parse_args()
     sh = Short()
     n = int(round(sh.total * 30))
-    tmp = a.out + '.parts'
+    tmp = os.path.abspath(a.out + '.parts')       # concat lists resolve relative paths against the list's folder
     os.makedirs(tmp, exist_ok=True)
     jobs = [(i, min(n, i + 300), os.path.join(tmp, f'{i:05d}.mp4')) for i in range(0, n, 300)]
     with mp.get_context('spawn').Pool(a.workers) as pool:

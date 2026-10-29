@@ -1,1 +1,1 @@
-scene_plain B1 --samples 16
+scene_plain B1 --samples 32

@@ -185,7 +185,7 @@ def video(out, workers=3, scale=1.0, t_from=0.0, t_to=None, crf=18, chunk=600, p
     n_total = int(round(core.timing()['total'] * fps))
     f0 = int(round(t_from * fps))
     f1 = n_total if t_to is None else min(n_total, int(round(t_to * fps)))
-    tmp = out + '.parts'
+    tmp = os.path.abspath(out + '.parts')         # concat lists resolve relative paths against the list's folder
     os.makedirs(tmp, exist_ok=True)
     skip = set()
     # dry-run in a child process so this parent stays small while the workers run

@@ -1,0 +1,2 @@
+scene_plain B2 --samples 16 --force
+scene_plain B3 --samples 16 --force
