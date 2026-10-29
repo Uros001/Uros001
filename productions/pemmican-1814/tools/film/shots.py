@@ -3,6 +3,7 @@
   Plate    2.5D move over Blender background/foreground plates (parallax, fog, particles, grade)
   Still    a single image (render or graphic) with a slow move
   Archive, Diptych, Sequence   archival paintings/photographs (rostrum moves)
+  ArchiveDepth   archival photograph with a 2.5D move from a depth map
   DocPage  a real scanned document page with highlighter marks
   Func     any callable fn(tl, dur) -> RGB (maps, graphics, cards)
 """
@@ -278,6 +279,68 @@ class Archive(Shot):
         e = _ease(self.ease, seg(tl, 0, dur))
         cx, cy, w = (lerp(p, q, e) for p, q in zip(self.a, self.b))
         out = _mono(_arch_view(self.path, cx, cy, w, core.W, core.H), self.mono)
+        return core.grade(out, **self.grd) if self.grd else out
+
+
+@functools.lru_cache(maxsize=4)
+def _depth_of(path):
+    """Depth map for an archival still (tools/depth_map.py): float32, near = 1, softened so that the move bends
+    the picture smoothly instead of tearing it at object edges."""
+    dp = os.path.join(os.path.dirname(path), 'depth', os.path.basename(path).rsplit('.', 1)[0] + '.png')
+    d = cv2.imread(dp, cv2.IMREAD_UNCHANGED)
+    if d is None:
+        raise FileNotFoundError(dp + ' (run tools/depth_map.py)')
+    d = d.astype(np.float32) / 65535.0
+    return cv2.GaussianBlur(d, (0, 0), max(d.shape) / 300)
+
+
+@functools.lru_cache(maxsize=2)
+def _out_grid(w, h):
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float32)
+    return (xs + 0.5) / w - 0.5, (ys + 0.5) / h - 0.5
+
+
+class ArchiveDepth(Shot):
+    """Archival photograph with a 2.5D camera move: framings a -> b as in Archive, plus a depth map so that near
+    parts of the picture grow (dolly) and slide (shift) more than far ones. Pixels are only displaced, never added;
+    keep dolly and shift small (a few per cent).
+
+    dolly  extra growth of the nearest plane over the shot (0.04 = 4 %)
+    shift  (x, y) slide of the nearest plane over the shot, as a fraction of the frame
+    """
+
+    def __init__(self, path, a=(0.5, 0.5, 1.0), b=None, dolly=0.04, shift=(0.0, 0.0), ease='io', mono=0.0, grade=None,
+                 desc='', source=''):
+        self.path, self.a, self.b, self.dolly, self.shift = path, a, b or a, dolly, shift
+        self.ease, self.mono, self.grd, self.desc, self.source = ease, mono, grade or {}, desc, source
+        self.name = 'archive:' + os.path.basename(path)
+
+    def frame(self, tl, dur, t):
+        e = _ease(self.ease, seg(tl, 0, dur))
+        cx, cy, w = (lerp(p, q, e) for p, q in zip(self.a, self.b))
+        pyr = _arch_pyr(self.path)
+        H0, W0 = pyr[0].shape[:2]
+        ow, oh = core.W, core.H
+        w = min(w, H0 * ow / oh / W0)
+        ww, wh = w * W0, w * W0 * oh / ow
+        cxp = min(max(cx * W0, ww / 2), W0 - ww / 2)
+        cyp = min(max(cy * H0, wh / 2), H0 - wh / 2)
+        gx, gy = _out_grid(ow, oh)
+        dep = _depth_of(self.path)
+        dh, dw = dep.shape
+        sx, sy = cxp + gx * ww, cyp + gy * wh
+        for _ in range(2):                          # depth at the source point, refined once
+            d = cv2.remap(dep, sx * (dw / W0), sy * (dh / H0), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+            g = 1.0 + self.dolly * e * d
+            sx = cxp + gx * ww / g - self.shift[0] * e * d * ww
+            sy = cyp + gy * wh / g - self.shift[1] * e * d * wh
+        k = 0
+        while k + 1 < len(pyr) and (ow / ww) * 2 ** (k + 1) <= 1.0:
+            k += 1
+        f = 2 ** k
+        out = cv2.remap(pyr[k], sx / f, sy / f, cv2.INTER_CUBIC if ow / ww * f > 1.0 else cv2.INTER_LINEAR,
+                        borderMode=cv2.BORDER_REPLICATE)
+        out = _mono(out.astype(np.float32) / 255.0, self.mono)
         return core.grade(out, **self.grd) if self.grd else out
 
 

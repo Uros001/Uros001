@@ -30,3 +30,8 @@ productions/*/assets/archival/ia/page134_words.json
 productions/*/delivery/The_Pemmican_War_1080p_v3.mp4
 studio/library/
 studio/models/*.onnx
+studio/tests/*/assets/*.jpg
+studio/tests/*/assets/*.ttf
+studio/tests/*/assets/*.otf
+studio/tests/*/assets/gsap.min.js
+studio/tests/*/*.mp4
