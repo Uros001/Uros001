@@ -81,3 +81,31 @@ Measured: loudness, true peak and LRA above; narration −17.8 LUFS in the mix; 
 overall word error rate ≈ 4 %, with the differences in formatting (numbers, hyphens). ASR shows the English is
 intelligible; it cannot certify how the Cree and French terms sound. Naturalness and emphasis were judged from
 these measurements only, so a human listening pass before publishing is recommended.
+
+## 5. Version 2: archival pass (2026-10-29)
+
+**What changed:** 14 archival clips (about 111 s, 12% of the running time) from Smithsonian Open Access (CC0) replace
+3D shots of bison, camps, the canoe road, the fur-trade post and the hide-trade era; see ASSET_MANIFEST §1b and
+FACT_CHECK §J. Sound for those shots was re-laid (place beds, hoofbeats under the Muybridge loop). Picture timing,
+narration, subtitles and chapters are unchanged.
+
+| Check (tools/qa.py + ffmpeg) | Result |
+|---|---|
+| Video | H.264 High, 1920×1080, 30 fps, 27,000 frames, 15:00.000, BT.709 |
+| Audio | AAC 48 kHz stereo, 14:59.989 |
+| Decode errors | none |
+| Black frames | 3, all intended (8:42.6 chapter dip, 14:44.9 to credits, final fade) |
+| Frozen picture / silence over 1.5 s | 0 / none |
+| Loudness | −14.1 LUFS, −1.5 dBTP, LRA 3.4 LU |
+| Subtitles | 235 cues, 2,065 words (= narration), no overlaps, at most 42 characters per line |
+| Rendering | 15 of 45 chunks re-rendered; 30 unchanged ones verified by an edit signature |
+
+Visual check (sampled frames, every 15 s plus the new clips at full resolution): every archival image carries its
+credit (title, date, maker, collection), none is cropped outside the image, the Muybridge print loops through eight
+views and fades out, the Hornaday photographs sit under the 1,091 counter and the lower third without collision.
+Not verified: real-time playback and sound by a person.
+
+Still weak (not fixed in this pass): Frog Plain oaks and grass (about 85 s), the summer and winter fort, the dock and
+rawhide bag macros, the berry bowl at 13:55 (reads as dark blobs), the prairie lodges and cart line, and distant
+bison silhouettes that stand still. These are 3D shots with no authentic image available from the Smithsonian
+collection; see PRODUCTION_STATUS "Next step".
