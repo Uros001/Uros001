@@ -25,11 +25,11 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
 | 5 Script | ✅ 42 paragraphs, 2,065 words | script/NARRATION.txt, PRONUNCIATION_GUIDE.md, FINAL_SCRIPT.md (generated from EDL) |
 | 6 Narration | ✅ 900.0 s timeline, master −18 LUFS | audio/narration/narration_master.wav, timing.json |
 | 7 Shot plan / assets | ✅ generated from EDL | production/SHOT_PLAN.md, production/ASSET_MANIFEST.md |
-| 8 3D + graphics | 🔄 realism pass: plates re-rendering | assets/blender/*.py, renders/plates/, tools/film/{gfx,mapseq,life}.py |
+| 8 3D + graphics | ✅ 29 plates (realism pass + QA fixes), editable scenes in assets/blender/blend/ | assets/blender/*.py, renders/plates/, tools/film/{gfx,mapseq,life}.py |
 | 9 Edit | ✅ EDL (105 clips) + renderer | tools/film/edl.py, render.py |
 | 10 Audio | ✅ score, SFX, mix −14.0 LUFS / −1.4 dBTP (re-mix after final EDL for SFX cuts) | audio/music, audio/sfx, audio/mix |
-| 11 Final render | 🔄 `sh tools/run_final.sh` (resumable: plates → chunks → mux; log delivery/render_final.log) | delivery/The_Pemmican_War_1080p.mp4 |
-| 12 QA + delivery | ⏳ (SRT, thumbnails, metadata done) | delivery/ |
+| 11 Final render | ✅ 15:00.000, 1920×1080, 30 fps, H.264 CRF 18 + AAC 48 kHz, −14.1 LUFS / −1.3 dBTP; in git as 15 parts + `join_video.sh` (SHA-256 checked) | delivery/The_Pemmican_War_1080p.mp4 |
+| 12 QA + delivery | ✅ automated + sampled-frame QA passed after fixes; Short 58.5 s; thumbnails, SRT, metadata | production/QA_REPORT.md, delivery/ |
 
 ## Decisions
 - Voice: Kokoro `af_heart`; speed 0.82 (~165 wpm while speaking). Whisper WER ≈ 4% (formatting only).
@@ -63,4 +63,8 @@ Persistent log so work can be resumed from verified artifacts. Update after ever
   - Short: captions were hard to read over snow (dark plate added); end-card title was wider than the 1080 px frame.
 
 ## Open issues
-- Final MP4 will exceed GitHub's 100 MB file limit: delivered in the working directory + sent to the user; committed to git as split parts with a join script.
+- Final MP4 (1.47 GB) exceeds GitHub's 100 MB file limit and LFS is blocked here: committed as 15 parts; run
+  `sh delivery/join_video.sh` to rebuild and verify it.
+- Not done by design: no YouTube upload (needs the channel owner's explicit go-ahead).
+- Recommended before publishing: one human viewing and listening pass of the full film (this production could only
+  check sampled frames and measurements, see QA_REPORT §3–4).

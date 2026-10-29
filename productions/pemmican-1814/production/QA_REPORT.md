@@ -33,3 +33,51 @@ No people are depicted in reconstructions. The battle is not depicted; the edit 
 
 Honesty checks: every 3D sequence family carries a "Reconstruction" tag at first appearance; credits and description
 state the synthetic voice, illustrative reconstructions and generated props. No AI image or video generation used.
+
+## 2. Technical QA — `delivery/The_Pemmican_War_1080p.mp4` (tools/qa.py + ffmpeg, 2026-10-29)
+
+| Check | Result | Status |
+|---|---|---|
+| Container / video | MP4, H.264 High, yuv420p, BT.709, 1920×1080, 30 fps constant, 27,000 frames, 15:00.000 | ✅ |
+| Encoding | x264 CRF 18 (preset medium), 2 s GOP; 1.47 GB, ≈13.1 Mb/s | ✅ |
+| Audio | AAC-LC 320 kb/s, 48 kHz, stereo, 14:59.989 (A/V durations match) | ✅ |
+| Decode errors (`ffmpeg -v error -f null`) | none | ✅ |
+| Black frames (`blackdetect`) | 3 segments, all intended: dip into chapter IV (8:42.6, 0.43 s), cut to credits (14:44.9, 0.43 s), final fade (14:59.3) | ✅ |
+| Frozen picture (`freezedetect`) | 0 events | ✅ |
+| Silence > 1.5 s (`silencedetect`) | none (the post-battle silence is an intended near-silent ambience, not dead air) | ✅ |
+| Loudness (EBU R128) | −14.1 LUFS integrated, −1.3 dBTP, LRA 3.4 LU | ✅ YouTube-ready |
+| Subtitles | 235 cues, 2,065 words = narration word count, sentence starts aligned to narration timing (max offset 0.0 s), no overlaps, ≤ 42 characters per line, last cue 14:44.0 | ✅ |
+| Chapters | 0:00 · 1:09 · 3:33 · 6:27 · 8:39 · 11:43 · 14:45, checked against rendered frames | ✅ |
+| Short | 1080×1920, 30 fps, 58.5 s, H.264 + AAC 48 kHz stereo, −14.1 LUFS, −1.5 dBTP | ✅ |
+
+## 3. Visual QA
+
+Method: a contact sheet of the finished MP4 (one frame every 15 s, 60 frames), full-resolution frames of every
+re-rendered plate in context, and frame grabs at every chapter boundary. This is sampled-frame inspection,
+not real-time viewing: the film was never watched as moving picture with sound by a person in this environment.
+
+Defects found by this QA and fixed before the final render:
+
+| Defect | Cause | Fix |
+|---|---|---|
+| Storehouse close-up (3:12, 9:37) nearly black (mean level 1.6 %) | the doorway bounce light pointed out of the door | light turned into the room; S1 and S2 re-rendered (S2 at 32 samples) |
+| Pale "lake" under the bison herd, the sunset herd and the cart line | flat far-ground sheet at −1 m flooded hollows of the rolling terrain (down to −4 m) | sheet moved to −6 m; B1–B3 re-rendered |
+| Dark band under the winter palisade; black strip under the summer palisade | foreground pass showed the buried parts of drifts and pickets | background objects rendered as holdouts in the fort foreground pass |
+| Summer fort foreground washed out and streaky | sparse grass spread over an area mostly outside the frame; strong frontal fill; backlit ground sheen | dense grass only where the camera sees it, softer fill, low ground specular |
+| Speckle noise in the defocused oaks of the grass close-up | 16-sample render of shallow depth of field | constant soft blur on that layer (it is out of focus anyway) |
+| Chimney and lodge smoke invisible | smoke too thin and too close to the sky's brightness | denser, darker plumes |
+| Short: captions unreadable over snow; end-card title wider than the frame | white text on white; type size for landscape | dark caption plate; smaller title |
+
+Known limitations (not fixed, judged acceptable): bison are seen as backlit silhouettes at telephoto distance and
+hold still (the motion comes from grass, light and camera); the 3D look is a stylised reconstruction and is labelled
+"Reconstruction" throughout; one oak in the Frog Plain wide shot has an arched limb that reads slightly odd.
+
+## 4. Audio QA
+
+Measured: loudness, true peak and LRA above; narration −17.8 LUFS in the mix; music under speech −32.7 LUFS and
+−25.6 LUFS in pauses (ducking −7.5 dB music, −5 dB ambience); no clipping. Difficult names get corrected phonemes in
+`tools/tts_narration.py`, following the pronunciation guide (Métis, Macdonell, Souris, Qu'Appelle, Grenouillère,
+*pimîhkân*, Athabasca, Ojibwe, Piikani and others). The narration was transcribed back with Whisper (small.en):
+overall word error rate ≈ 4 %, with the differences in formatting (numbers, hyphens). ASR shows the English is
+intelligible; it cannot certify how the Cree and French terms sound. Naturalness and emphasis were judged from
+these measurements only, so a human listening pass before publishing is recommended.

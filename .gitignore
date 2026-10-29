@@ -17,3 +17,4 @@ __pycache__/
 productions/*/delivery/*.log
 productions/*/delivery/.chunk_plates_*.json
 productions/*/delivery/picture.mp4
+productions/*/delivery/*_1080p.mp4

@@ -3,8 +3,8 @@
 | File | What it is |
 |---|---|
 | `The_Pemmican_War_1080p.mp4` | Final documentary, 15:00, 1920×1080, 30 fps, H.264 High (CRF 18), AAC 48 kHz stereo, −14 LUFS |
-| `The_Pemmican_War_1080p.mp4.part-*` + `join_video.sh` | The same file split into <95 MB parts (GitHub's file limit, LFS is not available from the production environment). Run `sh join_video.sh` to rebuild it and verify its SHA-256. |
-| `The_Pemmican_War_Short_1080x1920.mp4` | Vertical Short (~58 s) cut from the cold open, with burned-in captions |
+| `The_Pemmican_War_1080p.mp4.part-00…14` + `join_video.sh` | The same file split into 15 parts under 100 MB (GitHub's file limit, LFS is not available from the production environment). Run `sh join_video.sh` to rebuild it and verify its SHA-256. |
+| `The_Pemmican_War_Short_1080x1920.mp4` | Vertical Short (58.5 s) cut from the cold open, with burned-in captions and an end card |
 | `The_Pemmican_War_EN.srt` | English subtitles (sentence-timed from the narration) |
 | `thumbnail_primary.png` / `_1920.png` | Primary thumbnail, "ILLEGAL CARGO" (1280×720 and 1920×1080) |
 | `thumbnail_alt.png` / `_1920.png` | Alternative thumbnail, "LASTED YEARS" |

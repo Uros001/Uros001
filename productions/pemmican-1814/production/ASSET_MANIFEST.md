@@ -11,7 +11,7 @@ third-party footage, stock imagery, archival imagery, or AI-generated image/vide
 | Rendered plates (`renders/plates/*_bg.png`, `*_fg.png`) | 29 camera set-ups, background and foreground layers at 2304×1296 | Rendered with Blender 5.2.3 LTS (Cycles, CPU) via the `bpy` Python module | Original work |
 | Blender (software) | Renderer | blender.org, `bpy` from PyPI | GPL (tool only; output is not GPL-encumbered) |
 | Leaf atlas (`assets/textures/leaf_atlas.png`) | Four bur-oak-style leaves with alpha, used as leaf cards on the oaks | `tools/make_leaf_tex.py` (procedural) | Original work |
-| Blender scene files (`assets/blender/blend/*.blend`) | Saved scenes as built by the `scene_*.py` scripts (for opening and editing in Blender) | `assets/blender/make_blends.py` | Original work |
+| Blender scene files (`assets/blender/blend/*.blend`, 12 variants) | Saved scenes as built by the `scene_*.py` scripts, with named cameras for every shot; generated fur and grass curves are left out to keep files under 100 MB (re-run the scene script to regenerate them) | `assets/blender/make_blends.py` | Original work |
 | Paper texture (`assets/textures/paper_scribble.png`) | Aged sheet with illegible generated pen strokes | `tools/make_paper_tex.py` | Original work. **Not a facsimile** of any document |
 | Map vectors (`assets/maps/ne_*.geojson`) | Land, lakes, rivers, coastlines, borders, graticules, Italy outline | Natural Earth (naturalearthdata.com, via GitHub mirror) | Public domain (`assets/maps/NE_LICENSE.txt`) |
 | Shaded relief | Global relief raster, re-tinted | `shadedrelief.jpg` from the matplotlib basemap data package (NASA/NOAA derived) | Public domain |
