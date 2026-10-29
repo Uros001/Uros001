@@ -57,6 +57,9 @@ Wikimedia Commons answered with HTTP 429 (too many requests from this shared add
 | `tavernier_slaughtered_for_the_hide` | Slaughtered for the hide / Frenzeny & Tavernier., [New York] : [Harper & Brothers], 1874. | Frenzeny & Tavernier | Library of Congress · [LC-DIG-ds-12612](https://www.loc.gov/item/2019630603/) | LOC rights advisory: No known restrictions on publication. |
 | `tavernier_curing_hides_and_bones` | Sketches in the far West--curing hides and bones / Frenzeny & Tavernier., 1874. | Frenzeny & Tavernier | Library of Congress · [LC-USZ62-100250](https://www.loc.gov/item/90710851/) | LOC rights advisory: No known restrictions on publication. |
 | `nyzp_nucleus_of_the_buffalo_herd` | Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C.J. Jones, [between 1900 and 1920] | Photographer unknown | Library of Congress · [LC-DIG-ds-16139](https://www.loc.gov/item/2023632555/) | LOC rights advisory: No known restrictions on publication. |
+| `hbc_fort_vancouver_mess` | Hudson's Bay Company post, Fort Vancouver, Columbia River, 1860 (album *British Northwest Boundary Commission and Related Subjects, 1859-1861*) | Photographer unknown | Library of Congress · [LC-USZC4-11410](https://www.loc.gov/item/2003663139/) | LOC rights advisory: ['No known restrictions on publication.'] |
+| `hbc_fort_colville_officers_house` | Officers' house, Hudson's Bay Company's Fort Colville, 1860 (album *British Northwest Boundary Commission and Related Subjects, 1859-1861*) | Photographer unknown | Library of Congress · [LC-USZC4-11422](https://www.loc.gov/item/2003668201/) | LOC rights advisory: ['No known restrictions on publication.'] |
+| `hbc_fort_colville_huts` | Huts of the Hudson's Bay Company's servants, Fort Colville, 1860 (album *British Northwest Boundary Commission and Related Subjects, 1859-1861*) | Photographer unknown | Library of Congress · [LC-USZC4-11423](https://www.loc.gov/item/2003668202/) | LOC rights advisory: ['No known restrictions on publication.'] |
 | `doc_proclamation` | Macdonell's proclamation, 8 January 1814, as printed on p. 134 of the *Report of the proceedings … at the assizes, held at York in Upper Canada, October 1818* (Montreal: Lane and Mower, 1819); cropped from the page scan | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n167](https://archive.org/details/reportofproceedi00wilc/page/n167); scan from the University of Toronto (Thomas Fisher Library) | Public domain (printed 1819) |
 | `doc_glossary` | Glossary of the same book, p. xiv ("Pemican", "Taureau"); cropped | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n19](https://archive.org/details/reportofproceedi00wilc/page/n19) | Public domain (printed 1819) |
 | `doc_title` | Title page of the same book; cropped | Lane and Mower, printers | Internet Archive · [reportofproceedi00wilc, leaf n6](https://archive.org/details/reportofproceedi00wilc/page/n6) | Public domain (printed 1819) |
@@ -75,6 +78,10 @@ How they are used:
 - The two Harper's Weekly engravings of 1874 (Frenzeny & Tavernier) illustrate the line about the 1870s hide trade.
 - "Nucleus of the buffalo herd" (album of the New York Zoological Park, 1900–1920) is used for "Bison have slowly come
   back"; the caption repeats the record's title and date only.
+- Three 1860 photographs of Hudson's Bay Company posts (Fort Vancouver and Fort Colville, Columbia River, from the British
+  Northwest Boundary Commission album) replace three 3D "post" shots (the Hudson's Bay Company paragraph, the arrival of
+  Macdonell, the settlers' return). They show HBC posts of 1860 on the Columbia, not Fort Douglas or Red River in 1812–16;
+  the credit names the post and the year, and none stands in for a specific Red River building.
 - The three pages of the 1819 book replace the earlier generated "prop" documents. Page 134 is the real printed text of
   the proclamation, filmed like a rostrum camera over the page; yellow highlighter marks are drawn on as each term is
   spoken, located with the scan's own OCR word boxes (`tools/doc_marks.py`), and the credit says "highlighting added".
