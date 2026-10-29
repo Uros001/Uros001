@@ -5,6 +5,7 @@
   Archive, Diptych, Sequence   archival paintings/photographs (rostrum moves)
   ArchiveDepth   archival photograph with a 2.5D move from a depth map
   DocPage  a real scanned document page with highlighter marks
+  Movie    a rendered motion-graphics clip (HyperFrames MP4) placed in the edit
   Func     any callable fn(tl, dur) -> RGB (maps, graphics, cards)
 """
 import os, json, math, functools
@@ -534,6 +535,47 @@ class DocPage(Shot):
             ink = cv2.GaussianBlur(ink, (0, 0), max(1.0, s * 3.0))
             out = out * (1.0 - ink[:, :, None] * (1.0 - _HILITE)[None, None])     # multiply: print stays black under the ink
         return core.grade(out, **self.grd) if self.grd else out
+
+
+_MOVIES = {}
+
+
+def _movie_frame(path, n):
+    """Frame n (0-based, RGB uint8) of a video file; sequential reads are cheap, jumps seek."""
+    st = _MOVIES.get(path)
+    if st is None:
+        cap = cv2.VideoCapture(path)
+        if not cap.isOpened():
+            raise FileNotFoundError(path)
+        st = _MOVIES[path] = dict(cap=cap, count=int(cap.get(cv2.CAP_PROP_FRAME_COUNT)), pos=0, last=None, last_n=-1)
+    n = max(0, min(n, st['count'] - 1))
+    if n == st['last_n']:
+        return st['last']
+    if n != st['pos']:
+        st['cap'].set(cv2.CAP_PROP_POS_FRAMES, n)
+    ok, img = st['cap'].read()
+    if not ok:
+        return st['last']
+    st['pos'], st['last_n'], st['last'] = n + 1, n, img[:, :, ::-1]
+    return st['last']
+
+
+class Movie(Shot):
+    """A rendered clip (a HyperFrames motion graphic, 1920x1080, 30 fps) placed in the edit. Frame tl*fps of the file is
+    shown; before its start and after its end it holds the first / last frame (for dissolves).
+
+    offset  seconds into the file at the clip's start
+    """
+
+    def __init__(self, path, offset=0.0, desc='', source='Original motion graphic (HyperFrames)'):
+        self.path, self.offset, self.desc, self.source = path, offset, desc, source
+        self.name = 'movie:' + os.path.basename(path)
+
+    def frame(self, tl, dur, t):
+        img = _movie_frame(self.path, int(round((tl + self.offset) * core.FPS)))
+        if img.shape[1] != core.W or img.shape[0] != core.H:
+            img = cv2.resize(img, (core.W, core.H), interpolation=cv2.INTER_AREA)
+        return img.astype(np.float32) / 255.0
 
 
 class Func(Shot):

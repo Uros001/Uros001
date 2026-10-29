@@ -7,7 +7,7 @@ OVERLAYS: (t0, t1, fn(L, t)) drawn on a Skia layer over the graded picture.
 """
 import json, os
 from . import core, gfx, mapseq as MS, text as T
-from .shots import Plate, Func, Black, Archive, Diptych, Sequence, DocPage
+from .shots import Plate, Func, Black, Archive, ArchiveDepth, Diptych, Sequence, DocPage, Movie
 from .core import anchor as A
 
 # ------------------------------------------------------------------ atmosphere presets
@@ -125,6 +125,24 @@ def AR(key, a, b=None, desc='', detail=False, **kw):
     l1, l2 = _credit_lines(key)
     sh.credit = (l1 + '  (detail)' if detail else l1, l2)
     return sh
+
+
+def ARD(key, a, b=None, dolly=0.04, shift=(0.0, 0.0), desc='', detail=False, **kw):
+    """Archival photograph or painting with a 2.5D move from its depth map (shots.ArchiveDepth; make the map with
+    tools/depth_map.py <key>). Not for documents, engravings with lettering or close faces. Credited on screen."""
+    m = _ARCH[key]
+    kw.setdefault('grade', G_ARCH if m['maker'] == 'George Catlin' else {})
+    sh = ArchiveDepth(os.path.join(core.ROOT, m['file']), a, b, dolly=dolly, shift=shift,
+                      desc=desc or f"{m['maker']}: {m['title']} ({m['date']}), 2.5D move",
+                      source=f"{m['collection']}, {m['smithsonian_id']}", **kw)
+    l1, l2 = _credit_lines(key)
+    sh.credit = (l1 + '  (detail)' if detail else l1, l2)
+    return sh
+
+
+def MV(name, desc, offset=0.0):
+    """A HyperFrames motion graphic rendered to motion/<name>.mp4 (see studio/hyperframes_template)."""
+    return Movie(os.path.join(core.ROOT, 'motion', name + '.mp4'), offset=offset, desc=desc)
 
 
 def DIP(k1, k2, desc):

@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Lost Tribe Knowledge: HyperFrames starting point. Copy this folder to productions/<film>/motion/<shot>/,
+     set DURATION (seconds) in data-duration of #root and every .clip, add elements, animate them on `tl`.
+     Rules: animate transforms and opacity only (lint rejects layout properties), no CDN scripts, local render only. -->
+<html lang="en" data-resolution="landscape">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Corm"; src: url("assets/cormorant.ttf"); font-weight: 300 700; }
+@font-face { font-family: "CormI"; src: url("assets/cormorant_italic.ttf"); font-weight: 300 700; }
+@font-face { font-family: "Oswald"; src: url("assets/oswald.ttf"); font-weight: 200 700; }
+@font-face { font-family: "InterM"; src: url("assets/Inter-Medium.otf"); }
+@font-face { font-family: "InterSB"; src: url("assets/Inter-SemiBold.otf"); }
+/* the film's palette (tools/film/text.py) */
+:root { --ground:#101214; --ink:#ece4d4; --dim:#b9b0a0; --ochre:#d39b45; --rust:#a8483a; --water:#94adb9; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1920px; height:1080px; overflow:hidden; background:var(--ground); }
+#root { position:relative; width:1920px; height:1080px; overflow:hidden; }
+.title { font:500 64px "Corm"; color:var(--ink); letter-spacing:10px; text-transform:uppercase; }
+.place { font:600 26px "Corm"; color:var(--ink); text-shadow:0 2px 6px rgba(0,0,0,.85); }
+.tag { font:20px "InterSB"; color:var(--ochre); letter-spacing:4px; text-transform:uppercase; }
+.caption { position:absolute; left:0; width:1920px; top:1018px; text-align:center; font:18px "InterM"; color:var(--dim);
+           letter-spacing:1.5px; text-shadow:0 1px 4px rgba(0,0,0,.9); }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,.42) 100%); }
+#grain { position:absolute; inset:0; mix-blend-mode:overlay; opacity:.10; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="4" data-width="1920" data-height="1080">
+  <!-- example element: replace -->
+  <div id="tag" class="tag clip" data-start="0" data-duration="4" data-track-index="0"
+       style="position:absolute; left:150px; top:132px;">Example tag</div>
+  <div id="vig" class="clip" data-start="0" data-duration="4" data-track-index="8"></div>
+  <svg id="grain" class="clip" data-start="0" data-duration="4" data-track-index="9" viewBox="0 0 1920 1080">
+    <filter id="n"><feTurbulence id="turb" type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="1" /></filter>
+    <rect width="1920" height="1080" filter="url(#n)" />
+  </svg>
+</div>
+<script>
+  const D = 4;
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo("#tag", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+  tl.to("#turb", { attr: { seed: 200 }, duration: D, ease: "steps(" + Math.round(D * 30) + ")" }, 0);   // moving grain
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

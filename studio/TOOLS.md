@@ -17,6 +17,9 @@ reconstruction; no AI-generated pictures presented as historical evidence.
 | PySceneDetect | 0.7.2 | BSD-3-Clause | Measure cut rhythm (shot lengths) of reference documentaries and of our own films | imports |
 | FFmpeg (system) | 6.1.1 | LGPL/GPL | Already had: `zscale`, `lut3d`, `haldclut`, `tonemap`, `colorspace`, `deband`, `nlmeans`, `bm3d`, `vidstab`, `minterpolate`, `loudnorm`, `arnndn`, `afftdn`, `dialoguenhance`, `frei0r` | filter list checked |
 
+In the edit: start from `studio/hyperframes_template` (the film's palette, fonts, grain and vignette), render with
+its `build.sh`, place the MP4 with `MV('<shot>', desc)` (shot type `Movie`). The workflow is in `STANDARD_WORKFLOW.md`.
+
 HyperFrames rules for our use: render locally only (no `cloud`, `publish`, HeyGen account or paid HeyGen media);
 telemetry is switched off (`hyperframes telemetry disable`).
 
@@ -60,6 +63,7 @@ denoised in about 20 s at 960×540, 24 samples.
 |---|---|---|---|---|
 | Depth Anything V2 Small (ONNX export by fabio-sim) | v2.0.0 | Apache-2.0 (the Small model only; Base/Large are non-commercial and not used) | A depth map from a still photograph, so a real archival image can be given a slow parallax move (foreground, middle, far) instead of a flat pan | 1860 Fort Colville photograph: logs, buildings and sky separated correctly, 1.4 s on the CPU |
 
+In the edit: `ARD(key, a, b, dolly, shift)` (shot type `ArchiveDepth`), after `tools/depth_map.py <key>`.
 The depth map only moves the existing pixels; it adds nothing to the picture. Gaps opened by the parallax are kept
 small (gentle moves) and filled from neighbouring pixels.
 

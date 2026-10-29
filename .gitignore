@@ -35,3 +35,7 @@ studio/tests/*/assets/*.ttf
 studio/tests/*/assets/*.otf
 studio/tests/*/assets/gsap.min.js
 studio/tests/*/*.mp4
+studio/hyperframes_template/assets/
+productions/*/motion/*/assets/*.ttf
+productions/*/motion/*/assets/*.otf
+productions/*/motion/*/assets/gsap.min.js
