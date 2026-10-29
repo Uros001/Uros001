@@ -35,6 +35,42 @@ SELECT = {
 }
 
 
+# Library of Congress items (rights advisory in each item record: "No known restrictions on publication").
+# crop = (x0, y0, x1, y1) as fractions of the master scan, to the picture only (no masthead, text columns or caption card);
+# 'stereo-left' takes the left photograph of a stereograph.
+LOC = {
+    'upton_red_river_carts': dict(src='loc/LC-DIG-stereo-1s43921u.tif', crop='stereo-left', item='2022651022',
+                                  title='Red River carts, Minnesota', maker='B. F. Upton', date='between 1867 and 1875',
+                                  collection='Library of Congress', repro='LC-DIG-stereo-1s43921'),
+    'tavernier_slaughtered_for_the_hide': dict(src='loc/12612u.tif', crop=(0.095, 0.268, 0.935, 0.944), item='2019630603',
+                                               title='Slaughtered for the hide',
+                                               maker='Frenzeny & Tavernier', date='Harper\'s Weekly, 12 December 1874', collection='Library of Congress',
+                                               repro='LC-DIG-ds-12612'),
+    'tavernier_curing_hides_and_bones': dict(src='loc/3c00250u.tif', crop=(0.066, 0.097, 0.968, 0.820), item='90710851',
+                                             title='Curing hides and bones',
+                                             maker='Frenzeny & Tavernier', date='Harper\'s Weekly, 4 April 1874', collection='Library of Congress',
+                                             repro='LC-USZ62-100250'),
+    'nyzp_nucleus_of_the_buffalo_herd': dict(src='loc/16139u.tif', crop=(0.046, 0.036, 0.968, 0.805), item='2023632555',
+                                             title='Nucleus of the buffalo herd', maker='Photographer unknown',
+                                             date='between 1900 and 1920', collection='Library of Congress',
+                                             repro='LC-DIG-ds-16139'),
+}
+
+
+def _stereo_left(im):
+    """Left photograph of a stereograph: the print is low-saturation sepia on a saturated yellow mount."""
+    import numpy as np
+    hsv = cv2.cvtColor(cv2.resize(im, None, fx=0.25, fy=0.25, interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2HSV)
+    photo = (hsv[:, :, 1] < 90).astype(np.uint8)
+    photo[:, photo.shape[1] // 2:] = 0                              # left half only
+    photo = cv2.morphologyEx(photo, cv2.MORPH_OPEN, np.ones((9, 9), np.uint8))
+    n, lab, st, _ = cv2.connectedComponentsWithStats(photo)
+    i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    x, y, w, h = st[i, :4] * 4
+    m = int(0.022 * w)                                               # inset: the print's soft edge and mount
+    return im[y + m:y + h - m, x + m:x + w - m]
+
+
 def muybridge(src, dst):
     """Cut Muybridge's "Buffalo gallop" sheet (6 rows x 4 lateral views) into frames and steady them on the
     animal. Rows 3-4 (cells 8-15) share one camera bank and background and make one stride; the other rows are
@@ -84,6 +120,27 @@ def main():
                         record_link=m.get('record_link', ''), guid=m.get('guid', ''), rights=m.get('usage', 'CC0'),
                         catalog_title=m.get('title', ''), catalog_date=m.get('date', ''), catalog_artist=m.get('artist', ''))
         print(key, im.shape[1], 'x', im.shape[0], m.get('usage'))
+    for key, m in LOC.items():
+        im = cv2.imread(os.path.join(A, m['src']), cv2.IMREAD_COLOR)
+        if m['crop'] == 'stereo-left':
+            im = _stereo_left(im)
+        else:
+            h, w = im.shape[:2]
+            x0, y0, x1, y1 = m['crop']
+            im = im[int(y0 * h):int(y1 * h), int(x0 * w):int(x1 * w)]
+        h, w = im.shape[:2]
+        s = min(1.0, MAX / max(h, w))
+        if s < 1.0:
+            im = cv2.resize(im, (round(w * s), round(h * s)), interpolation=cv2.INTER_AREA)
+        cv2.imwrite(os.path.join(A, 'work', key + '.jpg'), im, [cv2.IMWRITE_JPEG_QUALITY, 92])
+        rec = json.load(open(os.path.join(A, 'loc', f"item_{m['item']}.json")))['item']
+        out[key] = dict(file=f'assets/archival/work/{key}.jpg', size=[im.shape[1], im.shape[0]], title=m['title'],
+                        maker=m['maker'], date=m['date'], collection=m['collection'], smithsonian_id=m['repro'],
+                        record_id=m['item'], record_link=f"https://www.loc.gov/item/{m['item']}/", guid='',
+                        rights='LOC rights advisory: ' + str(rec.get('rights_advisory') or rec.get('rights_information')),
+                        catalog_title=rec.get('title', ''), catalog_date=str(rec.get('created_published', [''])[0]),
+                        catalog_artist='; '.join(rec.get('contributor_names') or []))
+        print(key, im.shape[1], 'x', im.shape[0], rec.get('rights_advisory'))
     json.dump(out, open(os.path.join(A, 'ARCHIVAL_SOURCES.json'), 'w'), indent=1, ensure_ascii=False)
     muybridge(os.path.join(A, 'si_tif/SIA-2004-44793.tif'), os.path.join(A, 'work/muybridge_gallop'))
 

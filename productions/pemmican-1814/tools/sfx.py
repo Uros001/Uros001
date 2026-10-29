@@ -130,8 +130,13 @@ ARCH_BEDS = {           # archival stills: the place in the picture, kept low un
     'muybridge_gallop_sheet': [('room', -12)],
     'zoo_cow_and_calf': [('wind', -13)],
     'zoo_bison_2014': [('wind', -12)],
+    'upton_red_river_carts': [('wind', -12)],
+    'tavernier_slaughtered_for_the_hide': [('wind', -10)],
+    'tavernier_curing_hides_and_bones': [('wind', -10)],
+    'nyzp_nucleus_of_the_buffalo_herd': [('wind', -14)],
 }
-ARCH_BISON = ('catlin_yellowstone_chase', 'catlin_herds_crossing', 'catlin_bulls_running_season', 'catlin_winter_chase')
+ARCH_BISON = ('catlin_yellowstone_chase', 'catlin_herds_crossing', 'catlin_bulls_running_season', 'catlin_winter_chase',
+              'nyzp_nucleus_of_the_buffalo_herd')
 
 
 def arch_key(sh):
@@ -308,6 +313,11 @@ def main():
                     dd = rng.uniform(1.0, 2.6)
                     place(fx, squeal(dd), t, -24 + rng.uniform(-4, 0), rng.uniform(-0.5, 0.5))
                     t += rng.uniform(0.4, 1.4)
+        elif isinstance(sh, Archive) and arch_key(sh) == 'upton_red_river_carts':
+            t = c['start'] + rng.uniform(0.6, 1.4)             # a dry axle, far off, as in the cart-line shot
+            while t < c['end'] - 1.0:
+                place(fx, squeal(rng.uniform(1.0, 2.2)), t, -26 + rng.uniform(-3, 0), rng.uniform(-0.4, 0.4))
+                t += rng.uniform(1.6, 3.0)
         elif isinstance(sh, Sequence):
             # muffled hoofbeats in the rhythm of the looping gallop (one stride per loop of frames)
             stride = len(sh.frames) / sh.fps

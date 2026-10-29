@@ -21,15 +21,21 @@ footage or AI-generated image/video. No paid service was used.
 | Fonts | Cormorant Garamond, Oswald | Google Fonts repositories on GitHub | SIL Open Font License 1.1 (`assets/fonts/*_OFL.txt`) |
 | Fonts | Inter, EB Garamond | Ubuntu packages (`fonts-inter`, `fonts-ebgaramond`) | SIL Open Font License 1.1 |
 
-## 1b. Archival images (Smithsonian Institution Open Access, CC0)
+## 1b. Archival images (Smithsonian Institution Open Access and Library of Congress)
 
-Found in the Smithsonian's Open Access catalogue and fetched from its public bucket (`smithsonian-open-access`,
-`media/<unit>/<id>`), because the usual archive and stock sites are blocked from this environment. Only items whose
-media are marked CC0 were used. Each one is credited on screen (title, date, maker, collection) while it is shown;
-`tools/fetch_archival.sh` and `tools/prep_archival.py` rebuild the working copies; full records are in
-`assets/archival/ARCHIVAL_SOURCES.json`.
+**Smithsonian** (SAAM, Archives, NMAH, National Zoo): found in the Open Access catalogue and fetched from its public
+bucket (`smithsonian-open-access`, `media/<unit>/<id>`); only items whose media are marked CC0 were used.
 
-| Key (file in `assets/archival/work/`) | Title, date | Maker | Collection · Smithsonian ID | Licence |
+**Library of Congress** (Prints & Photographs Division): found with the LOC public JSON search (`tools/loc_search.py`),
+the item record read first (`tools/loc_item.py`; records saved in `assets/archival/loc/item_*.json`), and only items whose
+rights advisory says "No known restrictions on publication" were used. Two other bison photographs (Wichita herd 1901,
+Pierre 1910) were left out because the LOC lists their rights status as "not evaluated".
+
+Each image is credited on screen (title, date, maker, collection) while it is shown. `tools/fetch_archival.sh` and
+`tools/prep_archival.py` rebuild the working copies and `assets/archival/ARCHIVAL_SOURCES.json` holds every record.
+Wikimedia Commons answered with HTTP 429 (too many requests from this shared address), so nothing was taken from it.
+
+| Key (file in `assets/archival/work/`) | Title, date | Maker | Collection · ID | Licence |
 |---|---|---|---|---|
 | `catlin_yellowstone_chase` | Buffalo Chase, Mouth of the Yellowstone, 1832-1833 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.415_1](https://americanart.si.edu/collections/search/artwork/?id=3956) | CC0 |
 | `catlin_sioux_camp` | Sioux Encamped on the Upper Missouri, Dressing Buffalo Meat and Robes, 1832 | George Catlin | Smithsonian American Art Museum · [SAAM-1985.66.377_1](https://americanart.si.edu/collections/search/artwork/?id=4367) | CC0 |
@@ -46,16 +52,25 @@ media are marked CC0 were used. Each one is credited on screen (title, date, mak
 | `hornaday_bison_group` | Mammals Exhibit, South Hall, United States National Museum - American Bison Group, 1887 | Photographer unknown | Smithsonian Institution Archives · [SIA-SIA_000095_B43_F01_005](https://siarchives.si.edu/collections/siris_arc_401885) | CC0 |
 | `zoo_cow_and_calf` | National Zoological Park, American Bison Cow "May" and Calf, 1898; Between 1898 and 1900 (copied 1929) | Photographer unknown | Smithsonian Institution Archives · [SIA-SIA_000095_B46_F13_014](https://siarchives.si.edu/collections/siris_arc_399497) | CC0 |
 | `zoo_bison_2014` | American Bison, 2014:11:05 | Smithsonian's National Zoo | Smithsonian · [NZP-20141105-008CPM](https://nationalzoo.si.edu/object/nzp_NZP-20141105-008CPM) | CC0 |
+| `upton_red_river_carts` | Red River carts, [between 1867 and 1875] | B. F. Upton | Library of Congress · [LC-DIG-stereo-1s43921](https://www.loc.gov/item/2022651022/) | LOC rights advisory: No known restrictions on publication. |
+| `tavernier_slaughtered_for_the_hide` | Slaughtered for the hide / Frenzeny & Tavernier., [New York] : [Harper & Brothers], 1874. | Frenzeny & Tavernier | Library of Congress · [LC-DIG-ds-12612](https://www.loc.gov/item/2019630603/) | LOC rights advisory: No known restrictions on publication. |
+| `tavernier_curing_hides_and_bones` | Sketches in the far West--curing hides and bones / Frenzeny & Tavernier., 1874. | Frenzeny & Tavernier | Library of Congress · [LC-USZ62-100250](https://www.loc.gov/item/90710851/) | LOC rights advisory: No known restrictions on publication. |
+| `nyzp_nucleus_of_the_buffalo_herd` | Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C.J. Jones, [between 1900 and 1920] | Photographer unknown | Library of Congress · [LC-DIG-ds-16139](https://www.loc.gov/item/2023632555/) | LOC rights advisory: No known restrictions on publication. |
 
 How they are used:
 - Catlin painted on the upper Missouri in 1832 among Plains nations including the Assiniboine, Plains Cree and
   Blackfoot/Kainai, the economy the film describes. His paintings illustrate the bison hunt, camps drying meat, the
   people and the fur-trade post world; captions give the place and year, so none stands in for Red River in 1814.
   The Comanche village (southern plains, 1834–35) is used only for the line about women's work, with its own caption.
-- Muybridge's sheet (24 views, made in Philadelphia, 1884–86, per the NMAH record) is shown as the mounted print; 8 consecutive views
-  (rows 3–4) are played as a loop to show the animal moving, inside a frame, and named as his photographs.
-- The Hornaday photographs and zoo photographs are shown as what they are (1884–87 workshop, the 1887 museum group,
-  the National Zoo herd about 1898, a zoo bison in 2014). None is used for the 1870s commercial hunt.
+- Muybridge's sheet (24 views, made in Philadelphia, 1884–86, per the NMAH record) is shown as the mounted print;
+  8 consecutive views (rows 3–4) are played as a loop inside a frame, and named as his photographs.
+- Hornaday photographs and the National Zoo photographs are shown as what they are (1884–87 workshop, the 1887 museum
+  group, a zoo bison in 2014). None is used for the 1870s commercial hunt.
+- The photograph of Red River carts (B. F. Upton, Minnesota, 1867–75) is used when the narration describes the hunt and
+  the carts; its caption names Minnesota and the dates, and it does not claim to show the 1840 hunt.
+- The two Harper's Weekly engravings of 1874 (Frenzeny & Tavernier) illustrate the line about the 1870s hide trade.
+- "Nucleus of the buffalo herd" (album of the New York Zoological Park, 1900–1920) is used for "Bison have slowly come
+  back"; the caption repeats the record's title and date only.
 
 ## 2. Sound
 

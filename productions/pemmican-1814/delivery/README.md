@@ -2,7 +2,7 @@
 
 | File | What it is |
 |---|---|
-| `The_Pemmican_War_1080p.mp4` | Final documentary (version 2, with archival images), 15:00, 1920×1080, 30 fps, H.264 High (CRF 18), AAC 48 kHz stereo, −14 LUFS |
+| `The_Pemmican_War_1080p.mp4` | Final documentary (version 3, with archival images from the Smithsonian and the Library of Congress), 15:00, 1920×1080, 30 fps, H.264 High (CRF 18), AAC 48 kHz stereo, −14 LUFS |
 | `The_Pemmican_War_1080p.mp4.part-00…15` + `join_video.sh` | The same file split into 16 parts under 100 MB (GitHub's file limit, LFS is not available from the production environment). Run `sh join_video.sh` to rebuild it and verify its SHA-256. |
 | `The_Pemmican_War_Short_1080x1920.mp4` | Vertical Short (58.5 s) cut from the cold open, with burned-in captions and an end card |
 | `The_Pemmican_War_EN.srt` | English subtitles (sentence-timed from the narration) |
@@ -13,7 +13,7 @@
 | `../production/SHOT_PLAN.md`, `../production/ASSET_MANIFEST.md` | Shot list (generated from the EDL) and licences |
 | `../script/FINAL_SCRIPT.md` | Narration with timings and the picture under each paragraph |
 
-Version 1 (all 3D picture, before the archival pass) is kept in git history at commit 79ee180.
+Version 1 (all 3D picture) is kept in git history at commit 79ee180, version 2 (Smithsonian images only) at c56cd31.
 
 Nothing has been uploaded to YouTube. Publishing needs the channel owner's explicit go-ahead.
 

@@ -54,7 +54,7 @@ historical artworks appear; reconstructions are labelled as such on screen and i
 | 40 | 4:48.06 | 5:04.15 | 16.1 s | Motion graphic | Graphic: four 90-lb bags per canoe | dissolve 0.6 s |
 | 41 | 5:04.15 | 5:16.10 | 12.0 s | Motion graphic | George Catlin: Fort Union, Mouth of the Yellowstone River (1832) | dissolve 0.7 s |
 | 42 | 5:16.10 | 5:25.41 | 9.3 s | Map | Map: Métis communities on the Red and Assiniboine | dissolve 0.6 s |
-| 43 | 5:25.41 | 5:35.97 | 10.6 s | 3D plate (2.5D move) | `plain_B3` — A line of Red River carts on the plains | dissolve 0.7 s |
+| 43 | 5:25.41 | 5:35.97 | 10.6 s | Motion graphic | Red River carts and the men who drove them, Minnesota, 1867-75 (photograph) | dissolve 0.7 s |
 | 44 | 5:35.97 | 5:41.57 | 5.6 s | 3D plate (2.5D move) | `store_S1` — Bags stacked at a post | dissolve 0.6 s |
 | 45 | 5:41.57 | 5:52.56 | 11.0 s | Motion graphic | George Catlin: Buffalo Herds Crossing the Upper Missouri (1832) | dissolve 0.7 s |
 | 46 | 5:52.56 | 5:58.32 | 5.8 s | Map | Map: furs from the north, fuel from bison country | dissolve 0.6 s |
@@ -104,22 +104,24 @@ historical artworks appear; reconstructions are labelled as such on screen and i
 | 90 | 12:31.19 | 12:35.61 | 4.4 s | Motion graphic | Muybridge's bison in motion: eight consecutive views played as a loop, fading out | dissolve 0.6 s |
 | 91 | 12:35.61 | 12:43.08 | 7.5 s | Motion graphic | George Catlin: Buffalo Bulls Fighting in Running Season, Upper Missouri (1837–39) | dissolve 0.6 s |
 | 92 | 12:43.08 | 12:49.75 | 6.7 s | 3D plate (2.5D move) | `camp_R3b` — Empty racks at dusk | dissolve 0.7 s |
-| 93 | 12:49.75 | 13:15.23 | 25.5 s | 3D plate (2.5D move) | `plain_B2` — Bison on the ridge, disappearing one by one | dissolve 0.8 s |
-| 94 | 13:15.23 | 13:21.96 | 6.7 s | 3D plate (2.5D move) | `plain_G3` — Empty plain at dusk | dissolve 0.8 s |
-| 95 | 13:21.96 | 13:29.79 | 7.8 s | Motion graphic | Photographer unknown: William T. Hornaday in the model and taxidermy shop (1884–87) | dissolve 0.8 s |
-| 96 | 13:29.79 | 13:36.30 | 6.5 s | Motion graphic | Photographer unknown: Group of bison collected and mounted by Hornaday, U.S. National Museum (1887) | dissolve 0.6 s |
-| 97 | 13:36.30 | 13:47.46 | 11.2 s | 3D plate (2.5D move) | `camp_R3b` — Empty racks | dissolve 0.8 s |
-| 98 | 13:47.46 | 13:52.75 | 5.3 s | Motion graphic | Photographer unknown: Bison cow "May" and calf, National Zoological Park (c. 1898) | dissolve 0.8 s |
-| 99 | 13:52.75 | 13:57.05 | 4.3 s | 3D plate (2.5D move) | `camp_K3` — Berries for pemmican | dissolve 0.6 s |
-| 100 | 13:57.05 | 14:00.60 | 3.5 s | 3D plate (2.5D move) | `camp_K1` — Pounded meat on a hide | dissolve 0.6 s |
-| 101 | 14:00.60 | 14:15.79 | 15.2 s | Map | Map: the Buffalo Treaty, 2014 | dissolve 0.7 s |
-| 102 | 14:15.79 | 14:22.65 | 6.9 s | Motion graphic | Smithsonian's National Zoo: American bison, Smithsonian's National Zoo (2014) | dissolve 0.8 s |
-| 103 | 14:22.65 | 14:24.55 | 1.9 s | 3D plate (2.5D move) | `dock_D5` — The bag: focus pull | dissolve 0.9 s |
-| 104 | 14:24.55 | 14:27.23 | 2.7 s | 3D plate (2.5D move) | `desk_W2` — The order | dissolve 0.3 s |
-| 105 | 14:27.23 | 14:29.13 | 1.9 s | 3D plate (2.5D move) | `plain_G2` — The plain | dissolve 0.3 s |
-| 106 | 14:29.13 | 14:31.97 | 2.8 s | 3D plate (2.5D move) | `dock_C3b` — Cargo | dissolve 0.3 s |
-| 107 | 14:31.97 | 14:45.00 | 13.0 s | 3D plate (2.5D move) | `dock_D4` — Pull back from the landing | dissolve 0.9 s |
-| 108 | 14:45.00 | 15:00.00 | 15.0 s | Motion graphic | Credits and disclosures | dip 1.4 s |
+| 93 | 12:49.75 | 12:55.25 | 5.5 s | Motion graphic | Harper's Weekly, 1874: a hunter holds a skinned hide beside a bison carcass | dissolve 0.8 s |
+| 94 | 12:55.25 | 13:02.01 | 6.8 s | Motion graphic | Harper's Weekly, 1874: hides pegged out to dry and a heap of bones | dissolve 0.6 s |
+| 95 | 13:02.01 | 13:15.23 | 13.2 s | 3D plate (2.5D move) | `plain_B2` — Bison on the ridge, disappearing one by one | dissolve 0.8 s |
+| 96 | 13:15.23 | 13:21.96 | 6.7 s | 3D plate (2.5D move) | `plain_G3` — Empty plain at dusk | dissolve 0.8 s |
+| 97 | 13:21.96 | 13:29.79 | 7.8 s | Motion graphic | Photographer unknown: William T. Hornaday in the model and taxidermy shop (1884–87) | dissolve 0.8 s |
+| 98 | 13:29.79 | 13:36.30 | 6.5 s | Motion graphic | Photographer unknown: Group of bison collected and mounted by Hornaday, U.S. National Museum (1887) | dissolve 0.6 s |
+| 99 | 13:36.30 | 13:47.46 | 11.2 s | 3D plate (2.5D move) | `camp_R3b` — Empty racks | dissolve 0.8 s |
+| 100 | 13:47.46 | 13:52.75 | 5.3 s | Motion graphic | Photographer unknown: Nucleus of the buffalo herd (between 1900 and 1920) | dissolve 0.8 s |
+| 101 | 13:52.75 | 13:57.05 | 4.3 s | 3D plate (2.5D move) | `camp_K3` — Berries for pemmican | dissolve 0.6 s |
+| 102 | 13:57.05 | 14:00.60 | 3.5 s | 3D plate (2.5D move) | `camp_K1` — Pounded meat on a hide | dissolve 0.6 s |
+| 103 | 14:00.60 | 14:15.79 | 15.2 s | Map | Map: the Buffalo Treaty, 2014 | dissolve 0.7 s |
+| 104 | 14:15.79 | 14:22.65 | 6.9 s | Motion graphic | Smithsonian's National Zoo: American bison, Smithsonian's National Zoo (2014) | dissolve 0.8 s |
+| 105 | 14:22.65 | 14:24.55 | 1.9 s | 3D plate (2.5D move) | `dock_D5` — The bag: focus pull | dissolve 0.9 s |
+| 106 | 14:24.55 | 14:27.23 | 2.7 s | 3D plate (2.5D move) | `desk_W2` — The order | dissolve 0.3 s |
+| 107 | 14:27.23 | 14:29.13 | 1.9 s | 3D plate (2.5D move) | `plain_G2` — The plain | dissolve 0.3 s |
+| 108 | 14:29.13 | 14:31.97 | 2.8 s | 3D plate (2.5D move) | `dock_C3b` — Cargo | dissolve 0.3 s |
+| 109 | 14:31.97 | 14:45.00 | 13.0 s | 3D plate (2.5D move) | `dock_D4` — Pull back from the landing | dissolve 0.9 s |
+| 110 | 14:45.00 | 15:00.00 | 15.0 s | Motion graphic | Credits and disclosures | dip 1.4 s |
 
 ## Overlays (supers, lower thirds, counters)
 
@@ -151,18 +153,21 @@ historical artworks appear; reconstructions are labelled as such on screen and i
 | 2:27.63 | 2:37.25 | Credit: Comanche Village, Women Dressing Robes and Drying Meat, 1834–35 — George Catlin  ·  Smithsonian American Art Museum |
 | 3:37.25 | 3:43.51 | Credit: Canoe Race near Sault Ste. Marie, 1836–37 — George Catlin  ·  Smithsonian American Art Museum |
 | 5:04.75 | 5:15.75 | Credit: Fort Union, Mouth of the Yellowstone River, 1832 — George Catlin  ·  Smithsonian American Art Museum |
+| 5:26.01 | 5:35.62 | Credit: Red River carts, Minnesota, between 1867 and 1875 — B. F. Upton  ·  Library of Congress |
 | 5:42.17 | 5:52.21 | Credit: Buffalo Herds Crossing the Upper Missouri, 1832 — George Catlin  ·  Smithsonian American Art Museum |
 | 7:10.54 | 7:16.77 | Credit: Buffalo Chase in Winter, Indians on Snowshoes, 1832–33 — George Catlin  ·  Smithsonian American Art Museum |
 | 12:27.89 | 12:35.26 | Credit: Buffalo gallop (Animal Locomotion), 1884–86 — Eadweard Muybridge  ·  National Museum of American History |
 | 12:36.21 | 12:42.73 | Credit: Buffalo Bulls Fighting in Running Season, Upper Missouri, 1837–39 — George Catlin  ·  Smithsonian American Art Museum |
+| 12:50.35 | 12:54.90 | Credit: Slaughtered for the hide, Harper's Weekly, 12 December 1874 — Frenzeny & Tavernier  ·  Library of Congress |
+| 12:55.85 | 13:01.66 | Credit: Curing hides and bones, Harper's Weekly, 4 April 1874 — Frenzeny & Tavernier  ·  Library of Congress |
 | 13:22.56 | 13:29.44 | Credit: William T. Hornaday in the model and taxidermy shop, 1884–87 — Smithsonian Institution Archives |
 | 13:30.39 | 13:35.95 | Credit: Group of bison collected and mounted by Hornaday, U.S. National Museum, 1887 — Smithsonian Institution Archives |
-| 13:48.06 | 13:52.40 | Credit: Bison cow "May" and calf, National Zoological Park, c. 1898 — Smithsonian Institution Archives |
+| 13:48.06 | 13:52.40 | Credit: Nucleus of the buffalo herd, between 1900 and 1920 — Library of Congress |
 | 14:16.39 | 14:22.30 | Credit: American bison, Smithsonian's National Zoo, 2014 — Smithsonian's National Zoo |
 
 ## Counts
 
-- Clips: 108 (3D plate shots 56, maps 13, graphics/cards 39)
-- Screen time: 3D 382 s, maps 176 s, graphics/cards 342 s
-- Average shot length: 8.3 s
+- Clips: 110 (3D plate shots 55, maps 13, graphics/cards 42)
+- Screen time: 3D 359 s, maps 176 s, graphics/cards 365 s
+- Average shot length: 8.2 s
 - Unique Blender plates: 27

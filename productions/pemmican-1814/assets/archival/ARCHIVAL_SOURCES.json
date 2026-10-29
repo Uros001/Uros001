@@ -283,5 +283,81 @@
   "catalog_title": "American Bison",
   "catalog_date": "2014:11:05",
   "catalog_artist": ""
+ },
+ "upton_red_river_carts": {
+  "file": "assets/archival/work/upton_red_river_carts.jpg",
+  "size": [
+   2498,
+   2190
+  ],
+  "title": "Red River carts, Minnesota",
+  "maker": "B. F. Upton",
+  "date": "between 1867 and 1875",
+  "collection": "Library of Congress",
+  "smithsonian_id": "LC-DIG-stereo-1s43921",
+  "record_id": "2022651022",
+  "record_link": "https://www.loc.gov/item/2022651022/",
+  "guid": "",
+  "rights": "LOC rights advisory: No known restrictions on publication.",
+  "catalog_title": "Red River carts",
+  "catalog_date": "[between 1867 and 1875]",
+  "catalog_artist": "Upton, B. F. (Benjamin Franklin), photographer"
+ },
+ "tavernier_slaughtered_for_the_hide": {
+  "file": "assets/archival/work/tavernier_slaughtered_for_the_hide.jpg",
+  "size": [
+   3908,
+   4500
+  ],
+  "title": "Slaughtered for the hide",
+  "maker": "Frenzeny & Tavernier",
+  "date": "Harper's Weekly, 12 December 1874",
+  "collection": "Library of Congress",
+  "smithsonian_id": "LC-DIG-ds-12612",
+  "record_id": "2019630603",
+  "record_link": "https://www.loc.gov/item/2019630603/",
+  "guid": "",
+  "rights": "LOC rights advisory: No known restrictions on publication.",
+  "catalog_title": "Slaughtered for the hide / Frenzeny & Tavernier.",
+  "catalog_date": "[New York] : [Harper & Brothers], 1874.",
+  "catalog_artist": "Frenzeny & Tavernier, artist"
+ },
+ "tavernier_curing_hides_and_bones": {
+  "file": "assets/archival/work/tavernier_curing_hides_and_bones.jpg",
+  "size": [
+   3694,
+   2343
+  ],
+  "title": "Curing hides and bones",
+  "maker": "Frenzeny & Tavernier",
+  "date": "Harper's Weekly, 4 April 1874",
+  "collection": "Library of Congress",
+  "smithsonian_id": "LC-USZ62-100250",
+  "record_id": "90710851",
+  "record_link": "https://www.loc.gov/item/90710851/",
+  "guid": "",
+  "rights": "LOC rights advisory: No known restrictions on publication.",
+  "catalog_title": "Sketches in the far West--curing hides and bones / Frenzeny & Tavernier.",
+  "catalog_date": "1874.",
+  "catalog_artist": "Frenzeny & Tavernier."
+ },
+ "nyzp_nucleus_of_the_buffalo_herd": {
+  "file": "assets/archival/work/nyzp_nucleus_of_the_buffalo_herd.jpg",
+  "size": [
+   4500,
+   3045
+  ],
+  "title": "Nucleus of the buffalo herd",
+  "maker": "Photographer unknown",
+  "date": "between 1900 and 1920",
+  "collection": "Library of Congress",
+  "smithsonian_id": "LC-DIG-ds-16139",
+  "record_id": "2023632555",
+  "record_link": "https://www.loc.gov/item/2023632555/",
+  "guid": "",
+  "rights": "LOC rights advisory: No known restrictions on publication.",
+  "catalog_title": "Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C.J. Jones",
+  "catalog_date": "[between 1900 and 1920]",
+  "catalog_artist": ""
  }
 }

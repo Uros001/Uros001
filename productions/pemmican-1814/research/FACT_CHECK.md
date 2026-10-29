@@ -133,6 +133,10 @@ All from Smithsonian Institution Open Access catalogue records (media marked CC0
 | J9 | "Group of Bisons or American Buffaloes … Collected and Mounted by W.T. Hornaday, 1886–87", U.S. National Museum, photographed 1887 — under Hornaday's 1889 count | ✅ | SIA RU 95, SIA_000095_B43_F01_005 (record notes quoted) |
 | J10 | Bison cow "May" and calf, National Zoological Park, c. 1898 (cow born at the park 2 Nov 1890) — under "Bison have slowly come back" | ✅ | SIA RU 95, SIA_000095_B46_F13_014 |
 | J11 | American bison, Smithsonian's National Zoo, 2014 — present-day animal, labelled with its year | ✅ | NZP image NZP-20141105-008CPM |
+| J12 | Photograph "Red River carts", B. F. Upton, Minnesota, between 1867 and 1875 — shown with the line about families going out to hunt with carts; the caption gives place and dates and makes no claim about who the men are (the record does not say) | ✅ | LOC 2022651022, LC-DIG-stereo-1s43921; rights advisory "No known restrictions on publication" |
+| J13 | Frenzeny & Tavernier, "Slaughtered for the hide", Harper's Weekly, 12 Dec 1874 — under "in the 1870s ... commercial hunters killed the animals by the millions" | ✅ | LOC 2019630603, LC-DIG-ds-12612 |
+| J14 | Frenzeny & Tavernier, "Sketches in the Far West: curing hides and bones", Harper's Weekly, 4 Apr 1874 | ✅ | LOC 90710851 (LC-USZ62-100250) |
+| J15 | "Nucleus of the buffalo herd. Seven specimens, brought from Texas and Oklahoma by C. J. Jones", photograph in an album of the New York Zoological Park, between 1900 and 1920 — under "Bison have slowly come back" | ✅ | LOC 2023632555, LC-DIG-ds-16139 |
 
 ## I. Primary and further reading (for the video description)
 - Canadian Encyclopedia: "Pemmican"; "Pemmican Proclamation"; "Battle of Seven Oaks"; "Cuthbert Grant"

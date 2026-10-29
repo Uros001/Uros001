@@ -109,3 +109,25 @@ Still weak (not fixed in this pass): Frog Plain oaks and grass (about 85 s), the
 rawhide bag macros, the berry bowl at 13:55 (reads as dark blobs), the prairie lodges and cart line, and distant
 bison silhouettes that stand still. These are 3D shots with no authentic image available from the Smithsonian
 collection; see PRODUCTION_STATUS "Next step".
+
+## 6. Version 3: Library of Congress images added (2026-10-29)
+
+**What changed:** four more real images replace 3D shots: a photograph of Red River carts (B. F. Upton, Minnesota,
+1867–75) at 5:25, two 1874 Harper's Weekly engravings of the hide trade (Frenzeny & Tavernier) at 12:50–13:02, and a
+1900s photograph of the nucleus of a bison herd at 13:48 (rights advisory "No known restrictions on publication" read
+for each; ASSET_MANIFEST §1b, FACT_CHECK J12–J15). The bison-on-the-ridge 3D shot now starts at 13:02 so that it
+accompanies "By 1879, the bison were essentially gone". The credits page names the Library of Congress. Archival
+material is now 18 clips, 134 s (14.9% of the film; measured from the edit list). Original 3D shots are now 40% of the running time (359 s), graphics and maps 45% (407 s, many over live 3D shots). Sound was re-laid (cart axles, herd calls).
+
+| Check (tools/qa.py + ffmpeg) | Result |
+|---|---|
+| Video | H.264 High, 1920×1080, 30 fps, 27,000 frames, 15:00.000 |
+| Audio | AAC 48 kHz stereo, 14:59.989; −14.1 LUFS, −1.4 dBTP, LRA 3.4 LU |
+| Decode errors / frozen picture / silence over 1.5 s | none / 0 / none |
+| Black frames | 3, all intended (8:42.6, 14:44.9, final fade) |
+| Subtitles | 235 cues, 2,065 words, no overlaps, at most 42 characters per line |
+| Rendering | 5 of 45 chunks re-rendered (4 for the edit change, 1 for the credits); the other 40 unchanged |
+
+Visual check: the four new clips were viewed at start and end of their moves and in the finished film (credit
+legible, framing inside the picture, no mount or caption text of the source scan visible); the credits page was
+viewed. Not verified: real-time playback and sound by a person.

@@ -857,7 +857,7 @@ Begin now.
 ### B2. The film that exists now (version 1, delivered)
 - Topic chosen: pemmican and the Pemmican War, Red River colony, 1814–1816 ("The Pemmican War").
 - 15:00.0, 1920×1080, 30 fps, H.264 CRF 18, AAC 48 kHz stereo, −14.1 LUFS, −1.3 dBTP. Cold open, five chapters, credits.
-- 108 clips in version 2: about 45% maps and motion graphics (many sit on top of live 3D shots), about 42% original Blender 3D plates, about 12% real archival images (added in version 2).
+- 110 clips in version 3: about 45% maps and motion graphics (many sit on top of live 3D shots), about 40% original Blender 3D plates, about 15% real archival images (added in versions 2 and 3: 18 clips, 134 s).
 - Narration: synthetic voice (Kokoro, "af_heart"), disclosed on screen and in the description. Music: original score built from CC0 orchestral samples. Sound effects are synthesized. Mix tested with loudness measurement and a speech-recognition check (about 4% word error, formatting only).
 - Also delivered: vertical Short (58.5 s), 2 thumbnails, English SRT (235 cues), 5 titles, description with sources, chapters, tags, shot plan, asset/licence manifest, fact check with source links, QA report. Nothing was uploaded to YouTube.
 - No AI image or video generation was used at any point.
@@ -877,6 +877,9 @@ Network access was restricted for most of the work (Wikimedia, Library of Congre
 - William Hornaday in his taxidermy shop and the 1887 bison group he mounted; zoo bison c. 1898; a zoo bison in 2014.
 Honesty rules used: every image is captioned with what it really is and where/when it was made; Catlin's Missouri paintings are not presented as Red River 1814.
 
+### B5b. Version 3 (in progress): Library of Congress, and what the network allowed
+After I changed the environment's network setting, most archives answered. Wikimedia Commons rate-limited the shared server address (HTTP 429), and the tool's permission checker refused a repeat request, so I did not retry. The Library of Congress worked. From it, four more real items were added: a photograph of Red River carts (B. F. Upton, Minnesota, 1867–75), two 1874 Harper's Weekly engravings of the hide trade (Frenzeny & Tavernier), and a 1900s photograph of the nucleus of a bison herd. Each was checked against its "No known restrictions on publication" rights advisory before use.
+
 ### B6. What still looks generic (my honest list)
 - Frog Plain scenes (about 85 s): oaks and grass still read as CG.
 - Summer fort (32 s) and winter fort: clean model look.
@@ -885,7 +888,7 @@ Honesty rules used: every image is captioned with what it really is and where/wh
 - Distant bison are silhouettes that stand still.
 
 ### B7. Ideas still open (not done yet)
-- Real public-domain material specific to this story: Peter Rindisbacher's Red River watercolours (1820s), Paul Kane's Métis buffalo hunt paintings (1840s), Frances Anne Hopkins's canoe paintings, 1870s photographs of Red River carts and Métis hunters, the 1892 photograph of a pile of bison skulls, portraits of Selkirk, the Amundsen South Pole photograph.
+- Real public-domain material specific to this story that is still missing: Peter Rindisbacher's Red River watercolours (1820s), Paul Kane's Métis buffalo hunt paintings (1840s), Frances Anne Hopkins's canoe paintings (LAC C-002771), the 1892 photograph of a pile of bison skulls (rights records disagree), portraits of Selkirk, the Amundsen South Pole photograph.
 - Real modern footage (bison herds, prairie wind, river mist) labelled "present-day footage".
 - Real photographic textures and sky maps (public domain / CC0) for the remaining 3D scenes.
 - A consistent "period photograph" finishing look so 3D and real images belong to one film.

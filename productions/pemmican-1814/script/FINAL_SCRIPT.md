@@ -148,9 +148,10 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 5:04.6 George Catlin: Fort Union, Mouth of the Yellowstone River (1832)
 - 5:16.1 Map: Métis communities on the Red and Assiniboine
-- 5:25.4 `plain_B3` A line of Red River carts on the plains
+- 5:25.4 Red River carts and the men who drove them, Minnesota, 1867-75 (photograph)
 - 5:36.0 `store_S1` Bags stacked at a post
 - 5:04.7 *on screen:* Credit: Fort Union, Mouth of the Yellowstone River, 1832 — George Catlin  ·  Smithsonian American Art Museum
+- 5:26.0 *on screen:* Credit: Red River carts, Minnesota, between 1867 and 1875 — B. F. Upton  ·  Library of Congress
 
 **P18** · 5:42.0–5:57.0
 
@@ -313,9 +314,12 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 - 12:36.1 George Catlin: Buffalo Bulls Fighting in Running Season, Upper Missouri (1837–39)
 - 12:43.1 `camp_R3b` Empty racks at dusk
-- 12:49.8 `plain_B2` Bison on the ridge, disappearing one by one
+- 12:49.8 Harper's Weekly, 1874: a hunter holds a skinned hide beside a bison carcass
+- 12:55.2 Harper's Weekly, 1874: hides pegged out to dry and a heap of bones
 - 12:40.3 *on screen:* Big: TENS OF MILLIONS / estimates vary widely; nobody knows exactly
 - 12:36.2 *on screen:* Credit: Buffalo Bulls Fighting in Running Season, Upper Missouri, 1837–39 — George Catlin  ·  Smithsonian American Art Museum
+- 12:50.4 *on screen:* Credit: Slaughtered for the hide, Harper's Weekly, 12 December 1874 — Frenzeny & Tavernier  ·  Library of Congress
+- 12:55.9 *on screen:* Credit: Curing hides and bones, Harper's Weekly, 4 April 1874 — Frenzeny & Tavernier  ·  Library of Congress
 
 **P38** · 13:02.5–13:20.3
 
@@ -346,12 +350,12 @@ Each paragraph lists the shots and on-screen text under it. Fact-check row ids a
 
 > Bison have slowly come back since then, and pemmican never truly vanished. It's still made in Indigenous kitchens, by people who learned it the way it was always learned: from someone who knew how. And in 2014, nations from both sides of the border, among them the Blackfeet, the Blood Tribe, the Siksika and the Piikani, signed what they call the Buffalo Treaty, a pact to bring the animal back to their lands. It was the first treaty among them in more than a hundred and fifty years.
 
-- 13:47.9 Photographer unknown: Bison cow "May" and calf, National Zoological Park (c. 1898)
+- 13:47.9 Photographer unknown: Nucleus of the buffalo herd (between 1900 and 1920)
 - 13:52.8 `camp_K3` Berries for pemmican
 - 13:57.1 `camp_K1` Pounded meat on a hide
 - 14:00.6 Map: the Buffalo Treaty, 2014
 - 14:15.8 Smithsonian's National Zoo: American bison, Smithsonian's National Zoo (2014)
-- 13:48.1 *on screen:* Credit: Bison cow "May" and calf, National Zoological Park, c. 1898 — Smithsonian Institution Archives
+- 13:48.1 *on screen:* Credit: Nucleus of the buffalo herd, between 1900 and 1920 — Library of Congress
 - 14:16.4 *on screen:* Credit: American bison, Smithsonian's National Zoo, 2014 — Smithsonian's National Zoo
 
 **P42** · 14:23.2–14:43.8
