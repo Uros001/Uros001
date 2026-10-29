@@ -39,3 +39,4 @@ studio/hyperframes_template/assets/
 productions/*/motion/*/assets/*.ttf
 productions/*/motion/*/assets/*.otf
 productions/*/motion/*/assets/gsap.min.js
+**/.hyperframes/
